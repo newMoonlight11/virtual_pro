@@ -53,13 +53,13 @@ $colors: (
 ) !default;
 // scss-docs-end colors-map
 
-$primary:       #cb0c9f !default;
-$secondary:     #8392AB !default;
+$primary:       #7678ed !default;
+$secondary:     #3d348b !default;
 $info:          #17c1e8 !default;
-$success:       #82d616 !default;
-$warning:       #fbcf33 !default;
-$danger:        #ea0606 !default;
-$light:         $gray-200 !default;
+$success:       #d1d646 !default;
+$warning:       #f7b801 !default;
+$danger:        #f35b04 !default;
+$light:         #f5f5f5 !default;
 $dark:          $h-color !default;
 
 // scss-docs-start theme-colors-map
@@ -78,8 +78,8 @@ $theme-colors: (
 
 
 // Gradient colors
-$primary-gradient:            #7928CA !default;
-$primary-gradient-state:      #FF0080 !default;
+$primary-gradient:            #3d348b !default;
+$primary-gradient-state:      #7678ed !default;
 
 $secondary-gradient:          #627594 !default;
 $secondary-gradient-state:    #A8B8D8 !default;
@@ -549,7 +549,7 @@ $text-gradient-bg-clip:       text !default;
 $text-gradient-text-fill:     transparent !default;
 $text-gradient-position:      relative !default;
 $text-gradient-zindex:        1 !default;
-$text-gradient-bg-primary:    linear-gradient(310deg, #7928CA, #FF0080) !default;
+$text-gradient-bg-primary:    linear-gradient(310deg, #3d348b, #7678ed) !default;
 $text-gradient-bg-info:       linear-gradient(310deg, #2152FF, #21D4FD) !default;
 $text-gradient-bg-success:    linear-gradient(310deg, #17AD37, #C1E823) !default;
 $text-gradient-bg-warning:    linear-gradient(310deg, #F53939, #FBCF33) !default;
@@ -557,7 +557,22 @@ $text-gradient-bg-danger:     linear-gradient(310deg, #D60808, #FF6690) !default
 $text-gradient-bg-dark:     linear-gradient(310deg, #141727, #3A416F) !default;
 
 $initialism-font-size:        $small-font-size !default;
+// Logs
+//
+// Define log colors, border radius, and padding.
 
+$log-padding-y:                   $spacer !default;
+$log-padding-x:                   $spacer !default;
+$log-margin-bottom:               1rem !default;
+$log-border-radius:               $border-radius-md !default;
+$log-link-font-weight:            $font-weight-bold !default;
+$log-border-width:                $border-width !default;
+
+$log-bg-level:                    -10 !default;
+$log-border-level:                -9 !default;
+$log-color-level:                 6 !default;
+
+$log-dismissible-padding-r:       $log-padding-x * 3 !default; // 3x covers width of x plus default padding on either side
 $blockquote-margin-y:         $spacer !default;
 $blockquote-font-size:        $font-size-base * 1.25 !default;
 $blockquote-footer-color:     $gray-600 !default;
