@@ -10,6 +10,14 @@ use App\Http\Controllers\SessionsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AnuncioController;
+use App\Http\Controllers\CalificacionController;
+use App\Http\Controllers\CronogramaController;
+use App\Http\Controllers\EstudianteController;
+use App\Http\Controllers\ModuloController;
+use App\Http\Controllers\ProfesorController;
+use App\Http\Controllers\SimulacroController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,7 +33,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => 'auth'], function () {
 
-    Route::get('/', [HomeController::class, 'home']);
+	Route::get('/', [HomeController::class, 'home']);
 	Route::get('dashboard', function () {
 		return view('dashboard');
 	})->name('dashboard');
@@ -50,22 +58,22 @@ Route::group(['middleware' => 'auth'], function () {
 		return view('tables');
 	})->name('tables');
 
-    Route::get('virtual-reality', function () {
+	Route::get('virtual-reality', function () {
 		return view('virtual-reality');
 	})->name('virtual-reality');
 
-    Route::get('static-sign-in', function () {
+	Route::get('static-sign-in', function () {
 		return view('static-sign-in');
 	})->name('sign-in');
 
-    Route::get('static-sign-up', function () {
+	Route::get('static-sign-up', function () {
 		return view('static-sign-up');
 	})->name('sign-up');
 
-    Route::get('/logout', [SessionsController::class, 'destroy']);
+	Route::get('/logout', [SessionsController::class, 'destroy']);
 	Route::get('/user-profile', [InfoUserController::class, 'create']);
 	Route::post('/user-profile', [InfoUserController::class, 'store']);
-    Route::get('/login', function () {
+	Route::get('/login', function () {
 		return view('dashboard');
 	})->name('sign-up');
 });
@@ -73,10 +81,10 @@ Route::group(['middleware' => 'auth'], function () {
 
 
 Route::group(['middleware' => 'guest'], function () {
-    Route::get('/register', [RegisterController::class, 'create']);
-    Route::post('/register', [RegisterController::class, 'store']);
-    Route::get('/login', [SessionsController::class, 'create']);
-    Route::post('/session', [SessionsController::class, 'store']);
+	Route::get('/register', [RegisterController::class, 'create']);
+	Route::post('/register', [RegisterController::class, 'store']);
+	Route::get('/login', [SessionsController::class, 'create']);
+	Route::post('/session', [SessionsController::class, 'store']);
 	Route::get('/login/forgot-password', [ResetController::class, 'create']);
 	Route::post('/forgot-password', [ResetController::class, 'sendEmail']);
 	Route::get('/reset-password/{token}', [ResetController::class, 'resetPass'])->name('password.reset');
@@ -88,5 +96,22 @@ Route::group(['middleware' => 'guest'], function () {
 });
 
 Route::get('/login', function () {
-    return view('session/login-session');
+	return view('session/login-session');
 })->name('login');
+
+Route::get('/admin/users', [AdminController::class, 'index'])->name('admin.users');
+Route::get('/admin/users/create', [AdminController::class, 'create'])->name('admin.users.create');
+Route::post('/admin/users', [AdminController::class, 'store'])->name('admin.users.store');
+Route::get('/admin/users/{id}/edit', [AdminController::class, 'edit'])->name('admin.users.edit');
+Route::put('/admin/users/{id}', [AdminController::class, 'update'])->name('admin.users.update');
+Route::delete('/admin/users/{id}', [AdminController::class, 'destroy'])->name('admin.users.destroy');
+Route::middleware(['auth'])->group(function () {
+	Route::get('/profesor', [ProfesorController::class, 'index'])->name('profesor.dashboard');
+	Route::get('/estudiante', [EstudianteController::class, 'index'])->name('estudiante.dashboard');
+
+	Route::resource('simulacros', SimulacroController::class);
+	Route::resource('modulos', ModuloController::class);
+	Route::resource('anuncios', AnuncioController::class);
+	Route::resource('cronograma', CronogramaController::class);
+	Route::resource('calificaciones', CalificacionController::class);
+});
