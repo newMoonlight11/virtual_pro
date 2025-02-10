@@ -52,6 +52,6 @@ class InfoUserController extends Controller
         ]);
 
 
-        return redirect('/user-profile')->with('success','Profile updated successfully');
+        return redirect('/user-profile')->with('success','Perfil actualizado con éxito');
     }
 }

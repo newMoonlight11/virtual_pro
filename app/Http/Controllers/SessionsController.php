@@ -23,11 +23,11 @@ class SessionsController extends Controller
         if(Auth::attempt($attributes))
         {
             session()->regenerate();
-            return redirect('dashboard')->with(['success'=>'You are logged in.']);
+            return redirect('dashboard')->with(['success'=>'Has iniciado sesión.']);
         }
         else{
 
-            return back()->withErrors(['email'=>'Email or password invalid.']);
+            return back()->withErrors(['email'=>'Correo o contraseña no válidos.']);
         }
     }
     
@@ -36,6 +36,6 @@ class SessionsController extends Controller
 
         Auth::logout();
 
-        return redirect('/login')->with(['success'=>'You\'ve been logged out.']);
+        return redirect('/login')->with(['success'=>'Has cerrado sesión.']);
     }
 }
