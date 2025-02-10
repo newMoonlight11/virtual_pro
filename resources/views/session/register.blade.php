@@ -8,8 +8,8 @@
       <div class="container">
         <div class="row justify-content-center">
           <div class="col-lg-5 text-center mx-auto">
-            <h1 class="text-white mb-2 mt-5">Welcome!</h1>
-            <p class="text-lead text-white">Use these awesome forms to login or create new account in your project for free.</p>
+            <h1 class="text-white mb-2 mt-5">¡Bienvenid@!</h1>
+            <p class="text-lead text-white">Ingresa tus datos en el formulario y te contáctaremos lo antes posible.</p>
           </div>
         </div>
       </div>
@@ -19,9 +19,9 @@
         <div class="col-xl-4 col-lg-5 col-md-7 mx-auto">
           <div class="card z-index-0">
             <div class="card-header text-center pt-4">
-              <h5>Register with</h5>
+              <h5>Regístrate</h5>
             </div>
-            <div class="row px-xl-5 px-sm-4 px-3">
+            {{-- <div class="row px-xl-5 px-sm-4 px-3">
               <div class="col-3 ms-auto px-1">
                 <a class="btn btn-outline-light w-100" href="javascript:;">
                   <svg width="24px" height="32px" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink32">
@@ -64,7 +64,7 @@
                   or
                 </p>
               </div>
-            </div>
+            </div> --}}
             <div class="card-body">
               <form role="form text-left" method="POST" action="/register">
                 @csrf
@@ -80,25 +80,25 @@
                     <p class="text-danger text-xs mt-2">{{ $message }}</p>
                   @enderror
                 </div>
-                <div class="mb-3">
+                {{-- <div class="mb-3">
                   <input type="password" class="form-control" placeholder="Password" name="password" id="password" aria-label="Password" aria-describedby="password-addon">
                   @error('password')
                     <p class="text-danger text-xs mt-2">{{ $message }}</p>
                   @enderror
-                </div>
+                </div> --}}
                 <div class="form-check form-check-info text-left">
                   <input class="form-check-input" type="checkbox" name="agreement" id="flexCheckDefault" checked>
                   <label class="form-check-label" for="flexCheckDefault">
-                    I agree the <a href="javascript:;" class="text-dark font-weight-bolder">Terms and Conditions</a>
+                    Acepto los <a href="javascript:;" class="text-dark font-weight-bolder">Términos y Condiciones</a>
                   </label>
                   @error('agreement')
-                    <p class="text-danger text-xs mt-2">First, agree to the Terms and Conditions, then try register again.</p>
+                    <p class="text-danger text-xs mt-2">Primero, acepta los términos y condiciones, luego intenta registrarte de nuevo.</p>
                   @enderror
                 </div>
                 <div class="text-center">
-                  <button type="submit" class="btn bg-gradient-dark w-100 my-4 mb-2">Sign up</button>
+                  <button type="submit" class="btn bg-gradient-dark w-100 my-4 mb-2">REGISTRARME</button>
                 </div>
-                <p class="text-sm mt-3 mb-0">Already have an account? <a href="login" class="text-dark font-weight-bolder">Sign in</a></p>
+                <p class="text-sm mt-3 mb-0">¿Ya tienes una cuenta? Ingresa al <a href="login" class="text-dark font-weight-bolder">Campus Virtual</a></p>
               </form>
             </div>
           </div>

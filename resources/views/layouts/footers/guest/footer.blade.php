@@ -2,27 +2,20 @@
   <footer class="footer py-5">
     <div class="container">
       <div class="row">
-      <div class="col-lg-8 mb-4 mx-auto text-center">
-          <a href="https://www.creative-tim.com/?_ga=2.242299972.757293697.1638911086-1528502635.1638911086" target="_blank" class="text-secondary me-xl-5 me-3 mb-sm-0 mb-2">
-              Company
+        <div class="d-flex justify-content-center align-items-center flex-wrap mb-3">
+          <a href="" target="_blank" class="text-secondary me-4">
+            <i class="bi bi-whatsapp text-secondary fs-5"></i>
           </a>
-          <a href="https://www.creative-tim.com/presentation" target="_blank" class="text-secondary me-xl-5 me-3 mb-sm-0 mb-2">
-              About Us
+          <a href="" target="_blank" class="text-secondary me-4">
+            <i class="bi bi-instagram text-secondary fs-5"></i>
           </a>
-          <a href="https://www.creative-tim.com/presentation" target="_blank" class="text-secondary me-xl-5 me-3 mb-sm-0 mb-2">
-              Team
+          <a href="" target="_blank" class="text-secondary me-4">
+            <i class="bi bi-facebook text-secondary fs-5"></i>
           </a>
-          <a href="https://www.creative-tim.com/templates" target="_blank" class="text-secondary me-xl-5 me-3 mb-sm-0 mb-2">
-              Products
-          </a>
-          <a href="https://www.creative-tim.com/blog" target="_blank" class="text-secondary me-xl-5 me-3 mb-sm-0 mb-2">
-              Blog
-          </a>
-          <a href="https://www.creative-tim.com/support-terms" target="_blank" class="text-secondary me-xl-5 me-3 mb-sm-0 mb-2">
-              Pricing
-          </a>
-      </div>
-        @if (!auth()->user() || \Request::is('static-sign-up')) 
+          <p class="mb-0 text-secondary ms-4">Preicfes Virtual Pro ® <script>document.write(new Date().getFullYear())</script></p>
+        </div>
+        
+        {{-- @if (!auth()->user() || \Request::is('static-sign-up')) 
           <div class="col-lg-8 mx-auto text-center mb-4 mt-2">
               <a href="https://dribbble.com/creativetim" target="_blank" class="text-secondary me-xl-4 me-4">
                   <span class="text-lg fab fa-dribbble" aria-hidden="true"></span>
@@ -40,22 +33,22 @@
                   <span class="text-lg fab fa-github" aria-hidden="true"></span>
               </a>
           </div>
-        @endif
+        @endif --}}
       </div>
-      @if (!auth()->user() || \Request::is('static-sign-up')) 
+      {{-- @if (!auth()->user() || \Request::is('static-sign-up')) 
         <div class="row">
           <div class="col-8 mx-auto text-center mt-1">
             <p class="mb-0 text-secondary">
-              Copyright © <script>
+              Preicfes Virtual Pro ® <script>
                 document.write(new Date().getFullYear())
-              </script> Soft by 
+              </script> 
               <a style="color: #252f40;" href="https://www.creative-tim.com" class="font-weight-bold ml-1" target="_blank">Creative Tim</a>
               &
               <a style="color: #252f40;" href="https://www.updivision.com" class="font-weight-bold ml-1" target="_blank">UPDIVISION</a>.
             </p>
           </div>
         </div>
-      @endif
+      @endif --}}
     </div>
   </footer>
   <!-- -------- END FOOTER 3 w/ COMPANY DESCRIPTION WITH LINKS & SOCIAL ICONS & COPYRIGHT ------- -->
