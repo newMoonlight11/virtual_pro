@@ -6,38 +6,46 @@ use App\Models\User;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class RegisterController extends Controller
 {
     public function create()
     {
-        return view('session.register');
+        return view('session.register'); // Asegúrate de que esta vista existe
     }
 
-    public function store()
+    public function store(Request $request)
     {
-        $attributes = request()->validate([
-            'name' => ['required', 'max:50'],
-            'email' => ['required', 'email', 'max:50', Rule::unique('users', 'email')],
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
             'password' => [
                 'required',
                 'string',
-                'min:8',              // Mínimo 8 caracteres
-                'regex:/[A-Z]/',      // Al menos una mayúscula
-                'regex:/[a-z]/',      // Al menos una minúscula
-                'regex:/[0-9]/',      // Al menos un número
-                'regex:/[\W]/',       // Al menos un carácter especial
-                'confirmed'           // Debe coincidir con password_confirmation
+                'min:8',
+                'regex:/[A-Z]/',
+                'regex:/[a-z]/',
+                'regex:/[0-9]/',
+                'regex:/[\W]/',
+                'confirmed'
             ],
-            'agreement' => ['accepted']
+            'role' => 'required|in:profesor,estudiante',
+        ], [
+            'password.regex' => 'La contraseña debe incluir al menos una mayúscula, una minúscula, un número y un carácter especial.',
+            'password.confirmed' => 'Las contraseñas no coinciden.',
         ]);
-        $attributes['password'] = bcrypt($attributes['password']);
 
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'role' => $request->role,
+        ]);
 
-
-        session()->flash('success', 'Tu cuenta ha sido creada');
-        $user = User::create($attributes);
         Auth::login($user);
-        return redirect('/dashboard');
+
+        // Redirigir según el rol
+        return redirect()->route($user->role === 'profesor' ? 'profesor.dashboard' : 'estudiante.dashboard');
     }
 }

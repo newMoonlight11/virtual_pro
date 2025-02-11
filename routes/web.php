@@ -81,7 +81,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 
 Route::group(['middleware' => 'guest'], function () {
-	Route::get('/register', [RegisterController::class, 'create']);
+	Route::get('/register', [RegisterController::class, 'create'])->name('register');
 	Route::post('/register', [RegisterController::class, 'store']);
 	Route::get('/login', [SessionsController::class, 'create']);
 	Route::post('/session', [SessionsController::class, 'store']);
@@ -91,7 +91,7 @@ Route::group(['middleware' => 'guest'], function () {
 	Route::post('/reset-password', [ChangePasswordController::class, 'changePassword'])->name('password.update');
 	Route::get('/index', [IndexController::class, 'index']);
 	// Route::get('/index', function () {return view('index');});	
-	
+
 
 });
 
@@ -114,4 +114,32 @@ Route::middleware(['auth'])->group(function () {
 	Route::resource('anuncios', AnuncioController::class);
 	Route::resource('cronograma', CronogramaController::class);
 	Route::resource('calificaciones', CalificacionController::class);
+});
+Route::middleware(['auth'])->group(function () {
+	// Admin
+	Route::get('/admin/usuarios', function () {
+		return view('admin.registro-usuarios');
+	})->name('admin.usuarios');
+
+	Route::get('/admin/profesores', function () {
+		return view('admin.registro-profesores');
+	})->name('admin.profesores');
+
+	// Profesor
+	Route::prefix('profesor')->group(function () {
+		Route::get('/calificaciones', [ProfesorController::class, 'calificaciones'])->name('profesor.calificaciones');
+		Route::get('/cronograma', [ProfesorController::class, 'cronograma'])->name('profesor.cronograma');
+		Route::get('/modulos', [ProfesorController::class, 'modulos'])->name('profesor.modulos');
+		Route::get('/simulacros', [ProfesorController::class, 'simulacros'])->name('profesor.simulacros');
+		Route::get('/anuncios', [ProfesorController::class, 'anuncios'])->name('profesor.anuncios');
+	});
+
+	// Estudiante
+	Route::prefix('estudiante')->group(function () {
+		Route::get('/calificaciones', [EstudianteController::class, 'calificaciones'])->name('estudiante.calificaciones');
+		Route::get('/cronograma', [EstudianteController::class, 'cronograma'])->name('estudiante.cronograma');
+		Route::get('/modulos', [EstudianteController::class, 'modulos'])->name('estudiante.modulos');
+		Route::get('/anuncios', [EstudianteController::class, 'anuncios'])->name('estudiante.anuncios');
+		Route::get('/simulacros', [EstudianteController::class, 'simulacros'])->name('estudiante.simulacros');
+	});
 });
