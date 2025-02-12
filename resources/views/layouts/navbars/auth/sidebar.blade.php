@@ -30,7 +30,7 @@
         </a>
       </li>
       <li class="nav-item mt-2">
-        <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Laravel Examples</h6>
+        <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Usuarios</h6>
       </li>
       <li class="nav-item">
         <a class="nav-link {{ (Request::is('user-profile') ? 'active' : '') }} " href="{{ url('user-profile') }}">
@@ -50,7 +50,7 @@
                     </g>
                 </svg>
             </div>
-            <span class="nav-link-text ms-1">User Profile</span>
+            <span class="nav-link-text ms-1">Perfil de Usuario</span>
         </a>
       </li>
       <li class="nav-item pb-2">
@@ -58,7 +58,7 @@
             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                 <i style="font-size: 1rem;" class="fas fa-lg fa-list-ul ps-2 pe-2 text-center text-dark {{ (Request::is('user-management') ? 'text-white' : 'text-dark') }} " aria-hidden="true"></i>
             </div>
-            <span class="nav-link-text ms-1">User Management</span>
+            <span class="nav-link-text ms-1">Gestión de Usuarios</span>
         </a>
       </li>
       {{-- <li class="nav-item mt-2">
