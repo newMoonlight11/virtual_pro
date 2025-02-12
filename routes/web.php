@@ -128,10 +128,32 @@ Route::middleware(['auth'])->group(function () {
 	// Profesor
 	Route::prefix('profesor')->group(function () {
 		Route::get('/calificaciones', [ProfesorController::class, 'calificaciones'])->name('profesor.calificaciones');
+		Route::get('/calificaciones/{id}/edit', [ProfesorController::class, 'editarCalificacion'])->name('profesor.editar_calificacion');
+		Route::put('/calificaciones/{id}', [ProfesorController::class, 'actualizarCalificacion'])->name('profesor.actualizar_calificacion');
+		Route::delete('/calificaciones/{id}', [ProfesorController::class, 'eliminarCalificacion'])->name('profesor.eliminar_calificacion');
 		Route::get('/cronograma', [ProfesorController::class, 'cronograma'])->name('profesor.cronograma');
+		Route::get('/cronograma/{id}/edit', [ProfesorController::class, 'editarCronograma'])->name('profesor.editar_cronograma');
+		Route::put('/cronograma/{id}', [ProfesorController::class, 'actualizarCronograma'])->name('profesor.actualizar_cronograma');
+		Route::delete('/cronograma/{id}', [ProfesorController::class, 'eliminarCronograma'])->name('profesor.eliminar_cronograma');
 		Route::get('/modulos', [ProfesorController::class, 'modulos'])->name('profesor.modulos');
-		Route::get('/simulacros', [ProfesorController::class, 'simulacros'])->name('profesor.simulacros');
-		Route::get('/anuncios', [ProfesorController::class, 'anuncios'])->name('profesor.anuncios');
+		Route::get('/modulos/create', [ProfesorController::class, 'crearModulo'])->name('profesor.crear_modulo');
+		Route::post('/modulos', [ProfesorController::class, 'guardarModulo'])->name('profesor.guardar_modulo');
+		Route::get('/modulos/{id}/edit', [ProfesorController::class, 'editarModulo'])->name('profesor.editar_modulo');
+		Route::put('/modulos/{id}', [ProfesorController::class, 'actualizarModulo'])->name('profesor.actualizar_modulo');
+		Route::delete('/modulos/{id}', [ProfesorController::class, 'eliminarModulo'])->name('profesor.eliminar_modulo');
+		Route::resource('/simulacros', SimulacroController::class)->names([
+			'index' => 'profesor.simulacros.index',
+			'create' => 'profesor.simulacros.create',
+			'store' => 'profesor.simulacros.store',
+			'show' => 'profesor.simulacros.show',
+			'edit' => 'profesor.simulacros.edit',
+			'update' => 'profesor.simulacros.update',
+			'destroy' => 'profesor.simulacros.destroy',
+		]);
+		Route::get('/anuncios', [AnuncioController::class, 'index'])->name('profesor.anuncios');
+		Route::get('/anuncios/create', [AnuncioController::class, 'create'])->name('profesor.crear_anuncio');
+		Route::post('/anuncios', [AnuncioController::class, 'store'])->name('profesor.guardar_anuncio');
+		Route::delete('/anuncios/{id}', [AnuncioController::class, 'destroy'])->name('profesor.eliminar_anuncio');
 	});
 
 	// Estudiante
@@ -139,7 +161,9 @@ Route::middleware(['auth'])->group(function () {
 		Route::get('/calificaciones', [EstudianteController::class, 'calificaciones'])->name('estudiante.calificaciones');
 		Route::get('/cronograma', [EstudianteController::class, 'cronograma'])->name('estudiante.cronograma');
 		Route::get('/modulos', [EstudianteController::class, 'modulos'])->name('estudiante.modulos');
-		Route::get('/anuncios', [EstudianteController::class, 'anuncios'])->name('estudiante.anuncios');
-		Route::get('/simulacros', [EstudianteController::class, 'simulacros'])->name('estudiante.simulacros');
+		Route::get('/anuncios', [AnuncioController::class, 'verAnuncios'])->name('estudiante.anuncios');
+		Route::get('/estudiante/simulacros', [SimulacroController::class, 'verSimulacros'])->name('estudiante.simulacros');
+		Route::get('/estudiante/simulacros/{id}', [SimulacroController::class, 'realizarSimulacro'])->name('estudiante.realizar_simulacro');
+		Route::post('/estudiante/simulacros/{id}', [SimulacroController::class, 'guardarRespuestas'])->name('estudiante.guardar_respuestas');
 	});
 });

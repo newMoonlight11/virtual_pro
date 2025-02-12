@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Calificacion;
 
 class EstudianteController extends Controller
 {
@@ -13,7 +14,8 @@ class EstudianteController extends Controller
 
     public function calificaciones()
     {
-        return view('estudiante.calificaciones');
+        $calificaciones = Calificacion::where('estudiante_id', auth()->user()->id)->get();
+        return view('estudiante.calificaciones', compact('calificaciones'));
     }
 
     public function cronograma()

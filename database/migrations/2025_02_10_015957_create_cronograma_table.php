@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('cronograma', function (Blueprint $table) {
+        Schema::create('cronogramas', function (Blueprint $table) {
             $table->id();
             $table->string('evento');
             $table->dateTime('fecha');
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('cronograma');
+        Schema::dropIfExists('cronogramas');
     }
 };
