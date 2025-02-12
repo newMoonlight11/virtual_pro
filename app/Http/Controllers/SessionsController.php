@@ -37,20 +37,20 @@ class SessionsController extends Controller
         return redirect('/login')->with(['success' => 'Has cerrado sesión.']);
     }
     
-    public function login(Request $request)
-    {
-        $credentials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|string|min:8',
-        ]);
+    // public function login(Request $request)
+    // {
+    //     $credentials = $request->validate([
+    //         'email' => 'required|email',
+    //         'password' => 'required|string|min:8',
+    //     ]);
 
-        if (Auth::attempt($credentials)) {
-            $user = Auth::user();
+    //     if (Auth::attempt($credentials)) {
+    //         $user = Auth::user();
 
-            // Redirigir según el rol
-            return redirect()->route($user->role === 'admin' ? 'admin.usuarios' : ($user->role === 'profesor' ? 'profesor.dashboard' : 'estudiante.dashboard'));
-        }
+    //         // Redirigir según el rol
+    //         return redirect()->route($user->role === 'admin' ? 'admin.usuarios' : ($user->role === 'profesor' ? 'profesor.dashboard' : 'estudiante.dashboard'));
+    //     }
 
-        return back()->withErrors(['email' => 'Las credenciales no son correctas.']);
-    }
+    //     return back()->withErrors(['email' => 'Las credenciales no son correctas.']);
+    // }
 }
