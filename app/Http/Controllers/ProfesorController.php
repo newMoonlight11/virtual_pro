@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\Calificacion;
 use App\Models\Cronograma;
 use App\Models\Modulo;
+use App\Models\Pregunta;
+use App\Models\Respuesta;
+use App\Models\Simulacro;
 use App\Models\User;
 
 class ProfesorController extends Controller
@@ -53,33 +56,24 @@ class ProfesorController extends Controller
 
     public function cronograma()
     {
-        $eventos = Cronograma::where('profesor_id', auth()->user()->id)->get();
-        return view('profesor.cronograma', compact('eventos'));
+        return view('profesor.cronograma');
     }
 
-    public function editarCronograma($id)
+    public function obtenerEventos()
     {
-        $evento = Cronograma::findOrFail($id);
-        return view('profesor.editar-cronograma', compact('evento'));
-    }
+        $eventos = [];
 
-    public function actualizarCronograma(Request $request, $id)
-    {
-        $request->validate([
-            'evento' => 'required|string|max:255',
-            'fecha' => 'required|date',
-        ]);
+        // Obtener simulacros y convertirlos en eventos del calendario
+        $simulacros = Simulacro::all();
+        foreach ($simulacros as $simulacro) {
+            $eventos[] = [
+                'title' => 'Simulacro: ' . $simulacro->titulo,
+                'start' => $simulacro->fecha,
+                'color' => '#28a745' // Verde para simulacros
+            ];
+        }
 
-        $evento = Cronograma::findOrFail($id);
-        $evento->update($request->all());
-
-        return redirect()->route('profesor.cronograma')->with('success', 'Evento actualizado.');
-    }
-
-    public function eliminarCronograma($id)
-    {
-        Cronograma::findOrFail($id)->delete();
-        return redirect()->route('profesor.cronograma')->with('success', 'Evento eliminado.');
+        return response()->json($eventos);
     }
 
     public function modulos()
@@ -134,6 +128,35 @@ class ProfesorController extends Controller
     public function simulacros()
     {
         return view('profesor.simulacros');
+    }
+
+    public function crearPregunta($simulacro_id)
+    {
+        return view('profesor.crear-pregunta', compact('simulacro_id'));
+    }
+
+    public function guardarPregunta(Request $request, $simulacro_id)
+    {
+        $request->validate([
+            'enunciado' => 'required|string',
+            'opciones' => 'required|array|min:4',
+            'correcta' => 'required|integer',
+        ]);
+
+        $pregunta = Pregunta::create([
+            'simulacro_id' => $simulacro_id,
+            'enunciado' => $request->enunciado,
+        ]);
+
+        foreach ($request->opciones as $index => $opcion) {
+            Respuesta::create([
+                'pregunta_id' => $pregunta->id,
+                'opcion' => $opcion,
+                'es_correcta' => $index == $request->correcta,
+            ]);
+        }
+
+        return redirect()->route('profesor.simulacros')->with('success', 'Pregunta agregada correctamente.');
     }
 
     public function anuncios()

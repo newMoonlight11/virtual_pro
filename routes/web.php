@@ -108,12 +108,6 @@ Route::delete('/admin/users/{id}', [AdminController::class, 'destroy'])->name('a
 Route::middleware(['auth'])->group(function () {
 	Route::get('/profesor', [ProfesorController::class, 'index'])->name('profesor.dashboard');
 	Route::get('/estudiante', [EstudianteController::class, 'index'])->name('estudiante.dashboard');
-
-	Route::resource('simulacros', SimulacroController::class);
-	Route::resource('modulos', ModuloController::class);
-	Route::resource('anuncios', AnuncioController::class);
-	Route::resource('cronograma', CronogramaController::class);
-	Route::resource('calificaciones', CalificacionController::class);
 });
 Route::middleware(['auth'])->group(function () {
 	// Admin
@@ -132,9 +126,7 @@ Route::middleware(['auth'])->group(function () {
 		Route::put('/calificaciones/{id}', [ProfesorController::class, 'actualizarCalificacion'])->name('profesor.actualizar_calificacion');
 		Route::delete('/calificaciones/{id}', [ProfesorController::class, 'eliminarCalificacion'])->name('profesor.eliminar_calificacion');
 		Route::get('/cronograma', [ProfesorController::class, 'cronograma'])->name('profesor.cronograma');
-		Route::get('/cronograma/{id}/edit', [ProfesorController::class, 'editarCronograma'])->name('profesor.editar_cronograma');
-		Route::put('/cronograma/{id}', [ProfesorController::class, 'actualizarCronograma'])->name('profesor.actualizar_cronograma');
-		Route::delete('/cronograma/{id}', [ProfesorController::class, 'eliminarCronograma'])->name('profesor.eliminar_cronograma');
+		Route::get('/cronograma/eventos', [ProfesorController::class, 'obtenerEventos'])->name('profesor.cronograma.eventos');
 		Route::get('/modulos', [ProfesorController::class, 'modulos'])->name('profesor.modulos');
 		Route::get('/modulos/create', [ProfesorController::class, 'crearModulo'])->name('profesor.crear_modulo');
 		Route::post('/modulos', [ProfesorController::class, 'guardarModulo'])->name('profesor.guardar_modulo');
@@ -162,8 +154,8 @@ Route::middleware(['auth'])->group(function () {
 		Route::get('/cronograma', [EstudianteController::class, 'cronograma'])->name('estudiante.cronograma');
 		Route::get('/modulos', [EstudianteController::class, 'modulos'])->name('estudiante.modulos');
 		Route::get('/anuncios', [AnuncioController::class, 'verAnuncios'])->name('estudiante.anuncios');
-		Route::get('/estudiante/simulacros', [SimulacroController::class, 'verSimulacros'])->name('estudiante.simulacros');
-		Route::get('/estudiante/simulacros/{id}', [SimulacroController::class, 'realizarSimulacro'])->name('estudiante.realizar_simulacro');
-		Route::post('/estudiante/simulacros/{id}', [SimulacroController::class, 'guardarRespuestas'])->name('estudiante.guardar_respuestas');
+		Route::get('/simulacros', [SimulacroController::class, 'verSimulacros'])->name('estudiante.simulacros');
+		Route::get('/simulacros/{id}', [SimulacroController::class, 'realizarSimulacro'])->name('estudiante.realizar_simulacro');
+		Route::post('/simulacros/{id}', [SimulacroController::class, 'guardarRespuestas'])->name('estudiante.guardar_respuestas');
 	});
 });

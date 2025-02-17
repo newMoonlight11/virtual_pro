@@ -2,13 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Modulo;
 use Illuminate\Http\Request;
 
 class ModuloController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return view('modulos.index');
+        $query = Modulo::query();
+
+        if ($request->filled('nombre')) {
+            $query->where('nombre', 'like', '%' . $request->nombre . '%');
+        }
+
+        $modulos = $query->latest()->get();
+
+        return view('profesor.modulos', compact('modulos'));
     }
 
     public function create()

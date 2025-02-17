@@ -8,9 +8,20 @@ use App\Models\Calificacion;
 
 class SimulacroController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $simulacros = Simulacro::all();
+        $query = Simulacro::query();
+
+        if ($request->filled('titulo')) {
+            $query->where('titulo', 'like', '%' . $request->titulo . '%');
+        }
+
+        if ($request->filled('fecha')) {
+            $query->whereDate('fecha', $request->fecha);
+        }
+
+        $simulacros = $query->latest()->get();
+
         return view('profesor.simulacros', compact('simulacros'));
     }
 
@@ -46,16 +57,26 @@ class SimulacroController extends Controller
 
     public function realizarSimulacro($id)
     {
-        $simulacro = Simulacro::findOrFail($id);
+        $simulacro = Simulacro::with('preguntas.respuestas')->findOrFail($id);
         return view('estudiante.realizar-simulacro', compact('simulacro'));
     }
 
     public function guardarRespuestas(Request $request, $id)
     {
         $simulacro = Simulacro::findOrFail($id);
+        $preguntas = $simulacro->preguntas;
+        $puntaje = 0;
 
-        // Simulación de calificación: Generar puntaje aleatorio entre 0 y 100
-        $puntaje = rand(50, 100);
+        foreach ($preguntas as $pregunta) {
+            $respuestaSeleccionada = $request->input("pregunta_{$pregunta->id}");
+
+            if ($respuestaSeleccionada) {
+                $respuestaCorrecta = $pregunta->respuestas()->where('es_correcta', true)->first();
+                if ($respuestaCorrecta && $respuestaCorrecta->id == $respuestaSeleccionada) {
+                    $puntaje += 10; // Suma 10 puntos por cada respuesta correcta
+                }
+            }
+        }
 
         Calificacion::create([
             'estudiante_id' => auth()->user()->id,
