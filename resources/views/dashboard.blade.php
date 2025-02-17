@@ -557,7 +557,7 @@
     <br>
     <div class="col-lg-4 col-md-6">
         <div class="card h-100">
-            <div class="card-header pb-0">
+            <div class="card-header pb-0 d-flex justify-content-between align-items-center">
                 <h6>Cronograma de actividades</h6>
                 {{-- <p class="text-sm">
             <i class="fa fa-arrow-up text-success" aria-hidden="true"></i>
@@ -621,6 +621,11 @@
                         </div>
                     </div>
                 </div>
+                <a class="text-body text-sm font-weight-bold mb-0 icon-move-right mt-auto"
+                    href="{{ route('profesor.cronograma') }}">
+                    Ver más
+                    <i class="fas fa-arrow-right text-sm ms-1" aria-hidden="true"></i>
+                </a>
             </div>
         </div>
     </div>

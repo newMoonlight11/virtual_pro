@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('evento');
             $table->dateTime('fecha');
-            $table->unsignedBigInteger('profesor_id');
+            $table->unsignedBigInteger('profesor_id')->nullable();
             $table->foreign('profesor_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });

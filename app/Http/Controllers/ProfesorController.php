@@ -56,24 +56,47 @@ class ProfesorController extends Controller
 
     public function cronograma()
     {
-        return view('profesor.cronograma');
+        $eventos = Cronograma::where('profesor_id', auth()->id())->get();
+        return view('profesor.cronograma', compact('eventos'));
     }
 
-    public function obtenerEventos()
+    public function guardarEvento(Request $request)
     {
-        $eventos = [];
+        $request->validate([
+            'evento' => 'required|string|max:255',
+            'fecha' => 'required|date',
+        ]);
 
-        // Obtener simulacros y convertirlos en eventos del calendario
-        $simulacros = Simulacro::all();
-        foreach ($simulacros as $simulacro) {
-            $eventos[] = [
-                'title' => 'Simulacro: ' . $simulacro->titulo,
-                'start' => $simulacro->fecha,
-                'color' => '#28a745' // Verde para simulacros
-            ];
-        }
+        Cronograma::create([
+            'evento' => $request->evento,
+            'fecha' => $request->fecha,
+            'profesor_id' => auth()->id(),
+        ]);
 
-        return response()->json($eventos);
+        return redirect()->route('profesor.cronograma')->with('success', 'Evento agregado al cronograma.');
+    }
+
+    public function actualizarEvento(Request $request, $id)
+    {
+        $request->validate([
+            'evento' => 'required|string|max:255',
+            'fecha' => 'required|date',
+            'hora' => 'required',
+        ]);
+
+        $evento = Cronograma::findOrFail($id);
+        $evento->update([
+            'evento' => $request->evento,
+            'fecha' => $request->fecha . ' ' . $request->hora, // Concatenamos la fecha con la hora
+        ]);
+
+        return redirect()->route('profesor.cronograma')->with('success', 'Evento actualizado correctamente.');
+    }
+
+    public function eliminarEvento($id)
+    {
+        Cronograma::findOrFail($id)->delete();
+        return redirect()->route('profesor.cronograma')->with('success', 'Evento eliminado correctamente.');
     }
 
     public function modulos()

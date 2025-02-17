@@ -123,8 +123,10 @@ Route::middleware(['auth'])->group(function () {
 		Route::get('/calificaciones/{id}/edit', [ProfesorController::class, 'editarCalificacion'])->name('profesor.editar_calificacion');
 		Route::put('/calificaciones/{id}', [ProfesorController::class, 'actualizarCalificacion'])->name('profesor.actualizar_calificacion');
 		Route::delete('/calificaciones/{id}', [ProfesorController::class, 'eliminarCalificacion'])->name('profesor.eliminar_calificacion');
-		Route::get('/cronograma', [ProfesorController::class, 'cronograma'])->name('profesor.cronograma');
-		Route::get('/cronograma/eventos', [ProfesorController::class, 'obtenerEventos'])->name('profesor.cronograma.eventos');
+		Route::get('cronograma', [ProfesorController::class, 'cronograma'])->name('profesor.cronograma');
+		Route::post('cronograma', [ProfesorController::class, 'guardarEvento'])->name('profesor.cronograma.guardar');
+		Route::put('cronograma/{id}', [ProfesorController::class, 'actualizarEvento'])->name('profesor.cronograma.actualizar');
+		Route::delete('cronograma/{id}', [ProfesorController::class, 'eliminarEvento'])->name('profesor.cronograma.eliminar');
 		Route::get('/modulos', [ProfesorController::class, 'modulos'])->name('profesor.modulos');
 		Route::get('/modulos/create', [ProfesorController::class, 'crearModulo'])->name('profesor.crear_modulo');
 		Route::post('/modulos', [ProfesorController::class, 'guardarModulo'])->name('profesor.guardar_modulo');
