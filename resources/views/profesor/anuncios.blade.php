@@ -8,6 +8,7 @@
             <thead>
                 <tr>
                     <th>Título</th>
+                    <th>Subtítulo</th>
                     <th>Contenido</th>
                     <th>Acciones</th>
                 </tr>
@@ -16,6 +17,7 @@
                 @foreach ($anuncios as $anuncio)
                     <tr>
                         <td>{{ $anuncio->titulo }}</td>
+                        <td>{{ $anuncio->subtitulo ?? 'Sin subtítulo' }}</td>
                         <td>{{ $anuncio->contenido }}</td>
                         <td>
                             <form action="{{ route('profesor.eliminar_anuncio', $anuncio->id) }}" method="POST"
@@ -23,7 +25,9 @@
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger btn-sm"
-                                    onclick="return confirm('¿Eliminar este anuncio?');">Eliminar</button>
+                                    onclick="return confirm('¿Eliminar este anuncio?');">
+                                    Eliminar
+                                </button>
                             </form>
                         </td>
                     </tr>
