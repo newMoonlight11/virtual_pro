@@ -9,16 +9,16 @@
           <div class="row">
             <div class="col-8">
               <div class="numbers">
-                <p class="text-sm mb-0 text-capitalize font-weight-bold">Today's Money</p>
+                <p class="text-sm mb-0 text-capitalize font-weight-bold">Total de usuarios</p>
                 <h5 class="font-weight-bolder mb-0">
-                  $53,000
-                  <span class="text-success text-sm font-weight-bolder">+55%</span>
+                  250
+                  <span class="text-success text-sm font-weight-bolder">+25%</span>
                 </h5>
               </div>
             </div>
             <div class="col-4 text-end">
               <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
-                <i class="ni ni-money-coins text-lg opacity-10" aria-hidden="true"></i>
+                <i class="bi bi-people-fill text-lg opacity-10" aria-hidden="true"></i>
               </div>
             </div>
           </div>
@@ -31,9 +31,9 @@
           <div class="row">
             <div class="col-8">
               <div class="numbers">
-                <p class="text-sm mb-0 text-capitalize font-weight-bold">Today's Users</p>
+                <p class="text-sm mb-0 text-capitalize font-weight-bold">Usuarios de hoy</p>
                 <h5 class="font-weight-bolder mb-0">
-                  2,300
+                  100
                   <span class="text-success text-sm font-weight-bolder">+3%</span>
                 </h5>
               </div>
@@ -53,16 +53,16 @@
           <div class="row">
             <div class="col-8">
               <div class="numbers">
-                <p class="text-sm mb-0 text-capitalize font-weight-bold">New Clients</p>
+                <p class="text-sm mb-0 text-capitalize font-weight-bold">Nuevos usuarios</p>
                 <h5 class="font-weight-bolder mb-0">
-                  +3,462
-                  <span class="text-danger text-sm font-weight-bolder">-2%</span>
+                  35
+                  <span class="text-success text-sm font-weight-bolder">+2%</span>
                 </h5>
               </div>
             </div>
             <div class="col-4 text-end">
               <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
-                <i class="ni ni-paper-diploma text-lg opacity-10" aria-hidden="true"></i>
+                <i class="bi bi-person-plus-fill text-lg opacity-10" aria-hidden="true"></i>
               </div>
             </div>
           </div>
@@ -75,16 +75,15 @@
           <div class="row">
             <div class="col-8">
               <div class="numbers">
-                <p class="text-sm mb-0 text-capitalize font-weight-bold">Sales</p>
+                <p class="text-sm mb-0 text-capitalize font-weight-bold">Días para el simulacro</p>
                 <h5 class="font-weight-bolder mb-0">
-                  $103,430
-                  <span class="text-success text-sm font-weight-bolder">+5%</span>
+                  100
                 </h5>
               </div>
             </div>
             <div class="col-4 text-end">
               <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
-                <i class="ni ni-cart text-lg opacity-10" aria-hidden="true"></i>
+                <i class="bi bi-hourglass-top  text-lg opacity-10" aria-hidden="true"></i>
               </div>
             </div>
           </div>
@@ -99,11 +98,11 @@
           <div class="row">
             <div class="col-lg-6">
               <div class="d-flex flex-column h-100">
-                <p class="mb-1 pt-2 text-bold">Built by developers</p>
-                <h5 class="font-weight-bolder">Soft UI Dashboard</h5>
-                <p class="mb-5">From colors, cards, typography to complex elements, you will find the full documentation.</p>
+                <p class="mb-1 pt-2 text-bold">Nueva cartilla</p>
+                <h5 class="font-weight-bolder">Guía de exploración vocacional</h5>
+                <p class="mb-5">Descubre tu verdadera vocación para elegir la carrera que mejor se adapte a tu perfíl.</p>
                 <a class="text-body text-sm font-weight-bold mb-0 icon-move-right mt-auto" href="javascript:;">
-                  Read More
+                  Ver más
                   <i class="fas fa-arrow-right text-sm ms-1" aria-hidden="true"></i>
                 </a>
               </div>
@@ -125,10 +124,10 @@
         <div class="overflow-hidden position-relative border-radius-lg bg-cover h-100" style="background-image: url('../assets/img/ivancik.jpg');">
           <span class="mask bg-gradient-dark"></span>
           <div class="card-body position-relative z-index-1 d-flex flex-column h-100 p-3">
-            <h5 class="text-white font-weight-bolder mb-4 pt-2">Work with the rockets</h5>
-            <p class="text-white">Wealth creation is an evolutionarily recent positive-sum game. It is all about who take the opportunity first.</p>
+            <h5 class="text-white font-weight-bolder mb-4 pt-2">Tips para presentar el exámen.</h5>
+            <p class="text-white">Revisa el contenido que se acaba de subir, te presentamos tips para la presentación de tu exámen.</p>
             <a class="text-white text-sm font-weight-bold mb-0 icon-move-right mt-auto" href="javascript:;">
-              Read More
+              Ver más
               <i class="fas fa-arrow-right text-sm ms-1" aria-hidden="true"></i>
             </a>
           </div>
@@ -136,7 +135,7 @@
       </div>
     </div>
   </div>
-  <div class="row mt-4">
+  {{-- <div class="row mt-4">
     <div class="col-lg-5 mb-lg-0 mb-4">
       <div class="card z-index-2">
         <div class="card-body p-3">
@@ -544,70 +543,71 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> --}}
+    <br>
     <div class="col-lg-4 col-md-6">
       <div class="card h-100">
         <div class="card-header pb-0">
-          <h6>Orders overview</h6>
-          <p class="text-sm">
+          <h6>Cronograma de actividades</h6>
+          {{-- <p class="text-sm">
             <i class="fa fa-arrow-up text-success" aria-hidden="true"></i>
             <span class="font-weight-bold">24%</span> this month
-          </p>
+          </p> --}}
         </div>
         <div class="card-body p-3">
           <div class="timeline timeline-one-side">
             <div class="timeline-block mb-3">
               <span class="timeline-step">
-                <i class="ni ni-bell-55 text-success text-gradient"></i>
+                <i class="ni ni-bell-55 text-primary"></i>
               </span>
               <div class="timeline-content">
-                <h6 class="text-dark text-sm font-weight-bold mb-0">$2400, Design changes</h6>
-                <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">22 DEC 7:20 PM</p>
+                <h6 class="text-dark text-sm font-weight-bold mb-0">Primera sesión sincrónica</h6>
+                <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">3 MAYO 8:00 AM</p>
               </div>
             </div>
             <div class="timeline-block mb-3">
               <span class="timeline-step">
-                <i class="ni ni-html5 text-danger text-gradient"></i>
+                <i class="ni ni-bell-55 text-primary"></i>
               </span>
               <div class="timeline-content">
-                <h6 class="text-dark text-sm font-weight-bold mb-0">New order #1832412</h6>
-                <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">21 DEC 11 PM</p>
+                <h6 class="text-dark text-sm font-weight-bold mb-0">Segunda sesión sincrónica</h6>
+                <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">4 MAYO 8:00 AM</p>
               </div>
             </div>
             <div class="timeline-block mb-3">
               <span class="timeline-step">
-                <i class="ni ni-cart text-info text-gradient"></i>
+                <i class="ni ni-bell-55 text-primary"></i>
               </span>
               <div class="timeline-content">
-                <h6 class="text-dark text-sm font-weight-bold mb-0">Server payments for April</h6>
-                <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">21 DEC 9:34 PM</p>
+                <h6 class="text-dark text-sm font-weight-bold mb-0">Tercera sesión sincrónica</h6>
+                <p class="text-secondary font-weight-bold text-xs mt-1 mb-0"> 10 MAYO 8:00 AM</p>
               </div>
             </div>
             <div class="timeline-block mb-3">
               <span class="timeline-step">
-                <i class="ni ni-credit-card text-warning text-gradient"></i>
+                <i class="ni ni-bell-55 text-primary"></i>
               </span>
               <div class="timeline-content">
-                <h6 class="text-dark text-sm font-weight-bold mb-0">New card added for order #4395133</h6>
-                <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">20 DEC 2:20 AM</p>
+                <h6 class="text-dark text-sm font-weight-bold mb-0">Cuarta sesión sincrónica</h6>
+                <p class="text-secondary font-weight-bold text-xs mt-1 mb-0"> 11 MAYO 8:00 AM</p>
               </div>
             </div>
             <div class="timeline-block mb-3">
               <span class="timeline-step">
-                <i class="ni ni-key-25 text-primary text-gradient"></i>
+                <i class="ni ni-bell-55 text-primary"></i>
               </span>
               <div class="timeline-content">
-                <h6 class="text-dark text-sm font-weight-bold mb-0">Unlock packages for development</h6>
-                <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">18 DEC 4:54 AM</p>
+                <h6 class="text-dark text-sm font-weight-bold mb-0">Quinta sesión sincrónica</h6>
+                <p class="text-secondary font-weight-bold text-xs mt-1 mb-0"> 17 MAYO 8:00 AM</p>
               </div>
             </div>
             <div class="timeline-block">
               <span class="timeline-step">
-                <i class="ni ni-money-coins text-dark text-gradient"></i>
+                <i class="bi bi-hourglass-top text-primary"></i>
               </span>
               <div class="timeline-content">
-                <h6 class="text-dark text-sm font-weight-bold mb-0">New order #9583120</h6>
-                <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">17 DEC</p>
+                <h6 class="text-dark text-sm font-weight-bold mb-0">Primer simulacro</h6>
+                <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">18 MAYO 8:00 AM</p>
               </div>
             </div>
           </div>
