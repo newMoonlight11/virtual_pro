@@ -22,16 +22,18 @@ class AnuncioController extends Controller
     {
         $request->validate([
             'titulo' => 'required|string|max:255',
+            'subtitulo' => 'nullable|string|max:255',
             'contenido' => 'required|string',
         ]);
 
         Anuncio::create([
             'titulo' => $request->titulo,
+            'subtitulo' => $request->subtitulo,
             'contenido' => $request->contenido,
-            'autor_id' => auth()->user()->id,
+            'autor_id' => auth()->id(), // Obtiene el ID del usuario autenticado
         ]);
 
-        return redirect()->route('profesor.anuncios')->with('success', 'Anuncio publicado correctamente.');
+        return redirect()->route('profesor.anuncios')->with('success', 'Anuncio creado correctamente.');
     }
 
     public function destroy($id)

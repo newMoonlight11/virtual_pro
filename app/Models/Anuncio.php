@@ -9,7 +9,7 @@ class Anuncio extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['titulo', 'contenido', 'autor_id'];
+    protected $fillable = ['titulo', 'subtitulo', 'contenido', 'autor_id'];
 
     public function autor()
     {
