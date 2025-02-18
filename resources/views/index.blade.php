@@ -29,7 +29,7 @@
             <h1 class="text-white mb-2">¡Prepárate con la mejor plataforma educativa!</h1>
             <p class="text-lead text-white">La herramienta definitiva para alcanzar un puntaje sobresaliente y abrir
                 las puertas a tu futuro académico y profesional.</p>
-            <a href="" target="_blank" class="btn btn-sm btn-round mb-0 me-1 bg-white text-secondary">¡Inscríbete
+            <a href="https://wa.me/qr/ZM27K3GRHSH7I1" target="_blank" class="btn btn-sm btn-round mb-0 me-1 bg-white text-secondary">¡Inscríbete
                 ahora y asegura tu éxito!</a>
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#imageCarousel" data-bs-slide="prev"
@@ -116,7 +116,7 @@
             </div>
         </div>
     </div>
-    <div class="container p-4 mt-6 bg-white">
+    <div class="container p-4 mt-6 bg-white border-radius-lg">
         <div class="row">
             <div class="col-md-6">
                 <h2 class="d-flex align-items-center mb-3 mt-md-7 text-secondary">Beneficios de estudiar con nosotros</h2>
@@ -205,7 +205,7 @@
     </div>
     <br>
     <div class="position-relative d-flex justify-content-center text-center mt-4">
-        <a href="" target="_blank"
+        <a href="{{ auth()->user() ? url('static-sign-up') : url('register') }}"
             class="btn btn-sm btn-round mb-0 me-1 bg-secondary text-white fs-7 {{ Request::is('static-sign-up') ? 'light' : 'dark' }}">
             ¡No pierdas más tiempo! Inscríbete hoy y prepárate para alcanzar tus sueños.
         </a>

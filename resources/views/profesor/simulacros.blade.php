@@ -11,7 +11,7 @@
                     <input type="text" name="titulo" class="form-control" placeholder="Buscar por título..."
                         value="{{ request('titulo') }}">
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <input type="date" name="fecha" class="form-control" value="{{ request('fecha') }}">
                 </div>
                 <div class="col-md-2">
@@ -20,6 +20,10 @@
                 <div class="col-md-2">
                     <a href="{{ route('profesor.simulacros.index') }}" class="btn btn-secondary"><i class="fas fa-sync"></i>
                         Restablecer</a>
+                </div>
+                <div class="col-md-2">
+                    <a href="{{ route('profesor.simulacros.create') }}" class="btn btn-secondary"><i class="fas fa-plus"></i>
+                        Nuevo</a>
                 </div>
             </div>
         </form>

@@ -9,7 +9,7 @@ class Calificacion extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['estudiante_id', 'simulacro_id', 'puntaje'];
+    protected $fillable = ['estudiante_id', 'simulacro_id', 'pregunta_id', 'respuesta', 'es_correcta'];
 
     public function estudiante()
     {
@@ -19,5 +19,10 @@ class Calificacion extends Model
     public function simulacro()
     {
         return $this->belongsTo(Simulacro::class, 'simulacro_id');
+    }
+
+    public function pregunta()
+    {
+        return $this->belongsTo(Pregunta::class, 'pregunta_id');
     }
 }

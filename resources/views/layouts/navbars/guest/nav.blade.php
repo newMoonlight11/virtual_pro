@@ -48,7 +48,9 @@
       </ul>
       <ul class="navbar-nav d-lg-block d-none">
         <li class="nav-item">
-          <a href="" target="_blank" class="btn btn-sm btn-round mb-0 me-1 bg-secondary text-white {{ (Request::is('static-sign-up') ? 'light' : 'dark') }}">CONTÁCTANOS</a>
+          <a href="https://wa.me/qr/ZM27K3GRHSH7I1" target="_blank" class="btn btn-sm btn-round mb-0 me-1 bg-secondary text-white {{ (Request::is('static-sign-up') ? 'light' : 'dark') }}">
+            <i class="bi bi-whatsapp text-white fs-6 me-2"></i>
+            CONTÁCTANOS</a>
         </li>
       </ul>
     </div>

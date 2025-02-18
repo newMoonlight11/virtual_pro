@@ -9,8 +9,15 @@ class Pregunta extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['simulacro_id', 'enunciado'];
-
+    protected $fillable = [
+        'simulacro_id',
+        'texto',
+        'opcion_a',
+        'opcion_b',
+        'opcion_c',
+        'opcion_d',
+        'respuesta_correcta'
+    ];
     public function simulacro()
     {
         return $this->belongsTo(Simulacro::class);

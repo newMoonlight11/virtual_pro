@@ -71,18 +71,22 @@ class SimulacroController extends Controller
             $respuestaSeleccionada = $request->input("pregunta_{$pregunta->id}");
 
             if ($respuestaSeleccionada) {
-                $respuestaCorrecta = $pregunta->respuestas()->where('es_correcta', true)->first();
-                if ($respuestaCorrecta && $respuestaCorrecta->id == $respuestaSeleccionada) {
+                $esCorrecta = ($respuestaSeleccionada == $pregunta->respuesta_correcta);
+
+                if ($esCorrecta) {
                     $puntaje += 10; // Suma 10 puntos por cada respuesta correcta
                 }
+
+                // Guardar cada respuesta en la tabla calificacions
+                Calificacion::create([
+                    'estudiante_id' => auth()->id(),
+                    'simulacro_id' => $simulacro->id,
+                    'pregunta_id' => $pregunta->id,
+                    'respuesta' => $respuestaSeleccionada,
+                    'es_correcta' => $esCorrecta
+                ]);
             }
         }
-
-        Calificacion::create([
-            'estudiante_id' => auth()->user()->id,
-            'simulacro_id' => $simulacro->id,
-            'puntaje' => $puntaje,
-        ]);
 
         return redirect()->route('estudiante.simulacros')->with('success', "Simulacro completado. Tu puntaje es: $puntaje");
     }

@@ -13,11 +13,14 @@ return new class extends Migration
     {
         Schema::create('preguntas', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('simulacro_id');
-            $table->text('enunciado');
+            $table->foreignId('simulacro_id')->constrained()->onDelete('cascade'); // Relación con la tabla simulacros
+            $table->text('texto'); // Texto de la pregunta
+            $table->string('opcion_a');
+            $table->string('opcion_b');
+            $table->string('opcion_c');
+            $table->string('opcion_d');
+            $table->char('respuesta_correcta', 1); // A, B, C o D
             $table->timestamps();
-
-            $table->foreign('simulacro_id')->references('id')->on('simulacros')->onDelete('cascade');
         });
     }
 
