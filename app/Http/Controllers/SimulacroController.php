@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Simulacro;
 use App\Models\Calificacion;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use Illuminate\Support\Facades\Storage;
+use App\Models\Simulacro;
+use App\Models\Pregunta;
 
 class SimulacroController extends Controller
 {
@@ -36,11 +39,37 @@ class SimulacroController extends Controller
             'titulo' => 'required|string|max:255',
             'descripcion' => 'nullable|string',
             'fecha' => 'required|date',
+            'archivo_preguntas' => 'required|string'
         ]);
 
-        Simulacro::create($request->all());
+        // Crear el simulacro
+        $simulacro = Simulacro::create([
+            'titulo' => $request->titulo,
+            'descripcion' => $request->descripcion,
+            'fecha' => $request->fecha,
+            'profesor_id' => auth()->id()
+        ]);
 
-        return redirect()->route('profesor.simulacros.index')->with('success', 'Simulacro creado correctamente.');
+        // Leer el archivo de preguntas
+        $filePath = storage_path('app/' . $request->archivo_preguntas);
+        $spreadsheet = IOFactory::load($filePath);
+        $worksheet = $spreadsheet->getActiveSheet();
+        $rows = $worksheet->toArray();
+
+        // Guardar preguntas en la base de datos
+        foreach (array_slice($rows, 1) as $row) {
+            Pregunta::create([
+                'simulacro_id' => $simulacro->id,
+                'texto' => $row[0],
+                'opcion_a' => $row[1],
+                'opcion_b' => $row[2],
+                'opcion_c' => $row[3],
+                'opcion_d' => $row[4],
+                'respuesta_correcta' => strtoupper($row[5]),
+            ]);
+        }
+
+        return redirect()->route('profesor.simulacros.index')->with('success', 'Simulacro creado y preguntas importadas correctamente.');
     }
 
     public function destroy($id)
@@ -89,5 +118,44 @@ class SimulacroController extends Controller
         }
 
         return redirect()->route('estudiante.simulacros')->with('success', "Simulacro completado. Tu puntaje es: $puntaje");
+    }
+
+    public function preview(Request $request)
+    {
+        $request->validate([
+            'titulo' => 'required|string|max:255',
+            'descripcion' => 'nullable|string',
+            'fecha' => 'required|date',
+            'archivo_preguntas' => 'required|mimes:xlsx,xls,csv'
+        ]);
+
+        // Guardar temporalmente el archivo
+        $filePath = $request->file('archivo_preguntas')->store('temp');
+
+        // Leer el archivo con PhpSpreadsheet
+        $spreadsheet = IOFactory::load(storage_path('app/' . $filePath));
+        $worksheet = $spreadsheet->getActiveSheet();
+        $rows = $worksheet->toArray();
+
+        // Extraer preguntas (sin la primera fila, que son los encabezados)
+        $preguntas = [];
+        foreach (array_slice($rows, 1) as $row) {
+            $preguntas[] = [
+                'texto' => $row[0], // Pregunta
+                'opcion_a' => $row[1],
+                'opcion_b' => $row[2],
+                'opcion_c' => $row[3],
+                'opcion_d' => $row[4],
+                'respuesta_correcta' => strtoupper($row[5]), // Convertir a mayúsculas
+            ];
+        }
+
+        return view('profesor.preview', [
+            'titulo' => $request->titulo,
+            'descripcion' => $request->descripcion,
+            'fecha' => $request->fecha,
+            'archivo' => $filePath,
+            'preguntas' => $preguntas
+        ]);
     }
 }
