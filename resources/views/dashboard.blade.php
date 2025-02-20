@@ -559,67 +559,24 @@
         <div class="card h-100">
             <div class="card-header pb-0 d-flex justify-content-between align-items-center">
                 <h6>Cronograma de actividades</h6>
-                {{-- <p class="text-sm">
-            <i class="fa fa-arrow-up text-success" aria-hidden="true"></i>
-            <span class="font-weight-bold">24%</span> this month
-          </p> --}}
             </div>
             <div class="card-body p-3">
                 <div class="timeline timeline-one-side">
-                    <div class="timeline-block mb-3">
-                        <span class="timeline-step">
-                            <i class="ni ni-bell-55 text-primary"></i>
-                        </span>
-                        <div class="timeline-content">
-                            <h6 class="text-dark text-sm font-weight-bold mb-0">Primera sesión sincrónica</h6>
-                            <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">3 MAYO 8:00 AM</p>
+                    @foreach ($eventos as $evento)
+                        <div class="timeline-block mb-3">
+                            <span class="timeline-step">
+                                <i class="ni ni-bell-55 text-primary"></i>
+                            </span>
+                            <div class="timeline-content">
+                                <h6 class="text-dark text-sm font-weight-bold mb-0">
+                                    {{ $evento->evento }}
+                                </h6>
+                                <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">
+                                    {{ \Carbon\Carbon::parse($evento->fecha)->translatedFormat('j F, h:i A') }}
+                                </p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="timeline-block mb-3">
-                        <span class="timeline-step">
-                            <i class="ni ni-bell-55 text-primary"></i>
-                        </span>
-                        <div class="timeline-content">
-                            <h6 class="text-dark text-sm font-weight-bold mb-0">Segunda sesión sincrónica</h6>
-                            <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">4 MAYO 8:00 AM</p>
-                        </div>
-                    </div>
-                    <div class="timeline-block mb-3">
-                        <span class="timeline-step">
-                            <i class="ni ni-bell-55 text-primary"></i>
-                        </span>
-                        <div class="timeline-content">
-                            <h6 class="text-dark text-sm font-weight-bold mb-0">Tercera sesión sincrónica</h6>
-                            <p class="text-secondary font-weight-bold text-xs mt-1 mb-0"> 10 MAYO 8:00 AM</p>
-                        </div>
-                    </div>
-                    <div class="timeline-block mb-3">
-                        <span class="timeline-step">
-                            <i class="ni ni-bell-55 text-primary"></i>
-                        </span>
-                        <div class="timeline-content">
-                            <h6 class="text-dark text-sm font-weight-bold mb-0">Cuarta sesión sincrónica</h6>
-                            <p class="text-secondary font-weight-bold text-xs mt-1 mb-0"> 11 MAYO 8:00 AM</p>
-                        </div>
-                    </div>
-                    <div class="timeline-block mb-3">
-                        <span class="timeline-step">
-                            <i class="ni ni-bell-55 text-primary"></i>
-                        </span>
-                        <div class="timeline-content">
-                            <h6 class="text-dark text-sm font-weight-bold mb-0">Quinta sesión sincrónica</h6>
-                            <p class="text-secondary font-weight-bold text-xs mt-1 mb-0"> 17 MAYO 8:00 AM</p>
-                        </div>
-                    </div>
-                    <div class="timeline-block">
-                        <span class="timeline-step">
-                            <i class="bi bi-hourglass-top text-primary"></i>
-                        </span>
-                        <div class="timeline-content">
-                            <h6 class="text-dark text-sm font-weight-bold mb-0">Primer simulacro</h6>
-                            <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">18 MAYO 8:00 AM</p>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
                 <a class="text-body text-sm font-weight-bold mb-0 icon-move-right mt-auto"
                     href="{{ route('profesor.cronograma') }}">
@@ -628,7 +585,6 @@
                 </a>
             </div>
         </div>
-    </div>
     </div>
 @endsection
 @push('dashboard')

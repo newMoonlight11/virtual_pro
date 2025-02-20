@@ -20,6 +20,38 @@
             </div>
         </form>
 
+        <!-- Estilos -->
+        <style>
+            th:nth-child(1),
+            td:nth-child(1) {
+                width: 10%;
+                min-width: 100px;
+                text-align: center;
+            }
+
+            th:nth-child(5),
+            td:nth-child(5) {
+                width: 15%;
+                white-space: nowrap;
+            }
+
+            table td,
+            table th {
+                vertical-align: middle;
+                text-align: center;
+            }
+
+            .table-responsive {
+                display: flex;
+                justify-content: center;
+            }
+
+            .table {
+                width: auto;
+                max-width: 100%;
+            }
+        </style>
+
         <!-- Tabla de eventos -->
         <div class="table-responsive">
             <table class="table table-bordered text-center">
@@ -39,40 +71,38 @@
                                 @csrf
                                 @method('PUT')
 
-                                <!-- Columna Día (No Editable) -->
+                                <!-- Día -->
                                 <td>
                                     <input type="text"
                                         value="{{ \Carbon\Carbon::parse($evento->fecha)->locale('es')->isoFormat('dddd') }}"
-                                        class="form-control" disabled>
+                                        class="form-control" disabled style="text-align: center;">
                                 </td>
 
-                                <!-- Columna Fecha (Editable) -->
+                                <!-- Fecha -->
                                 <td>
                                     <input type="date" name="fecha"
                                         value="{{ \Carbon\Carbon::parse($evento->fecha)->format('Y-m-d') }}"
                                         class="form-control">
                                 </td>
 
-                                <!-- Columna Actividad (Editable) -->
+                                <!-- Actividad -->
                                 <td>
                                     <input type="text" name="evento" value="{{ $evento->evento }}" class="form-control">
                                 </td>
 
-                                <!-- Columna Hora (Editable) -->
+                                <!-- Hora -->
                                 <td>
                                     <input type="time" name="hora"
                                         value="{{ \Carbon\Carbon::parse($evento->fecha)->format('H:i') }}"
                                         class="form-control">
                                 </td>
 
-                                <!-- Botones de acción -->
+                                <!-- Acciones -->
                                 <td>
-                                    <div style="display: flex; gap: 10px; align-items: center;">
-                                        <!-- Botón de actualizar -->
+                                    <div style="display: flex; gap: 5px; align-items: center; justify-content: center;">
                                         <button type="submit" class="btn btn-warning btn-sm">Actualizar</button>
-                            </form> <!-- Cierra el form aquí -->
+                            </form> <!-- Cierre del formulario de actualizar -->
 
-                            <!-- Botón de eliminar -->
                             <form action="{{ route('profesor.cronograma.eliminar', $evento->id) }}" method="POST">
                                 @csrf
                                 @method('DELETE')

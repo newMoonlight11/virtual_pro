@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Anuncio;
+use App\Models\Cronograma;
 
 class HomeController extends Controller
 {
@@ -11,10 +12,11 @@ class HomeController extends Controller
     {
         return redirect('dashboard');
     }
-    
+
     public function index()
     {
         $anuncio = Anuncio::latest()->first(); // Obtiene el anuncio más reciente
-        return view('dashboard', compact('anuncio'));
+        $eventos = Cronograma::orderBy('fecha', 'asc')->take(6)->get(); // Obtiene los próximos 6 eventos ordenados por fecha
+        return view('dashboard', compact('anuncio', 'eventos'));
     }
 }

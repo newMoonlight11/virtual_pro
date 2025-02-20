@@ -73,7 +73,7 @@ class ProfesorController extends Controller
             'profesor_id' => auth()->id(),
         ]);
 
-        return redirect()->route('profesor.cronograma')->with('success', 'Evento agregado al cronograma.');
+        return redirect()->route('profesor.cronograma');
     }
 
     public function actualizarEvento(Request $request, $id)
@@ -90,13 +90,13 @@ class ProfesorController extends Controller
             'fecha' => $request->fecha . ' ' . $request->hora, // Concatenamos la fecha con la hora
         ]);
 
-        return redirect()->route('profesor.cronograma')->with('success', 'Evento actualizado correctamente.');
+        return redirect()->route('profesor.cronograma');
     }
 
     public function eliminarEvento($id)
     {
         Cronograma::findOrFail($id)->delete();
-        return redirect()->route('profesor.cronograma')->with('success', 'Evento eliminado correctamente.');
+        return redirect()->route('profesor.cronograma');
     }
 
     public function modulos()

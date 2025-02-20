@@ -33,7 +33,7 @@ class AnuncioController extends Controller
             'autor_id' => auth()->id(), // Obtiene el ID del usuario autenticado
         ]);
 
-        return redirect()->route('profesor.anuncios')->with('success', 'Anuncio creado correctamente.');
+        return redirect()->route('profesor.anuncios');
     }
 
     public function destroy($id)
@@ -45,7 +45,7 @@ class AnuncioController extends Controller
         }
 
         $anuncio->delete();
-        return redirect()->route('profesor.anuncios')->with('success', 'Anuncio eliminado correctamente.');
+        return redirect()->route('profesor.anuncios');
     }
 
     public function verAnuncios()
