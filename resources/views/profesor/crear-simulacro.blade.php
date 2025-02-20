@@ -3,7 +3,7 @@
 @section('content')
     <div class="container-fluid py-4">
         <h3>Crear Nuevo Simulacro</h3>
-        <form action="{{ route('profesor.simulacros.store') }}" method="POST">
+        <form action="{{ route('profesor.simulacros.preview') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="mb-3">
                 <label class="form-label">Título</label>
@@ -21,7 +21,7 @@
                 <label class="form-label">Subir Preguntas (Archivo Excel)</label>
                 <input type="file" name="archivo_preguntas" class="form-control" accept=".xlsx, .xls, .csv" required>
             </div>
-            <button type="submit" class="btn btn-primary">Guardar</button>
+            <button type="submit" class="btn btn-primary">Previsualizar Preguntas</button>
             <a href="{{ route('profesor.simulacros.index') }}" class="btn btn-secondary">Cancelar</a>
         </form>
     </div>

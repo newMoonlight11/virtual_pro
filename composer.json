@@ -10,10 +10,11 @@
     "require": {
         "php": "^8.1",
         "guzzlehttp/guzzle": "^7.4",
+        "illuminate/support": "*",
         "laravel/framework": "^11.0",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.6",
-        "maatwebsite/excel": "^1.1"
+        "phpoffice/phpspreadsheet": "^4.0"
     },
     "require-dev": {
         "spatie/laravel-ignition": "^2.0",

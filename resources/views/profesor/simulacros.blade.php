@@ -1,7 +1,7 @@
 @extends('layouts.user_type.auth')
 
 @section('content')
-    <div class="container-fluid py-4">
+    <div class="container-fluid py-4 bg-white border-radius-lg">
         <h3>Gestión de Simulacros</h3>
 
         <!-- Formulario de búsqueda -->
@@ -29,17 +29,17 @@
         </form>
 
         <!-- Tabla de simulacros -->
-        <table class="table table-striped table-hover">
-            <thead class="table-dark">
+        <table class="table">
+            <thead class="table">
                 <tr>
-                    <th>Título</th>
-                    <th>Fecha</th>
-                    <th class="text-center">Acciones</th>
+                    <th><strong>Título</strong></th>
+                    <th><strong>Fecha</strong></th>
+                    <th class="text-center"><strong>Acciones</strong></th>
                 </tr>
             </thead>
             <tbody>
                 @forelse ($simulacros as $simulacro)
-                    <tr>
+                    <tr class="box_shadow">
                         <td>{{ $simulacro->titulo }}</td>
                         <td>{{ \Carbon\Carbon::parse($simulacro->fecha)->format('d/m/Y') }}</td>
                         <td class="text-center">
@@ -47,10 +47,14 @@
                                 style="display:inline;">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-outline-danger btn-sm"
+                                <button type="submit" class="btn btn-sm"
                                     onclick="return confirm('¿Eliminar este simulacro?');">
-                                    <i class="fas fa-trash"></i> Eliminar
+                                    <i class="fas fa-trash fs-6 text-danger"></i> 
                                 </button>
+                                {{-- <button type="submit" class="btn btn-sm"
+                                    onclick="{{ route('profesor.simulacros.preview') }}">
+                                    <i class="fas fa-eye fs-6 text-secondary"></i> 
+                                </button> --}}
                             </form>
                         </td>
                     </tr>
@@ -63,3 +67,9 @@
         </table>
     </div>
 @endsection
+
+<style>
+    .box_shadow:hover {
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.074); */
+    }
+</style>
