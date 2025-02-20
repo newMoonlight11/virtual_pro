@@ -35,43 +35,62 @@
                 <tbody>
                     @forelse ($eventos as $evento)
                         <tr>
-                            <td colspan="5">
-                                <form action="{{ route('profesor.cronograma.actualizar', $evento->id) }}" method="POST"
-                                    style="display:flex; gap: 10px;">
-                                    @csrf
-                                    @method('PUT')
+                            <form action="{{ route('profesor.cronograma.actualizar', $evento->id) }}" method="POST">
+                                @csrf
+                                @method('PUT')
 
+                                <!-- Columna Día (No Editable) -->
+                                <td>
+                                    <input type="text"
+                                        value="{{ \Carbon\Carbon::parse($evento->fecha)->locale('es')->isoFormat('dddd') }}"
+                                        class="form-control" disabled>
+                                </td>
+
+                                <!-- Columna Fecha (Editable) -->
+                                <td>
                                     <input type="date" name="fecha"
                                         value="{{ \Carbon\Carbon::parse($evento->fecha)->format('Y-m-d') }}"
                                         class="form-control">
+                                </td>
 
+                                <!-- Columna Actividad (Editable) -->
+                                <td>
                                     <input type="text" name="evento" value="{{ $evento->evento }}" class="form-control">
+                                </td>
 
+                                <!-- Columna Hora (Editable) -->
+                                <td>
                                     <input type="time" name="hora"
                                         value="{{ \Carbon\Carbon::parse($evento->fecha)->format('H:i') }}"
                                         class="form-control">
+                                </td>
 
-                                    <button type="submit" class="btn btn-warning btn-sm">Actualizar</button>
-                                </form>
+                                <!-- Botones de acción -->
+                                <td>
+                                    <div style="display: flex; gap: 10px; align-items: center;">
+                                        <!-- Botón de actualizar -->
+                                        <button type="submit" class="btn btn-warning btn-sm">Actualizar</button>
+                            </form> <!-- Cierra el form aquí -->
 
-                                <form action="{{ route('profesor.cronograma.eliminar', $evento->id) }}" method="POST"
-                                    style="display:inline;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm"
-                                        onclick="return confirm('¿Eliminar este evento?');">
-                                        Eliminar
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="5">No hay eventos programados.</td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
+                            <!-- Botón de eliminar -->
+                            <form action="{{ route('profesor.cronograma.eliminar', $evento->id) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm"
+                                    onclick="return confirm('¿Eliminar este evento?');">
+                                    Eliminar
+                                </button>
+                            </form>
         </div>
+        </td>
+        </tr>
+    @empty
+        <tr>
+            <td colspan="5">No hay eventos programados.</td>
+        </tr>
+        @endforelse
+        </tbody>
+        </table>
+    </div>
     </div>
 @endsection
