@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Archivo;
 use Illuminate\Http\Request;
 use App\Models\Calificacion;
 use App\Models\Cronograma;
@@ -10,6 +11,7 @@ use App\Models\Pregunta;
 use App\Models\Respuesta;
 use App\Models\Simulacro;
 use App\Models\User;
+use Illuminate\Support\Facades\Storage;
 
 class ProfesorController extends Controller
 {
@@ -99,9 +101,16 @@ class ProfesorController extends Controller
         return redirect()->route('profesor.cronograma');
     }
 
-    public function modulos()
+    public function modulos(Request $request)
     {
-        $modulos = Modulo::all();
+        $query = Modulo::query();
+
+        if ($request->filled('nombre')) {
+            $query->where('nombre', 'like', '%' . $request->nombre . '%');
+        }
+
+        $modulos = $query->latest()->get();
+
         return view('profesor.modulos', compact('modulos'));
     }
 
@@ -119,7 +128,7 @@ class ProfesorController extends Controller
 
         Modulo::create($request->all());
 
-        return redirect()->route('profesor.modulos')->with('success', 'Módulo creado correctamente.');
+        return redirect()->route('profesor.modulos');
     }
 
     public function editarModulo($id)
@@ -138,13 +147,50 @@ class ProfesorController extends Controller
         $modulo = Modulo::findOrFail($id);
         $modulo->update($request->all());
 
-        return redirect()->route('profesor.modulos')->with('success', 'Módulo actualizado correctamente.');
+        return redirect()->route('profesor.modulos');
     }
 
     public function eliminarModulo($id)
     {
         Modulo::findOrFail($id)->delete();
-        return redirect()->route('profesor.modulos')->with('success', 'Módulo eliminado correctamente.');
+        return redirect()->route('profesor.modulos');
+    }
+
+    public function subirArchivo(Request $request, $id)
+    {
+        $request->validate([
+            'archivo' => 'required|file|max:10240',
+            'nombre_personalizado' => 'nullable|string|max:255',
+        ]);
+
+        $modulo = Modulo::findOrFail($id);
+        $archivo = $request->file('archivo');
+
+        $rutaArchivo = $archivo->store('modulos', 'public');
+
+        // Si el usuario ingresó un nombre personalizado, úsalo; si no, usa el nombre original
+        $nombreArchivo = $request->nombre_personalizado ?: $archivo->getClientOriginalName();
+
+        Archivo::create([
+            'modulo_id' => $modulo->id,
+            'nombre' => $nombreArchivo,
+            'ruta' => $rutaArchivo,
+        ]);
+
+        return back();
+    }
+
+    public function eliminarArchivo($id)
+    {
+        $archivo = Archivo::findOrFail($id);
+
+        // Eliminar el archivo físico
+        Storage::disk('public')->delete($archivo->ruta);
+
+        // Eliminar el registro de la base de datos
+        $archivo->delete();
+
+        return back();
     }
 
 

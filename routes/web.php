@@ -133,6 +133,8 @@ Route::middleware(['auth'])->group(function () {
 		Route::get('/modulos/{id}/edit', [ProfesorController::class, 'editarModulo'])->name('profesor.editar_modulo');
 		Route::put('/modulos/{id}', [ProfesorController::class, 'actualizarModulo'])->name('profesor.actualizar_modulo');
 		Route::delete('/modulos/{id}', [ProfesorController::class, 'eliminarModulo'])->name('profesor.eliminar_modulo');
+		Route::post('/modulos/{id}/archivo', [ProfesorController::class, 'subirArchivo'])->name('profesor.subir_archivo');
+		Route::delete('/archivos/{id}', [ProfesorController::class, 'eliminarArchivo'])->name('profesor.eliminar_archivo');
 		Route::resource('/simulacros', SimulacroController::class)->names([
 			'index' => 'profesor.simulacros.index',
 			'create' => 'profesor.simulacros.create',

@@ -3,7 +3,7 @@
 @section('content')
     <div class="card">
         <div class="card-header bg-primary text-white">
-            <h5 class="m-0">Crear Nuevo Módulo</h5>
+            <h5 class="m-0 text-white">Crear Nuevo Módulo</h5>
         </div>
         <div class="card-body">
             <form action="{{ route('profesor.guardar_modulo') }}" method="POST">
