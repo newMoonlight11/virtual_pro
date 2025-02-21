@@ -119,11 +119,11 @@
     <div class="container p-4 mt-6 bg-white border-radius-lg">
         <div class="row">
             <div class="col-md-6">
-                <h2 class="d-flex align-items-center mb-3 mt-md-7 text-secondary">Beneficios de estudiar con nosotros</h2>
+                <h2 class="d-flex align-items-center mb-8 mt-md-7 text-secondary">Beneficios de estudiar con nosotros</h2>
             </div>
 
             <!-- Columna derecha: Características con íconos -->
-            <div class="col-md-6">
+            <div class="col-md-6 mt-5">
                 <div class="d-flex align-items-center mb-3">
                     <i class="bi bi-person text-primary fs-4 me-3"></i>
                     <span>Profesores expertos en todas las áreas del examen.</span>

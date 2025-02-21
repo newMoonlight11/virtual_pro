@@ -19,7 +19,7 @@
                 </div>
                 <div class="col-md-2">
                     <a href="{{ route('profesor.simulacros.index') }}" class="btn btn-secondary"><i class="fas fa-sync"></i>
-                        Restablecer</a>
+                        Reiniciar</a>
                 </div>
                 <div class="col-md-2">
                     <a href="{{ route('profesor.simulacros.create') }}" class="btn btn-secondary"><i class="fas fa-plus"></i>

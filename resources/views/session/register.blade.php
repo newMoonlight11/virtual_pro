@@ -81,7 +81,7 @@
                   @enderror
                 </div>
                 <div class="mb-3">
-                  <input type="email" class="form-control" placeholder="Teléfono" name="phone" id="phone" aria-label="Phone" aria-describedby="phone" value="{{ old('phone') }}">
+                  <input type="phone" class="form-control" placeholder="Teléfono" name="phone" id="phone" aria-label="Phone" aria-describedby="phone" value="{{ old('phone') }}">
                   @error('phone')
                     <p class="text-danger text-xs mt-2">{{ $message }}</p>
                   @enderror
