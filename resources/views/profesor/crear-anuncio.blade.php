@@ -4,7 +4,7 @@
     <div class="container-fluid py-4">
         <div class="card">
             <div class="card-header bg-primary text-white">
-                <h5 class="m-0">Crear Nuevo Anuncio</h5>
+                <h5 class="m-0 text-white">Crear Nuevo Anuncio</h5>
             </div>
             <div class="card-body">
                 <form action="{{ route('profesor.guardar_anuncio') }}" method="POST">
