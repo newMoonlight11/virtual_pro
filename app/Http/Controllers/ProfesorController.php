@@ -124,9 +124,32 @@ class ProfesorController extends Controller
         $request->validate([
             'nombre' => 'required|string|max:255',
             'descripcion' => 'nullable|string',
+            'archivos.*' => 'file|max:10240', // Cada archivo máximo 10MB
+            'nombres_personalizados' => 'nullable|string',
         ]);
 
-        Modulo::create($request->all());
+        // Crear el módulo
+        $modulo = Modulo::create($request->only(['nombre', 'descripcion']));
+
+        // Si se subieron archivos, guardarlos
+        if ($request->hasFile('archivos')) {
+            $archivos = $request->file('archivos');
+            $nombresPersonalizados = explode("\n", trim($request->nombres_personalizados));
+
+            foreach ($archivos as $index => $archivo) {
+                $rutaArchivo = $archivo->store('modulos', 'public');
+
+                // Usar nombre personalizado si está definido, de lo contrario, el nombre original
+                $nombreArchivo = $nombresPersonalizados[$index] ?? $archivo->getClientOriginalName();
+                $nombreArchivo = trim($nombreArchivo);
+
+                Archivo::create([
+                    'modulo_id' => $modulo->id,
+                    'nombre' => $nombreArchivo,
+                    'ruta' => $rutaArchivo,
+                ]);
+            }
+        }
 
         return redirect()->route('profesor.modulos');
     }
