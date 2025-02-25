@@ -56,21 +56,26 @@ class SimulacroController extends Controller
         $worksheet = $spreadsheet->getActiveSheet();
         $rows = $worksheet->toArray();
 
-        // Guardar preguntas en la base de datos
         foreach (array_slice($rows, 1) as $row) {
+            if (count($row) < 7) {
+                continue; // Si hay menos de 7 columnas, la fila se ignora
+            }
+
             Pregunta::create([
                 'simulacro_id' => $simulacro->id,
-                'texto' => $row[0],
-                'opcion_a' => $row[1],
-                'opcion_b' => $row[2],
-                'opcion_c' => $row[3],
-                'opcion_d' => $row[4],
-                'respuesta_correcta' => strtoupper($row[5]),
+                'imagen' => isset($row[0]) && !empty($row[0]) ? trim($row[0]) : null,
+                'texto' => trim($row[1]),
+                'opcion_a' => trim($row[2]),
+                'opcion_b' => trim($row[3]),
+                'opcion_c' => trim($row[4]),
+                'opcion_d' => trim($row[5]),
+                'respuesta_correcta' => strtoupper(substr(trim($row[6]), 0, 1)), // Solo una letra
             ]);
         }
 
         return redirect()->route('profesor.simulacros.index')->with('success', 'Simulacro creado y preguntas importadas correctamente.');
     }
+
 
     public function destroy($id)
     {
@@ -140,13 +145,19 @@ class SimulacroController extends Controller
         // Extraer preguntas (sin la primera fila, que son los encabezados)
         $preguntas = [];
         foreach (array_slice($rows, 1) as $row) {
+            // Verificar que la fila tiene el número correcto de columnas
+            if (count($row) < 7) {
+                continue; // Si la fila tiene menos de 7 columnas, se ignora para evitar errores
+            }
+
             $preguntas[] = [
-                'texto' => $row[0], // Pregunta
-                'opcion_a' => $row[1],
-                'opcion_b' => $row[2],
-                'opcion_c' => $row[3],
-                'opcion_d' => $row[4],
-                'respuesta_correcta' => strtoupper($row[5]), // Convertir a mayúsculas
+                'imagen' => isset($row[0]) && !empty($row[0]) ? trim($row[0]) : null, // Imagen en la primera columna
+                'texto' => trim($row[1] ?? 'Pregunta no especificada'), // Pregunta en la segunda columna
+                'opcion_a' => trim($row[2] ?? ''),
+                'opcion_b' => trim($row[3] ?? ''),
+                'opcion_c' => trim($row[4] ?? ''),
+                'opcion_d' => trim($row[5] ?? ''),
+                'respuesta_correcta' => strtoupper(substr(trim($row[6] ?? 'A'), 0, 1)), // Solo A, B, C o D
             ];
         }
 

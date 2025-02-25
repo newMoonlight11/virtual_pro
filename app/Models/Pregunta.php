@@ -11,6 +11,7 @@ class Pregunta extends Model
 
     protected $fillable = [
         'simulacro_id',
+        'imagen',
         'texto',
         'opcion_a',
         'opcion_b',

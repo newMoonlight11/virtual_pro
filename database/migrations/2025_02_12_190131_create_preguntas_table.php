@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('preguntas', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('simulacro_id')->constrained()->onDelete('cascade'); // Relación con la tabla simulacros
+            $table->foreignId('simulacro_id')->constrained()->onDelete('cascade'); 
+            $table->string('imagen')->nullable();// Relación con la tabla simulacros
             $table->text('texto'); // Texto de la pregunta
             $table->string('opcion_a');
             $table->string('opcion_b');
