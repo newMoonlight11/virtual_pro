@@ -1,11 +1,11 @@
 @extends('layouts.user_type.auth')
 
 @section('content')
-    <div class="container-fluid py-4">
+    <div class="container-fluid py-4 card">
         <h3 class="mb-4">Cronograma de Actividades</h3>
 
         <!-- Formulario para agregar un nuevo evento -->
-        <form action="{{ route('profesor.cronograma.guardar') }}" method="POST" class="mb-4">
+        <form action="{{ route('profesor.cronograma.guardar') }}" method="POST" class="mb-4 card-body">
             @csrf
             <div class="row">
                 <div class="col-md-4">
@@ -15,7 +15,7 @@
                     <input type="datetime-local" name="fecha" class="form-control" required>
                 </div>
                 <div class="col-md-3">
-                    <button type="submit" class="btn btn-success">Agregar Evento</button>
+                    <button type="submit" class="btn btn-primary">Agregar Evento</button>
                 </div>
             </div>
         </form>
@@ -59,8 +59,8 @@
 
         <!-- Tabla de eventos -->
         <div class="table-responsive">
-            <table class="table table-bordered text-center">
-                <thead class="table-dark">
+            <table class="table">
+                <thead class="table">
                     <tr>
                         <th>Día</th>
                         <th>Fecha</th>
@@ -105,15 +105,17 @@
                                 <!-- Acciones -->
                                 <td>
                                     <div style="display: flex; gap: 5px; align-items: center; justify-content: center;">
-                                        <button type="submit" class="btn btn-warning btn-sm">Actualizar</button>
+                                        <button type="submit" class="btn btn-sm" data-bs-toggle="tooltip" data-bs-original-title="Actualizar anuncio">
+                                            <i class="bi bi-arrow-repeat fs-6 text-success"></i>
+                                        </button>
                             </form> <!-- Cierre del formulario de actualizar -->
 
                             <form action="{{ route('profesor.cronograma.eliminar', $evento->id) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm"
+                                <button type="submit" class="btn btn-sm" data-bs-toggle="tooltip" data-bs-original-title="Eliminar anuncio"
                                     onclick="return confirm('¿Eliminar este evento?');">
-                                    Eliminar
+                                    <i class="fas fa-trash text-danger fs-6"></i>
                                 </button>
                             </form>
         </div>

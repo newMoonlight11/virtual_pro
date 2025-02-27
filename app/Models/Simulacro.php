@@ -20,4 +20,8 @@ class Simulacro extends Model
     {
         return $this->hasMany(Calificacion::class);
     }
+    public function preguntas()
+    {
+        return $this->hasMany(Pregunta::class);
+    }
 }

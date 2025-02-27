@@ -1,10 +1,10 @@
 @extends('layouts.user_type.auth')
 
 @section('content')
-    <div class="container py-4">
+    <div class="container py-4 card">
         <h3 class="mb-4">Vista Previa de Preguntas</h3>
 
-        <form action="{{ route('profesor.simulacros.store') }}" method="POST">
+        <form action="{{ route('profesor.simulacros.store') }}" method="POST" class="card-body">
             @csrf
             <input type="hidden" name="titulo" value="{{ $titulo }}">
             <input type="hidden" name="descripcion" value="{{ $descripcion }}">
@@ -15,10 +15,8 @@
                 <table class="table">
                     <thead>
                         <tr class="text-center">
-                            <th>Imagen</th>
-                            <th>
-                                <Pregunta> Pregunta </strong>
-                            </th>
+                            <th><strong> Imagen</strong></th>
+                            <th><strong> Pregunta </strong></th>
                             <th><strong> Opción A </strong></th>
                             <th><strong> Opción B </strong></th>
                             <th><strong> Opción C </strong></th>
@@ -28,7 +26,7 @@
                     </thead>
                     <tbody>
                         @foreach ($preguntas as $pregunta)
-                            <tr class="box_shadow">
+                            <tr>
                                 <td class="text-center">
                                     @if (filter_var($pregunta['imagen'], FILTER_VALIDATE_URL))
                                         <img src="{{ $pregunta['imagen'] }}" alt="Imagen Pregunta" width="50">
@@ -50,7 +48,7 @@
                     </tbody>
                 </table>
             </div>
-
+            <br>
             <button type="submit" class="btn btn-success">Confirmar y Guardar</button>
             <a href="{{ route('profesor.simulacros.create') }}" class="btn btn-danger">Cancelar</a>
         </form>

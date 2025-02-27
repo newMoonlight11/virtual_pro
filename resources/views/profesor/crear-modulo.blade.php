@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="card">
-        <div class="card-header bg-primary text-white">
+        <div class="card-header bg-secondary text-white">
             <h5 class="m-0 text-white">Crear Nuevo Módulo</h5>
         </div>
         <div class="card-body">
@@ -20,7 +20,7 @@
                 <!-- Formulario de carga de archivos -->
                 <div class="mb-3">
                     <label class="form-label">Archivos</label>
-                    <input type="file" name="archivos[]" class="form-control" multiple>
+                    <input type="file" name="archivos[]" class="form-control" accept=".pdf" multiple>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Nombres personalizados (uno por línea, opcional)</label>
@@ -28,7 +28,7 @@
                 </div>
 
                 <button type="submit" class="btn btn-success">Guardar</button>
-                <a href="{{ route('profesor.modulos') }}" class="btn btn-secondary">Cancelar</a>
+                <a href="{{ route('profesor.modulos') }}" class="btn btn-danger">Cancelar</a>
             </form>
         </div>
     </div>

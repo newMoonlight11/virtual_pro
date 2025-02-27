@@ -145,6 +145,7 @@ Route::middleware(['auth'])->group(function () {
 			'destroy' => 'profesor.simulacros.destroy',
 		]);
 		Route::post('/simulacros/preview', [SimulacroController::class, 'preview'])->name('profesor.simulacros.preview');
+		Route::get('/simulacros/{id}/test', [SimulacroController::class, 'test'])->name('profesor.simulacros.test');
 		Route::get('/anuncios', [AnuncioController::class, 'index'])->name('profesor.anuncios');
 		Route::get('/anuncios/create', [AnuncioController::class, 'create'])->name('profesor.crear_anuncio');
 		Route::post('/anuncios', [AnuncioController::class, 'store'])->name('profesor.guardar_anuncio');

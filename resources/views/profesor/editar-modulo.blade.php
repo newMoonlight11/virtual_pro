@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="card">
-        <div class="card-header bg-primary text-white">
+        <div class="card-header bg-secondary text-white">
             <h5 class="m-0 text-white">Editar Módulo</h5>
         </div>
         <div class="card-body">
@@ -22,7 +22,7 @@
                 </div>
 
                 <button type="submit" class="btn btn-success">Actualizar</button>
-                <a href="{{ route('profesor.modulos') }}" class="btn btn-secondary">Cancelar</a>
+                <a href="{{ route('profesor.modulos') }}" class="btn btn-danger">Cancelar</a>
             </form>
         </div>
     </div>

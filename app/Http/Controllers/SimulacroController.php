@@ -157,7 +157,7 @@ class SimulacroController extends Controller
                 'opcion_b' => trim($row[3] ?? ''),
                 'opcion_c' => trim($row[4] ?? ''),
                 'opcion_d' => trim($row[5] ?? ''),
-                'respuesta_correcta' => strtoupper(substr(trim($row[6] ?? 'A'), 0, 1)), // Solo A, B, C o D
+                'respuesta_correcta' => strtoupper(substr(trim($row[6] ?? 'F'), 0, 1)), // Solo A, B, C o D
             ];
         }
 
@@ -168,5 +168,11 @@ class SimulacroController extends Controller
             'archivo' => $filePath,
             'preguntas' => $preguntas
         ]);
+    }
+
+    public function test($id)
+    {
+        $simulacro = Simulacro::with('preguntas')->findOrFail($id);
+        return view('profesor.test', compact('simulacro'));
     }
 }

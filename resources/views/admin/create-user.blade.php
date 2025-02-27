@@ -5,8 +5,8 @@
         <div class="row">
             <div class="col-12">
                 <div class="card mb-4">
-                    <div class="card-header pb-0">
-                        <h5>Registrar nuevo usuario</h5>
+                    <div class="card-header bg-secondary">
+                        <h5 class="m-0 text-white">Registrar nuevo usuario</h5>
                     </div>
                     <div class="card-body">
                         @if (session('success'))
@@ -54,8 +54,8 @@
                                 </select>
                             </div>
 
-                            <button type="submit" class="btn btn-primary">Registrar Usuario</button>
-                            <a href="{{ route('admin.users') }}" class="btn btn-secondary">Cancelar</a>
+                            <button type="submit" class="btn btn-success">Registrar Usuario</button>
+                            <a href="{{ route('admin.users') }}" class="btn btn-danger">Cancelar</a>
                         </form>
                     </div>
                 </div>

@@ -3,7 +3,7 @@
 @section('content')
     <div class="container-fluid py-4">
         <div class="card">
-            <div class="card-header bg-primary text-white">
+            <div class="card-header bg-secondary text-white">
                 <h5 class="m-0 text-white">Crear Nuevo Anuncio</h5>
             </div>
             <div class="card-body">
@@ -22,7 +22,7 @@
                         <textarea name="contenido" class="form-control" required></textarea>
                     </div>
                     <button type="submit" class="btn btn-success">Guardar</button>
-                    <a href="{{ route('profesor.anuncios') }}" class="btn btn-secondary">Cancelar</a>
+                    <a href="{{ route('profesor.anuncios') }}" class="btn btn-danger">Cancelar</a>
                 </form>
             </div>
         </div>

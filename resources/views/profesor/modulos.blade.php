@@ -101,7 +101,7 @@
                 <div class="card p-4">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h3>Gestión de Módulos</h3>
-                        <a href="{{ route('profesor.crear_modulo') }}" class="btn btn-success">
+                        <a href="{{ route('profesor.crear_modulo') }}" class="btn btn-primary">
                             <i class="fas fa-plus"></i> Nuevo Módulo
                         </a>
                     </div>
@@ -114,7 +114,7 @@
                                     value="{{ request('nombre') }}">
                             </div>
                             <div class="col-md-3">
-                                <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Buscar</button>
+                                <button type="submit" class="btn btn-secondary"><i class="fas fa-search"></i> Buscar</button>
                             </div>
                             <div class="col-md-3">
                                 <a href="{{ route('profesor.modulos') }}" class="btn btn-secondary"><i
@@ -135,16 +135,16 @@
                                     </div>
                                     <div class="card-footer d-flex justify-content-between p-2">
                                         <a href="{{ route('profesor.editar_modulo', $modulo->id) }}"
-                                            class="btn btn-warning btn-sm w-50 me-1">
-                                            <i class="fas fa-edit"></i> Editar
+                                            class="btn btn-sm w-50 me-1" data-bs-toggle="tooltip" data-bs-original-title="Editar módulo">
+                                            <i class="fas fa-edit fs-6 text-success"></i>
                                         </a>
                                         <form action="{{ route('profesor.eliminar_modulo', $modulo->id) }}" method="POST"
-                                            class="w-50">
+                                            class="w-50" data-bs-toggle="tooltip" data-bs-original-title="Eliminar módulo">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm w-100"
+                                            <button type="submit" class="btn btn-sm w-100"
                                                 onclick="return confirm('¿Eliminar este módulo?');">
-                                                <i class="fas fa-trash"></i> Eliminar
+                                                <i class="fas fa-trash fs-6 text-danger"></i>
                                             </button>
                                         </form>
                                     </div>

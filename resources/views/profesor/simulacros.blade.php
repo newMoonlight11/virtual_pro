@@ -30,27 +30,32 @@
 
         <!-- Tabla de simulacros -->
         <table class="table">
-            <thead class="table">
+            <thead>
                 <tr>
-                    <th><strong>Título</strong></th>
-                    <th><strong>Fecha</strong></th>
+                    <th class="text-center"><strong>Título</strong></th>
+                    <th class="text-center"><strong>Fecha</strong></th>
                     <th class="text-center"><strong>Acciones</strong></th>
                 </tr>
             </thead>
             <tbody>
                 @forelse ($simulacros as $simulacro)
-                    <tr class="box_shadow">
-                        <td>{{ $simulacro->titulo }}</td>
-                        <td>{{ \Carbon\Carbon::parse($simulacro->fecha)->format('d/m/Y') }}</td>
+                    <tr>
+                        <td class="text-center">{{ $simulacro->titulo }}</td>
+                        <td class="text-center">{{ \Carbon\Carbon::parse($simulacro->fecha)->format('d/m/Y') }}</td>
                         <td class="text-center">
                             <form action="{{ route('profesor.simulacros.destroy', $simulacro->id) }}" method="POST"
                                 style="display:inline;">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-sm"
-                                    onclick="return confirm('¿Eliminar este simulacro?');">
+                                    onclick="return confirm('¿Eliminar este simulacro?');"
+                                    data-bs-toggle="tooltip" data-bs-original-title="Eliminar simulacro">
                                     <i class="fas fa-trash fs-6 text-danger"></i> 
                                 </button>
+                                <a href="{{ route('profesor.simulacros.test', $simulacro->id) }}" class="btn btn-sm"
+                                    data-bs-toggle="tooltip" data-bs-original-title="Probar simulacro">
+                                    <i class="fas fa-play text-primary fs-6"></i> 
+                                </a>
                                 {{-- <button type="submit" class="btn btn-sm"
                                     onclick="{{ route('profesor.simulacros.preview') }}">
                                     <i class="fas fa-eye fs-6 text-secondary"></i> 
