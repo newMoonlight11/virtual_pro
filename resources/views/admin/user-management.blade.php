@@ -22,7 +22,9 @@
                                 <thead>
                                     <tr>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder">ID</th>
-                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder ps-2 text-center">Nombre
+                                        <th
+                                            class="text-uppercase text-secondary text-xxs font-weight-bolder ps-2 text-center">
+                                            Nombre
                                         </th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder text-center">
                                             Email</th>
@@ -39,7 +41,8 @@
                                             <td>{{ $user->name }}</td>
                                             <td class="text-center">{{ $user->email }}</td>
                                             <td class="text-center">
-                                                <span class="badge bg-primary" style="width: 80%">{{ ucfirst($user->role) }}</span>
+                                                <span class="badge bg-primary"
+                                                    style="width: 80%">{{ ucfirst($user->role) }}</span>
                                             </td>
                                             <td class="text-center">
                                                 <a href="{{ route('admin.users.edit', $user->id) }}" class="mx-3"
@@ -68,4 +71,3 @@
         </div>
     </div>
 @endsection
-

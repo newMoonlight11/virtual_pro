@@ -17,6 +17,7 @@
 
                         <form action="{{ route('admin.users.store') }}" method="POST">
                             @csrf
+
                             <div class="mb-3">
                                 <label class="form-label">Nombre</label>
                                 <input type="text" name="name" value="{{ old('name') }}" class="form-control"
@@ -30,16 +31,25 @@
                             </div>
 
                             <div class="mb-3">
-                                <label class="form-label">Contraseña</label>
-                                <input type="password" name="password" class="form-control" required>
-                                @if ($errors->has('password'))
-                                    <div class="alert alert-danger">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </div>
-                                @endif
+                                <label class="form-label">Teléfono</label>
+                                <input type="text" name="phone" value="{{ old('phone') }}" class="form-control">
                             </div>
 
-                            <!-- Campo de Confirmación de Contraseña -->
+                            <div class="mb-3">
+                                <label class="form-label">Ubicación</label>
+                                <input type="text" name="location" value="{{ old('location') }}" class="form-control">
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Sobre mí</label>
+                                <textarea name="about_me" class="form-control">{{ old('about_me') }}</textarea>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Contraseña</label>
+                                <input type="password" name="password" class="form-control" required>
+                            </div>
+
                             <div class="mb-3">
                                 <label class="form-label">Confirmar Contraseña</label>
                                 <input type="password" name="password_confirmation" class="form-control" required>

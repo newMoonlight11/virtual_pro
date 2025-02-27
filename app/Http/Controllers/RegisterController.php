@@ -3,10 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 
 class RegisterController extends Controller
 {
@@ -19,33 +17,21 @@ class RegisterController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => [
-                'required',
-                'string',
-                'min:8',
-                'regex:/[A-Z]/',
-                'regex:/[a-z]/',
-                'regex:/[0-9]/',
-                'regex:/[\W]/',
-                'confirmed'
-            ],
-            'role' => 'required|in:profesor,estudiante',
-        ], [
-            'password.regex' => 'La contraseña debe incluir al menos una mayúscula, una minúscula, un número y un carácter especial.',
-            'password.confirmed' => 'Las contraseñas no coinciden.',
+            'email' => 'required|string|email|max:255|unique:users',
         ]);
 
+        // Se crea el usuario sin contraseña ni rol
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role' => $request->role,
+            'password' => null, // No tiene contraseña aún
+            'role' => null, // Sin rol asignado
         ]);
 
-        Auth::login($user);
+        // Guardamos un mensaje en la sesión
+        Session::flash('success', 'Se ha registrado con éxito. Prontamente nos contactaremos contigo.');
 
-        // Redirigir según el rol
-        return redirect()->route($user->role === 'profesor' ? 'profesor.dashboard' : 'estudiante.dashboard');
+        // Se mantiene en la misma página sin iniciar sesión
+        return back();
     }
 }
