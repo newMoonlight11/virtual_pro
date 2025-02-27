@@ -22,33 +22,38 @@
 
         <!-- Estilos -->
         <style>
-            th:nth-child(1),
-            td:nth-child(1) {
-                width: 10%;
-                min-width: 100px;
-                text-align: center;
-            }
-
-            th:nth-child(5),
-            td:nth-child(5) {
-                width: 15%;
-                white-space: nowrap;
-            }
-
-            table td,
-            table th {
-                vertical-align: middle;
-                text-align: center;
-            }
-
             .table-responsive {
                 display: flex;
                 justify-content: center;
+                width: 100%;
             }
 
             .table {
-                width: auto;
+                width: 80%;
                 max-width: 100%;
+                min-width: 600px;
+            }
+
+            /* Evita que la tabla colapse cuando no hay registros */
+            .table tbody tr td {
+                height: 60px;
+                /* Altura mínima de las filas */
+                text-align: center;
+            }
+
+            /* Si no hay eventos, asegurar que la tabla mantenga su tamaño */
+            .empty-table td {
+                height: 150px;
+                font-size: 18px;
+                color: #888;
+                text-align: center;
+                vertical-align: middle;
+            }
+
+            /* Estilos adicionales para hacer que los botones se vean bien */
+            .btn-sm {
+                font-size: 14px;
+                padding: 5px 10px;
             }
         </style>
 
@@ -115,7 +120,7 @@
         </td>
         </tr>
     @empty
-        <tr>
+        <tr class="empty-table">
             <td colspan="5">No hay eventos programados.</td>
         </tr>
         @endforelse
