@@ -18,12 +18,15 @@ class RegisterController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
+            'phone' => 'nullable|digits_between:7,15', // Validación para números de teléfono
+            'agreement' => 'accepted', // Validar que aceptó los términos
         ]);
 
         // Se crea el usuario sin contraseña ni rol
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
+            'phone' => $request->phone, // Ahora sí se guarda el teléfono
             'password' => null, // No tiene contraseña aún
             'role' => null, // Sin rol asignado
         ]);

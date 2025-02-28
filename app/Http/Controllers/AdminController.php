@@ -24,8 +24,6 @@ class AdminController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'phone' => 'nullable|numeric',
-            'location' => 'nullable|string|max:255',
-            'about_me' => 'nullable|string',
             'password' => [
                 'required',
                 'string',
@@ -43,8 +41,6 @@ class AdminController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
-            'location' => $request->location,
-            'about_me' => $request->about_me,
             'password' => Hash::make($request->password),
             'role' => $request->role,
         ]);
@@ -66,36 +62,26 @@ class AdminController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $id,
             'phone' => 'nullable|numeric',
-            'location' => 'nullable|string|max:255',
-            'about_me' => 'nullable|string',
             'role' => 'required|in:admin,profesor,estudiante',
             'password' => [
-                'nullable',  // Permite que el campo sea opcional
+                'nullable',
                 'string',
                 'min:8',
-                'regex:/[A-Z]/', // Al menos una mayúscula
-                'regex:/[a-z]/', // Al menos una minúscula
-                'regex:/[0-9]/', // Al menos un número
-                'regex:/[\W]/',  // Al menos un carácter especial
-                'confirmed'      // Debe coincidir con password_confirmation
+                'regex:/[A-Z]/',
+                'regex:/[a-z]/',
+                'regex:/[0-9]/',
+                'regex:/[\W]/',
+                'confirmed'
             ],
-        ], [
-            'password.regex' => 'La contraseña debe incluir al menos una mayúscula, una minúscula, un número y un carácter especial.',
-            'password.min' => 'La contraseña debe tener al menos 8 caracteres.',
-            'password.confirmed' => 'Las contraseñas no coinciden.',
         ]);
 
-        // Actualizar los campos del usuario
         $user->update([
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
-            'location' => $request->location,
-            'about_me' => $request->about_me,
             'role' => $request->role,
         ]);
 
-        // Si se proporciona una nueva contraseña, actualizarla
         if ($request->filled('password')) {
             $user->update([
                 'password' => Hash::make($request->password),

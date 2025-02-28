@@ -23,16 +23,6 @@
             </div>
 
             <div class="mb-3">
-                <label class="form-label">Ubicación</label>
-                <input type="text" name="location" value="{{ $user->location }}" class="form-control">
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label">Sobre mí</label>
-                <textarea name="about_me" class="form-control">{{ $user->about_me }}</textarea>
-            </div>
-
-            <div class="mb-3">
                 <label class="form-label">Nueva Contraseña <small>(Opcional)</small></label>
                 <input type="password" name="password" class="form-control">
                 <small class="text-muted">Debe tener al menos 8 caracteres, incluyendo mayúsculas, minúsculas, números y

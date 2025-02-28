@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use Illuminate\Support\Facades\Cookie;
 
 class SessionsController extends Controller
 {
@@ -29,8 +30,13 @@ class SessionsController extends Controller
         }
 
         // Intentar autenticación
-        if (Auth::attempt($attributes)) {
+        if (Auth::attempt($attributes, $request->filled('remember'))) {
             session()->regenerate();
+            if ($request->filled('remember')) {
+                Cookie::queue('email', $request->email, 43200); // Guarda el email por 30 días
+            } else {
+                Cookie::queue(Cookie::forget('email')); // Borra la cookie si no marcó "Recordarme"
+            }
             return redirect('dashboard')->with(['success' => 'Has iniciado sesión.']);
         } else {
             return back()->withErrors(['email' => 'Correo o contraseña no válidos.']);
