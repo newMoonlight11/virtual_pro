@@ -111,14 +111,20 @@ class SimulacroController extends Controller
                     $puntaje += 10; // Suma 10 puntos por cada respuesta correcta
                 }
 
-                // Guardar cada respuesta en la tabla calificacions
-                Calificacion::create([
-                    'estudiante_id' => auth()->id(),
-                    'simulacro_id' => $simulacro->id,
-                    'pregunta_id' => $pregunta->id,
-                    'respuesta' => $respuestaSeleccionada,
-                    'es_correcta' => $esCorrecta
-                ]);
+                // Guardar la calificación correctamente
+                // Guardar la calificación correctamente
+                Calificacion::updateOrCreate(
+                    [
+                        'estudiante_id' => auth()->id(),
+                        'simulacro_id' => $simulacro->id,
+                        'pregunta_id' => $pregunta->id,
+                    ],
+                    [
+                        'respuesta' => $respuestaSeleccionada,
+                        'es_correcta' => $esCorrecta,
+                        'puntaje' => $esCorrecta ? 10 : 0, // Si es correcta, suma 10; si no, deja 0
+                    ]
+                );
             }
         }
 
@@ -145,19 +151,29 @@ class SimulacroController extends Controller
         // Extraer preguntas (sin la primera fila, que son los encabezados)
         $preguntas = [];
         foreach (array_slice($rows, 1) as $row) {
-            // Verificar que la fila tiene el número correcto de columnas
             if (count($row) < 7) {
-                continue; // Si la fila tiene menos de 7 columnas, se ignora para evitar errores
+                continue; // Si la fila tiene menos de 7 columnas, se ignora
+            }
+
+            $imagenPath = null;
+
+            if (!empty(trim($row[0]))) {
+                $nombreArchivo = trim($row[0]);
+                $rutaImagen = 'public/imagenes_simulacros/' . $nombreArchivo;
+
+                if (Storage::exists($rutaImagen)) {
+                    $imagenPath = 'imagenes_simulacros/' . $nombreArchivo;
+                }
             }
 
             $preguntas[] = [
-                'imagen' => isset($row[0]) && !empty($row[0]) ? trim($row[0]) : null, // Imagen en la primera columna
-                'texto' => trim($row[1] ?? 'Pregunta no especificada'), // Pregunta en la segunda columna
-                'opcion_a' => trim($row[2] ?? ''),
-                'opcion_b' => trim($row[3] ?? ''),
-                'opcion_c' => trim($row[4] ?? ''),
-                'opcion_d' => trim($row[5] ?? ''),
-                'respuesta_correcta' => strtoupper(substr(trim($row[6] ?? 'F'), 0, 1)), // Solo A, B, C o D
+                'imagen' => $imagenPath, // Guarda solo si existe en el almacenamiento
+                'texto' => trim($row[1]),
+                'opcion_a' => trim($row[2]),
+                'opcion_b' => trim($row[3]),
+                'opcion_c' => trim($row[4]),
+                'opcion_d' => trim($row[5]),
+                'respuesta_correcta' => strtoupper(substr(trim($row[6]), 0, 1)), // Solo una letra
             ];
         }
 
@@ -166,7 +182,7 @@ class SimulacroController extends Controller
             'descripcion' => $request->descripcion,
             'fecha' => $request->fecha,
             'archivo' => $filePath,
-            'preguntas' => $preguntas
+            'preguntas' => $preguntas // Ahora las preguntas solo se previsualizan, no se guardan en la BD
         ]);
     }
 

@@ -24,7 +24,11 @@ class ProfesorController extends Controller
 
     public function calificaciones()
     {
-        $calificaciones = Calificacion::with('estudiante', 'simulacro')->get();
+        $calificaciones = Calificacion::with('estudiante', 'simulacro')
+            ->orderBy('simulacro_id')
+            ->orderByDesc('puntaje')
+            ->get();
+
         return view('profesor.calificaciones', compact('calificaciones'));
     }
 
@@ -182,7 +186,7 @@ class ProfesorController extends Controller
     public function subirArchivo(Request $request, $id)
     {
         $request->validate([
-            'archivo' => 'required|file|max:10240',
+            'archivo' => 'required|file|mimes:pdf|max:10240', // Solo PDF, máximo 10MB
             'nombre_personalizado' => 'nullable|string|max:255',
         ]);
 
@@ -191,7 +195,6 @@ class ProfesorController extends Controller
 
         $rutaArchivo = $archivo->store('modulos', 'public');
 
-        // Si el usuario ingresó un nombre personalizado, úsalo; si no, usa el nombre original
         $nombreArchivo = $request->nombre_personalizado ?: $archivo->getClientOriginalName();
 
         Archivo::create([

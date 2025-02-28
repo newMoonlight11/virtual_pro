@@ -4,11 +4,9 @@
     <style>
         /* Contenedor principal más ancho en pantallas grandes */
         .card.p-4 {
-            width: 90%;
-            max-width: 1200px;
-            /* Se expande más en pantallas grandes */
+            width: 100%;
+            max-width: none;
             margin: auto;
-            /* Centrar */
         }
 
         /* Contenedor de módulos: se adapta dinámicamente */
@@ -35,6 +33,15 @@
             justify-content: center;
             cursor: pointer;
             text-align: center;
+        }
+
+        /* Efecto hover para que el módulo sobresalga */
+        .modulo-card:hover {
+            transform: scale(1.05);
+            /* Aumenta ligeramente el tamaño */
+            transition: transform 0.2s ease-in-out;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+            /* Agrega sombra */
         }
 
         .card-header {
@@ -114,7 +121,8 @@
                                     value="{{ request('nombre') }}">
                             </div>
                             <div class="col-md-3">
-                                <button type="submit" class="btn btn-secondary"><i class="fas fa-search"></i> Buscar</button>
+                                <button type="submit" class="btn btn-secondary"><i class="fas fa-search"></i>
+                                    Buscar</button>
                             </div>
                             <div class="col-md-3">
                                 <a href="{{ route('profesor.modulos') }}" class="btn btn-secondary"><i
@@ -135,11 +143,13 @@
                                     </div>
                                     <div class="card-footer d-flex justify-content-between p-2">
                                         <a href="{{ route('profesor.editar_modulo', $modulo->id) }}"
-                                            class="btn btn-sm w-50 me-1" data-bs-toggle="tooltip" data-bs-original-title="Editar módulo">
+                                            class="btn btn-sm w-50 me-1" data-bs-toggle="tooltip"
+                                            data-bs-original-title="Editar módulo">
                                             <i class="fas fa-edit fs-6 text-success"></i>
                                         </a>
                                         <form action="{{ route('profesor.eliminar_modulo', $modulo->id) }}" method="POST"
-                                            class="w-50" data-bs-toggle="tooltip" data-bs-original-title="Eliminar módulo">
+                                            class="w-50" data-bs-toggle="tooltip"
+                                            data-bs-original-title="Eliminar módulo">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-sm w-100"
@@ -167,11 +177,13 @@
                                             <p>{{ $modulo->descripcion }}</p>
 
                                             <!-- Subir archivos -->
+                                            <!-- Subir archivos -->
                                             <form action="{{ route('profesor.subir_archivo', $modulo->id) }}"
                                                 method="POST" enctype="multipart/form-data">
                                                 @csrf
                                                 <div class="mb-2">
-                                                    <input type="file" name="archivo" class="form-control" required>
+                                                    <input type="file" name="archivo" class="form-control" accept=".pdf"
+                                                        required>
                                                 </div>
                                                 <div class="mb-2">
                                                     <input type="text" name="nombre_personalizado" class="form-control"

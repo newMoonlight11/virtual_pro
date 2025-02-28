@@ -15,13 +15,15 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('estudiante_id');
             $table->unsignedBigInteger('simulacro_id');
-            $table->integer('puntaje');
-            $table->foreign('estudiante_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('simulacro_id')->references('id')->on('simulacros')->onDelete('cascade');
-            $table->foreignId('preguntas_id')->constrained()->onDelete('cascade'); // Relación con preguntas
+            $table->unsignedBigInteger('pregunta_id')->nullable(); // CAMBIADO: era preguntas_id
+            $table->integer('puntaje')->default(0); // Se asegura de que siempre tenga un valor por defecto
             $table->char('respuesta', 1)->nullable(); // Respuesta seleccionada (A, B, C, D)
             $table->boolean('es_correcta')->nullable(); // Indica si es correcta o no
             $table->timestamps();
+
+            $table->foreign('estudiante_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('simulacro_id')->references('id')->on('simulacros')->onDelete('cascade');
+            $table->foreign('pregunta_id')->references('id')->on('preguntas')->onDelete('cascade'); // CAMBIADO
         });
     }
 
