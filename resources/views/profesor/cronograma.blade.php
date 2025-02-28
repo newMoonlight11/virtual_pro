@@ -105,7 +105,7 @@
                                 <!-- Acciones -->
                                 <td>
                                     <div style="display: flex; gap: 5px; align-items: center; justify-content: center;">
-                                        <button type="submit" class="btn btn-sm" data-bs-toggle="tooltip" data-bs-original-title="Actualizar anuncio">
+                                        <button type="submit" class="btn btn-sm" data-bs-toggle="tooltip" data-bs-original-title="Actualizar actividad">
                                             <i class="bi bi-arrow-repeat fs-6 text-success"></i>
                                         </button>
                             </form> <!-- Cierre del formulario de actualizar -->
@@ -113,7 +113,7 @@
                             <form action="{{ route('profesor.cronograma.eliminar', $evento->id) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-sm" data-bs-toggle="tooltip" data-bs-original-title="Eliminar anuncio"
+                                <button type="submit" class="btn btn-sm" data-bs-toggle="tooltip" data-bs-original-title="Eliminar actividad"
                                     onclick="return confirm('¿Eliminar este evento?');">
                                     <i class="fas fa-trash text-danger fs-6"></i>
                                 </button>
