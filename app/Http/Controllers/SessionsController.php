@@ -37,7 +37,7 @@ class SessionsController extends Controller
             } else {
                 Cookie::queue(Cookie::forget('email')); // Borra la cookie si no marcó "Recordarme"
             }
-            return redirect('dashboard')->with(['success' => 'Has iniciado sesión.']);
+            return redirect('dashboard');
         } else {
             return back()->withErrors(['email' => 'Correo o contraseña no válidos.']);
         }
@@ -48,6 +48,6 @@ class SessionsController extends Controller
 
         Auth::logout();
 
-        return redirect('/login')->with(['success' => 'Has cerrado sesión.']);
+        return redirect('/login');
     }
 }
