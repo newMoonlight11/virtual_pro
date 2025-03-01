@@ -9,12 +9,20 @@
         @else
             <div class="list-group">
                 @foreach ($simulacros as $simulacro)
-                    <a href="{{ route('estudiante.realizar_simulacro', $simulacro->id) }}"
-                        class="list-group-item list-group-item-action">
-                        <h5>{{ $simulacro->titulo }}</h5>
-                        <p>{{ $simulacro->descripcion }}</p>
-                        <small><strong>Fecha:</strong> {{ $simulacro->fecha }}</small>
-                    </a>
+                    @if ($simulacro->presentado)
+                        <div class="list-group-item bg-light text-muted">
+                            <h5>{{ $simulacro->titulo }}</h5>
+                            <p>{{ $simulacro->descripcion }}</p>
+                            <small><strong>Fecha:</strong> {{ $simulacro->fecha }}</small>
+                            <span class="badge bg-secondary">Ya presentado</span>
+                        </div>
+                    @else
+                        <a href="{{ route('estudiante.realizar_simulacro', $simulacro->id) }}" class="list-group-item list-group-item-action">
+                            <h5>{{ $simulacro->titulo }}</h5>
+                            <p>{{ $simulacro->descripcion }}</p>
+                            <small><strong>Fecha:</strong> {{ $simulacro->fecha }}</small>
+                        </a>
+                    @endif
                 @endforeach
             </div>
         @endif

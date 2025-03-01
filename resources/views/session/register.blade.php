@@ -26,7 +26,7 @@
                             <form role="form text-left" method="POST" action="{{ route('register') }}">
                                 @csrf
                                 @if (session('success'))
-                                    <div class="alert alert-success">
+                                    <div class="alert text-center">
                                         {{ session('success') }}
                                     </div>
                                 @endif

@@ -155,19 +155,19 @@ class SimulacroController extends Controller
                 continue; // Si la fila tiene menos de 7 columnas, se ignora
             }
 
-            $imagenPath = null;
+            // $imagenPath = null;
 
-            if (!empty(trim($row[0]))) {
-                $nombreArchivo = trim($row[0]);
-                $rutaImagen = 'public/imagenes_simulacros/' . $nombreArchivo;
+            // if (!empty(trim($row[0]))) {
+            //     $nombreArchivo = trim($row[0]);
+            //     $rutaImagen = 'public/imagenes_simulacros/' . $nombreArchivo;
 
-                if (Storage::exists($rutaImagen)) {
-                    $imagenPath = 'imagenes_simulacros/' . $nombreArchivo;
-                }
-            }
+            //     if (Storage::exists($rutaImagen)) {
+            //         $imagenPath = 'imagenes_simulacros/' . $nombreArchivo;
+            //     }
+            // }
 
             $preguntas[] = [
-                'imagen' => $imagenPath, // Guarda solo si existe en el almacenamiento
+                'imagen' => isset($row[0]) && !empty($row[0]) ? trim($row[0]) : null, // Imagen en la primera columna,
                 'texto' => trim($row[1]),
                 'opcion_a' => trim($row[2]),
                 'opcion_b' => trim($row[3]),
@@ -191,4 +191,25 @@ class SimulacroController extends Controller
         $simulacro = Simulacro::with('preguntas')->findOrFail($id);
         return view('profesor.test', compact('simulacro'));
     }
+
+    public function update(Request $request, $id)
+{
+    $request->validate([
+        'titulo' => 'required|string|max:255',
+        'descripcion' => 'nullable|string',
+        'fecha' => 'required|date',
+        'hora' => 'required', // Asegurar que 'hora' está validado
+    ]);
+
+    $simulacro = Simulacro::findOrFail($id);
+    $simulacro->update([
+        'titulo' => $request->titulo,
+        'descripcion' => $request->descripcion,
+        'fecha' => $request->fecha . ' ' . $request->hora,
+        'profesor_id' => auth()->id()
+    ]);
+
+    return redirect()->route('profesor.simulacros.index');
+}
+
 }

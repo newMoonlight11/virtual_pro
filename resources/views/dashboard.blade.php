@@ -2,6 +2,7 @@
 
 @section('content')
     <div class="row">
+      @if (auth()->user()->role === 'admin')
         <!-- Total de Usuarios -->
         <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
             <div class="card">
@@ -71,7 +72,8 @@
                 </div>
             </div>
         </div>
-
+        @endif
+        @if (auth()->user()->role === 'admin' || auth()->user()->role === 'profesor' || auth()->user()->role === 'estudiante' )
         <!-- Días para el simulacro -->
         <div class="col-xl-3 col-sm-6">
             <div class="card">
@@ -95,7 +97,7 @@
             </div>
         </div>
     </div>
-
+    @endif
 
     <div class="row mt-4 d-flex align-items-stretch">
         <!-- Card de Anuncio -->

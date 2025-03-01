@@ -36,88 +36,149 @@
                     <span class="nav-link-text ms-1">Dashboard</span>
                 </a>
             </li>
-            <li class="nav-item mt-2">
-                <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Usuarios</h6>
-            </li>
 
-            <li class="nav-item pb-2">
-                <a class="nav-link {{ Request::is('user-management') ? 'active' : '' }}"
-                    href="{{ url('admin/users') }}">
-                    <div
-                        class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i style="font-size: 1rem;"
-                            class="fas fa-lg fa-list-ul ps-2 pe-2 text-center text-dark {{ Request::is('user-management') ? 'text-white' : 'text-dark' }} "
-                            aria-hidden="true"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Gestión de Usuarios</span>
-                </a>
-            </li>
-            <!-- Calificaciones -->
-            <li class="nav-item pb-2">
-                <a class="nav-link {{ Request::is('profesor/calificaciones*') ? 'active' : '' }}"
-                    href="{{ route('profesor.calificaciones') }}">
-                    <div
-                        class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i
-                            class="fas fa-lg fa-graduation-cap text-dark {{ Request::is('profesor/calificaciones*') ? 'text-white' : 'text-dark' }}"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Calificaciones</span>
-                </a>
-            </li>
+            <!-- 🟢 Solo ADMIN -->
+            @if (auth()->user()->role === 'admin')
+                <li class="nav-item mt-2">
+                    <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Usuarios</h6>
+                </li>
 
-            <!-- Cronograma -->
-            <li class="nav-item pb-2">
-                <a class="nav-link {{ Request::is('profesor/cronograma*') ? 'active' : '' }}"
-                    href="{{ route('profesor.cronograma') }}">
-                    <div
-                        class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i
-                            class="fas fa-lg fa-calendar-alt text-dark {{ Request::is('profesor/cronograma*') ? 'text-white' : 'text-dark' }}"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Cronograma</span>
-                </a>
-            </li>
+                <li class="nav-item pb-2">
+                    <a class="nav-link {{ Request::is('user-management') ? 'active' : '' }}"
+                        href="{{ url('admin/users') }}">
+                        <div
+                            class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i style="font-size: 1rem;"
+                                class="fas fa-lg fa-list-ul ps-2 pe-2 text-center text-dark {{ Request::is('user-management') ? 'text-white' : 'text-dark' }} "
+                                aria-hidden="true"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Gestión de Usuarios</span>
+                    </a>
+                </li>
+            @endif
 
-            <!-- Módulos -->
-            <li class="nav-item pb-2">
-                <a class="nav-link {{ Request::is('profesor/modulos*') ? 'active' : '' }}"
-                    href="{{ route('profesor.modulos') }}">
-                    <div
-                        class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i
-                            class="fas fa-lg fa-book text-dark {{ Request::is('profesor/modulos*') ? 'text-white' : 'text-dark' }}"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Módulos</span>
-                </a>
-            </li>
+            <!-- 🔵 Solo PROFESORES -->
+            @if (auth()->user()->role === 'admin' || auth()->user()->role === 'profesor')
+                <li class="nav-item pb-2">
+                    <a class="nav-link {{ Request::is('profesor/calificaciones*') ? 'active' : '' }}"
+                        href="{{ route('profesor.calificaciones') }}">
+                        <div
+                            class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i
+                                class="fas fa-lg fa-graduation-cap text-dark {{ Request::is('profesor/calificaciones*') ? 'text-white' : 'text-dark' }}"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Calificaciones</span>
+                    </a>
+                </li>
 
-            <!-- Simulacros -->
-            <li class="nav-item pb-2">
-                <a class="nav-link {{ Request::is('profesor/simulacros*') ? 'active' : '' }}"
-                    href="{{ route('profesor.simulacros.index') }}">
-                    <div
-                        class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i
-                            class="fas fa-lg fa-file-alt text-dark {{ Request::is('profesor/simulacros*') ? 'text-white' : 'text-dark' }}"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Simulacros</span>
-                </a>
-            </li>
+                <!-- Cronograma -->
+                <li class="nav-item pb-2">
+                    <a class="nav-link {{ Request::is('profesor/cronograma*') ? 'active' : '' }}"
+                        href="{{ route('profesor.cronograma') }}">
+                        <div
+                            class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i
+                                class="fas fa-lg fa-calendar-alt text-dark {{ Request::is('profesor/cronograma*') ? 'text-white' : 'text-dark' }}"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Cronograma</span>
+                    </a>
+                </li>
+                <li class="nav-item pb-2">
+                    <a class="nav-link {{ Request::is('profesor/modulos*') ? 'active' : '' }}"
+                        href="{{ route('profesor.modulos') }}">
+                        <div
+                            class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i
+                                class="fas fa-lg fa-book text-dark {{ Request::is('profesor/modulos*') ? 'text-white' : 'text-dark' }}"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Módulos</span>
+                    </a>
+                </li>
 
-            <!-- Anuncios -->
-            <li class="nav-item pb-2">
-                <a class="nav-link {{ Request::is('profesor/anuncios*') ? 'active' : '' }}"
-                    href="{{ route('profesor.anuncios') }}">
-                    <div
-                        class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i
-                            class="fas fa-lg fa-bullhorn text-dark {{ Request::is('profesor/anuncios*') ? 'text-white' : 'text-dark' }}"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Anuncios</span>
-                </a>
-            </li>
+                <!-- Simulacros -->
+                <li class="nav-item pb-2">
+                    <a class="nav-link {{ Request::is('profesor/simulacros*') ? 'active' : '' }}"
+                        href="{{ route('profesor.simulacros.index') }}">
+                        <div
+                            class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i
+                                class="fas fa-lg fa-file-alt text-dark {{ Request::is('profesor/simulacros*') ? 'text-white' : 'text-dark' }}"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Simulacros</span>
+                    </a>
+                </li>
 
-            {{-- <li class="nav-item">
+                <!-- Anuncios -->
+                <li class="nav-item pb-2">
+                    <a class="nav-link {{ Request::is('profesor/anuncios*') ? 'active' : '' }}"
+                        href="{{ route('profesor.anuncios') }}">
+                        <div
+                            class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i
+                                class="fas fa-lg fa-bullhorn text-dark {{ Request::is('profesor/anuncios*') ? 'text-white' : 'text-dark' }}"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Anuncios</span>
+                    </a>
+                </li>
+            @endif
+
+            <!-- 🟠 Visible para PROFESORES y ESTUDIANTES -->
+            @if (auth()->user()->role === 'estudiante')
+                <li class="nav-item pb-2">
+                    <a class="nav-link {{ Request::is('estudiante/calificaciones*') ? 'active' : '' }}"
+                        href="{{ route('estudiante.calificaciones') }}">
+                        <div
+                            class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i
+                                class="fas fa-lg fa-graduation-cap text-dark {{ Request::is('estudiante/calificaciones*') ? 'text-white' : 'text-dark' }}"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Calificaciones</span>
+                    </a>
+                </li>
+                <li class="nav-item pb-2">
+                    <a class="nav-link {{ Request::is('estudiante/modulos*') ? 'active' : '' }}"
+                        href="{{ route('estudiante.modulos') }}">
+                        <div
+                            class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i
+                                class="fas fa-lg fa-book text-dark {{ Request::is('estudiante/modulos*') ? 'text-white' : 'text-dark' }}"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Módulos</span>
+                    </a>
+                </li>
+
+                <!-- Simulacros -->
+                <li class="nav-item pb-2">
+                    <a class="nav-link {{ Request::is('estudiante/simulacros*') ? 'active' : '' }}"
+                        href="{{ route('estudiante.simulacros') }}">
+                        <div
+                            class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i
+                                class="fas fa-lg fa-file-alt text-dark {{ Request::is('estudiante/simulacros*') ? 'text-white' : 'text-dark' }}"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Simulacros</span>
+                    </a>
+                </li>
+
+                <!-- Anuncios -->
+                <li class="nav-item pb-2">
+                    <a class="nav-link {{ Request::is('estudiante/anuncios*') ? 'active' : '' }}"
+                        href="{{ route('estudiante.anuncios') }}">
+                        <div
+                            class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i
+                                class="fas fa-lg fa-bullhorn text-dark {{ Request::is('estudiante/anuncios*') ? 'text-white' : 'text-dark' }}"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Anuncios</span>
+                    </a>
+                </li>
+            @endif
+        </ul>
+    </div>
+</aside>
+
+
+{{-- <li class="nav-item">
         <a class="nav-link {{ (Request::is('user-profile') ? 'active' : '') }} " href="{{ url('user-profile') }}">
             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                 <svg width="12px" height="12px" viewBox="0 0 46 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -139,7 +200,7 @@
         </a>
       </li> --}}
 
-            {{-- <li class="nav-item mt-2">
+{{-- <li class="nav-item mt-2">
         <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Example pages</h6>
       </li>
       <li class="nav-item">
@@ -296,7 +357,7 @@
       </li>
     </ul>
   </div> --}}
-            {{-- <div class="sidenav-footer mx-3 ">
+{{-- <div class="sidenav-footer mx-3 ">
     <div class="card card-background shadow-none card-background-mask-secondary" id="sidenavCard">
       <div class="full-background" style="background-image: url('../assets/img/curved-images/white-curved.jpeg')"></div>
       <div class="card-body text-start p-3 w-100">
@@ -311,4 +372,3 @@
       </div>
     </div>
   </div> --}}
-</aside>

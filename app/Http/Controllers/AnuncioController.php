@@ -53,4 +53,22 @@ class AnuncioController extends Controller
         $anuncios = Anuncio::latest()->get();
         return view('estudiante.anuncios', compact('anuncios'));
     }
+
+    public function actualizarAnuncio(Request $request, $id)
+    {
+        $request->validate([
+            'titulo' => 'required|string|max:255',
+            'subtitulo' => 'nullable|string|max:255',
+            'contenido' => 'required|string',
+        ]);
+        $anuncio = Anuncio::findOrFail($id);
+        $anuncio->update([
+            'titulo' => $request->titulo,
+            'subtitulo' => $request->subtitulo,
+            'contenido' => $request->contenido,
+            'autor_id' => auth()->id(), // Obtiene el ID del usuario autenticado
+        ]);
+
+        return redirect()->route('profesor.anuncios');
+    }
 }

@@ -258,4 +258,5 @@ class ProfesorController extends Controller
     {
         return view('profesor.anuncios');
     }
+
 }

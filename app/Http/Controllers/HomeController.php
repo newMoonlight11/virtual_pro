@@ -20,7 +20,7 @@ class HomeController extends Controller
     public function index()
     {
         $anuncio = Anuncio::latest()->first();
-        $modulo = Modulo::latest()->first(); 
+        $modulo = Modulo::latest()->first();
         $eventos = Cronograma::orderBy('fecha', 'asc')->take(6)->get(); // Obtiene los próximos 6 eventos ordenados por fecha
 
         $totalUsuarios = User::count();
@@ -32,8 +32,22 @@ class HomeController extends Controller
         $nuevosUsuarios = User::whereDate('created_at', '>=', Carbon::now()->subDays(7))->count();
 
         // 4️⃣ Días para el próximo simulacro
-        $proximoSimulacro = Simulacro::where('fecha', '>=', Carbon::now())->orderBy('fecha', 'asc')->first();
-        $diasParaSimulacro = $proximoSimulacro ? Carbon::now()->diffInDays($proximoSimulacro->fecha) : 'Ninguno';
+        $proximoSimulacro = Simulacro::where('fecha', '>=', Carbon::now())
+            ->orderBy('fecha', 'asc')
+            ->first();
+
+        if ($proximoSimulacro) {
+            $horasFaltantes = Carbon::now()->diffInHours($proximoSimulacro->fecha);
+            $diasFaltantes = Carbon::now()->diffInDays($proximoSimulacro->fecha);
+
+            if ($horasFaltantes < 24) {
+                $diasParaSimulacro = '1';
+            } else {
+                $diasParaSimulacro = $diasFaltantes . ' días';
+            }
+        } else {
+            $diasParaSimulacro = 'Ninguno';
+        }
 
         return view('dashboard', compact('anuncio', 'modulo', 'eventos', 'totalUsuarios', 'usuariosHoy', 'nuevosUsuarios', 'diasParaSimulacro'));
     }

@@ -140,6 +140,7 @@ Route::middleware(['auth', 'role:profesor'])->prefix('profesor')->group(function
 	Route::get('/anuncios/create', [AnuncioController::class, 'create'])->name('profesor.crear_anuncio');
 	Route::post('/anuncios', [AnuncioController::class, 'store'])->name('profesor.guardar_anuncio');
 	Route::delete('/anuncios/{id}', [AnuncioController::class, 'destroy'])->name('profesor.eliminar_anuncio');
+	Route::put('/anuncios/{id}', [AnuncioController::class, 'actualizarAnuncio'])->name('profesor.actualizar_anuncio');
 });
 
 // Estudiante

@@ -13,6 +13,7 @@
             <i class="bi bi-facebook text-secondary fs-5"></i>
           </a>
           <p class="mb-0 text-secondary ms-4">Preicfes VirtualPro ® <script>document.write(new Date().getFullYear())</script></p>
+          <p class="mb-0 text-secondary ms-4">Carrera 23 # 32 - 41 Oficina-201 EDF. MegaPark</p>
         </div>
         
         {{-- @if (!auth()->user() || \Request::is('static-sign-up')) 

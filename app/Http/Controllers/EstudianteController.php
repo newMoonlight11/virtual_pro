@@ -7,6 +7,7 @@ use App\Models\Calificacion;
 use App\Models\Cronograma;
 use App\Models\Modulo;
 use App\Models\Simulacro;
+use Illuminate\Support\Facades\Auth;
 
 class EstudianteController extends Controller
 {
@@ -97,6 +98,23 @@ class EstudianteController extends Controller
             ]
         );
 
-        return redirect()->route('estudiante.simulacros')->with('success', "Simulacro completado. Tu puntaje es: $puntajeTotal");
+        return redirect()->route('estudiante.simulacros');
     }
+
+    public function verSimulacros()
+{
+    $userId = Auth::id();
+    
+    // Obtener todos los simulacros
+    $simulacros = Simulacro::all();
+
+    // Verificar qué simulacros ya fueron presentados por el usuario
+    foreach ($simulacros as $simulacro) {
+        $simulacro->presentado = Calificacion::where('estudiante_id', $userId)
+            ->where('simulacro_id', $simulacro->id)
+            ->exists();
+    }
+
+    return view('estudiante.simulacros', compact('simulacros'));
+}
 }
