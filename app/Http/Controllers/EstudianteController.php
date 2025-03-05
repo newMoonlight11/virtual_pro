@@ -19,9 +19,10 @@ class EstudianteController extends Controller
     public function calificaciones()
     {
         $calificaciones = Calificacion::where('estudiante_id', auth()->id())
-            ->whereNull('pregunta_id') // Filtramos solo puntajes totales
             ->with('simulacro') // Asegura que cargue la relación con Simulacro
             ->get();
+
+        #dd($calificaciones);
 
         return view('estudiante.calificaciones', compact('calificaciones'));
     }
@@ -102,19 +103,19 @@ class EstudianteController extends Controller
     }
 
     public function verSimulacros()
-{
-    $userId = Auth::id();
-    
-    // Obtener todos los simulacros
-    $simulacros = Simulacro::all();
+    {
+        $userId = Auth::id();
 
-    // Verificar qué simulacros ya fueron presentados por el usuario
-    foreach ($simulacros as $simulacro) {
-        $simulacro->presentado = Calificacion::where('estudiante_id', $userId)
-            ->where('simulacro_id', $simulacro->id)
-            ->exists();
+        // Obtener todos los simulacros
+        $simulacros = Simulacro::all();
+
+        // Verificar qué simulacros ya fueron presentados por el usuario
+        foreach ($simulacros as $simulacro) {
+            $simulacro->presentado = Calificacion::where('estudiante_id', $userId)
+                ->where('simulacro_id', $simulacro->id)
+                ->exists();
+        }
+
+        return view('estudiante.simulacros', compact('simulacros'));
     }
-
-    return view('estudiante.simulacros', compact('simulacros'));
-}
 }

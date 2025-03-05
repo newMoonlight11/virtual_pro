@@ -10,7 +10,6 @@
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
             /* Agrega sombra */
         }
-        
     </style>
     <div class="container py-4">
         <div class="row justify-content-center">
@@ -70,19 +69,46 @@
                                                     <h6>Archivos disponibles:</h6>
                                                     <ul class="list-group">
                                                         @foreach ($modulo->archivos as $archivo)
-                                                            <li
-                                                                class="list-group-item d-flex justify-content-between align-items-center">
-                                                                <a href="{{ asset('storage/' . $archivo->ruta) }}"
-                                                                    target="_blank">
-                                                                    <i class="fas fa-download"></i> {{ $archivo->nombre }}
+                                                            <li class="list-group-item">
+                                                                <a href="#"
+                                                                    onclick="mostrarPDF('{{ asset('storage/' . $archivo->ruta) }}', {{ $modulo->id }}); return false;">
+                                                                    <i class="fas fa-file-pdf text-danger"></i>
+                                                                    {{ $archivo->nombre }}
                                                                 </a>
                                                             </li>
                                                         @endforeach
                                                     </ul>
                                                 </div>
+
+                                                <!-- Espacio para mostrar el visor de PDF de este módulo -->
+                                                <div id="contenedorVisor-{{ $modulo->id }}" class="mt-3"
+                                                    style="display: none;">
+                                                    <iframe id="visorPDF-{{ $modulo->id }}" src="" width="100%"
+                                                        height="500px"></iframe>
+                                                    <button class="btn btn-danger mt-2"
+                                                        onclick="cerrarPDF({{ $modulo->id }})">Cerrar Visor</button>
+                                                </div>
                                             @else
                                                 <p class="text-muted">No hay archivos disponibles en este módulo.</p>
                                             @endif
+
+                                            <script>
+                                                function mostrarPDF(url, moduloId) {
+                                                    var visor = document.getElementById('visorPDF-' + moduloId);
+                                                    var contenedorVisor = document.getElementById('contenedorVisor-' + moduloId);
+
+                                                    visor.src = url;
+                                                    contenedorVisor.style.display = 'block'; // Hace visible el visor
+                                                }
+
+                                                function cerrarPDF(moduloId) {
+                                                    var visor = document.getElementById('visorPDF-' + moduloId);
+                                                    var contenedorVisor = document.getElementById('contenedorVisor-' + moduloId);
+
+                                                    visor.src = ""; // Vacía la fuente del PDF
+                                                    contenedorVisor.style.display = 'none'; // Oculta el visor
+                                                }
+                                            </script>
                                         </div>
                                     </div>
                                 </div>
