@@ -8,6 +8,7 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Simulacro;
 use App\Models\Pregunta;
+use Illuminate\Support\Facades\Auth;
 
 class SimulacroController extends Controller
 {
@@ -85,13 +86,44 @@ class SimulacroController extends Controller
 
     public function verSimulacros()
     {
-        $simulacros = Simulacro::latest()->get();
+        $userId = Auth::id();
+        $fechaActual = now();
+
+        // Obtener todos los simulacros
+        $simulacros = Simulacro::all();
+
+        foreach ($simulacros as $simulacro) {
+            // Verificar si ya fue presentado
+            $simulacro->presentado = Calificacion::where('estudiante_id', $userId)
+                ->where('simulacro_id', $simulacro->id)
+                ->exists();
+
+            // Verificar si la fecha del simulacro ya ha llegado
+            $simulacro->disponible = $fechaActual >= $simulacro->fecha;
+        }
+
         return view('estudiante.simulacros', compact('simulacros'));
     }
 
     public function realizarSimulacro($id)
     {
-        $simulacro = Simulacro::with('preguntas.respuestas')->findOrFail($id);
+        $userId = Auth::id();
+        $simulacro = Simulacro::with('preguntas')->findOrFail($id);
+
+        // Comprobar si el usuario ya presentó el simulacro
+        $presentado = Calificacion::where('estudiante_id', $userId)
+            ->where('simulacro_id', $simulacro->id)
+            ->exists();
+
+        if ($presentado) {
+            return redirect()->route('estudiante.simulacros')->with('error', 'Ya realizaste este simulacro.');
+        }
+
+        // Comprobar si la fecha y hora ya han llegado
+        if (now() < $simulacro->fecha) {
+            return redirect()->route('estudiante.simulacros')->with('error', 'Este simulacro aún no está disponible.');
+        }
+
         return view('estudiante.realizar-simulacro', compact('simulacro'));
     }
 
@@ -99,20 +131,18 @@ class SimulacroController extends Controller
     {
         $simulacro = Simulacro::findOrFail($id);
         $preguntas = $simulacro->preguntas;
-        $puntaje = 0;
+        $puntajeTotal = 0;
 
         foreach ($preguntas as $pregunta) {
             $respuestaSeleccionada = $request->input("pregunta_{$pregunta->id}");
 
             if ($respuestaSeleccionada) {
                 $esCorrecta = ($respuestaSeleccionada == $pregunta->respuesta_correcta);
-
                 if ($esCorrecta) {
-                    $puntaje += 10; // Suma 10 puntos por cada respuesta correcta
+                    $puntajeTotal += 10; // Suma 10 puntos por cada respuesta correcta
                 }
 
-                // Guardar la calificación correctamente
-                // Guardar la calificación correctamente
+                // Guardar cada respuesta individual
                 Calificacion::updateOrCreate(
                     [
                         'estudiante_id' => auth()->id(),
@@ -122,13 +152,25 @@ class SimulacroController extends Controller
                     [
                         'respuesta' => $respuestaSeleccionada,
                         'es_correcta' => $esCorrecta,
-                        'puntaje' => $esCorrecta ? 10 : 0, // Si es correcta, suma 10; si no, deja 0
+                        'puntaje' => $esCorrecta ? 10 : 0, // Guarda puntaje individual por pregunta
                     ]
                 );
             }
         }
 
-        return redirect()->route('estudiante.simulacros')->with('success', "Simulacro completado. Tu puntaje es: $puntaje");
+        // Guardar el puntaje total del simulacro
+        Calificacion::updateOrCreate(
+            [
+                'estudiante_id' => auth()->id(),
+                'simulacro_id' => $simulacro->id,
+                'pregunta_id' => null, // Identificador de puntaje total
+            ],
+            [
+                'puntaje' => $puntajeTotal,
+            ]
+        );
+
+        return redirect()->route('estudiante.simulacros');
     }
 
     public function preview(Request $request)
@@ -193,23 +235,22 @@ class SimulacroController extends Controller
     }
 
     public function update(Request $request, $id)
-{
-    $request->validate([
-        'titulo' => 'required|string|max:255',
-        'descripcion' => 'nullable|string',
-        'fecha' => 'required|date',
-        'hora' => 'required', // Asegurar que 'hora' está validado
-    ]);
+    {
+        $request->validate([
+            'titulo' => 'required|string|max:255',
+            'descripcion' => 'nullable|string',
+            'fecha' => 'required|date',
+            'hora' => 'required', // Asegurar que 'hora' está validado
+        ]);
 
-    $simulacro = Simulacro::findOrFail($id);
-    $simulacro->update([
-        'titulo' => $request->titulo,
-        'descripcion' => $request->descripcion,
-        'fecha' => $request->fecha . ' ' . $request->hora,
-        'profesor_id' => auth()->id()
-    ]);
+        $simulacro = Simulacro::findOrFail($id);
+        $simulacro->update([
+            'titulo' => $request->titulo,
+            'descripcion' => $request->descripcion,
+            'fecha' => $request->fecha . ' ' . $request->hora,
+            'profesor_id' => auth()->id()
+        ]);
 
-    return redirect()->route('profesor.simulacros.index');
-}
-
+        return redirect()->route('profesor.simulacros.index');
+    }
 }

@@ -16,8 +16,16 @@
                             <small><strong>Fecha:</strong> {{ $simulacro->fecha }}</small>
                             <span class="badge bg-secondary">Ya presentado</span>
                         </div>
+                    @elseif (!$simulacro->disponible)
+                        <div class="list-group-item bg-warning text-dark">
+                            <h5>{{ $simulacro->titulo }}</h5>
+                            <p>{{ $simulacro->descripcion }}</p>
+                            <small><strong>Fecha:</strong> {{ $simulacro->fecha }}</small>
+                            <span class="badge bg-danger">No disponible aún</span>
+                        </div>
                     @else
-                        <a href="{{ route('estudiante.realizar_simulacro', $simulacro->id) }}" class="list-group-item list-group-item-action">
+                        <a href="{{ route('estudiante.realizar_simulacro', $simulacro->id) }}"
+                            class="list-group-item list-group-item-action">
                             <h5>{{ $simulacro->titulo }}</h5>
                             <p>{{ $simulacro->descripcion }}</p>
                             <small><strong>Fecha:</strong> {{ $simulacro->fecha }}</small>
