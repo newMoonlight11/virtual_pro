@@ -33,7 +33,7 @@ use App\Http\Controllers\SimulacroController;
 
 Route::group(['middleware' => 'auth'], function () {
 
-	Route::get('/', [HomeController::class, 'home']);
+	Route::get('/', [IndexController::class, 'index']);
 	Route::get('dashboard', [HomeController::class, 'index'])->name('dashboard');
 	Route::get('/profesor', [ProfesorController::class, 'index'])->name('profesor.dashboard');
 	Route::get('/estudiante', [EstudianteController::class, 'index'])->name('estudiante.dashboard');

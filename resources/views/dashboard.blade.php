@@ -2,100 +2,98 @@
 
 @section('content')
     <div class="row">
-      @if (auth()->user()->role === 'admin')
-        <!-- Total de Usuarios -->
-        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-            <div class="card">
-                <div class="card-body p-3">
-                    <div class="row">
-                        <div class="col-8">
-                            <div class="numbers">
-                                <p class="text-sm mb-0 text-capitalize font-weight-bold">Total de usuarios</p>
-                                <h5 class="font-weight-bolder mb-0">
-                                    {{ $totalUsuarios }}
-                                </h5>
+        @if (auth()->user()->role === 'admin')
+            <!-- Total de Usuarios -->
+            <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+                <div class="card">
+                    <div class="card-body p-3">
+                        <div class="row">
+                            <div class="col-8">
+                                <div class="numbers">
+                                    <p class="text-sm mb-0 text-capitalize font-weight-bold">Total de usuarios</p>
+                                    <h5 class="font-weight-bolder mb-0">
+                                        {{ $totalUsuarios }}
+                                    </h5>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-4 text-end">
-                            <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
-                                <i class="bi bi-people-fill text-lg opacity-10" aria-hidden="true"></i>
+                            <div class="col-4 text-end">
+                                <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
+                                    <i class="bi bi-people-fill text-lg opacity-10" aria-hidden="true"></i>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Usuarios de hoy -->
-        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-            <div class="card">
-                <div class="card-body p-3">
-                    <div class="row">
-                        <div class="col-8">
-                            <div class="numbers">
-                                <p class="text-sm mb-0 text-capitalize font-weight-bold">Usuarios de hoy</p>
-                                <h5 class="font-weight-bolder mb-0">
-                                    {{ $usuariosHoy }}
-                                </h5>
+            <!-- Usuarios de hoy -->
+            <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+                <div class="card">
+                    <div class="card-body p-3">
+                        <div class="row">
+                            <div class="col-8">
+                                <div class="numbers">
+                                    <p class="text-sm mb-0 text-capitalize font-weight-bold">Usuarios de hoy</p>
+                                    <h5 class="font-weight-bolder mb-0">
+                                        {{ $usuariosHoy }}
+                                    </h5>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-4 text-end">
-                            <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
-                                <i class="ni ni-world text-lg opacity-10" aria-hidden="true"></i>
+                            <div class="col-4 text-end">
+                                <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
+                                    <i class="ni ni-world text-lg opacity-10" aria-hidden="true"></i>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Nuevos usuarios -->
-        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-            <div class="card">
-                <div class="card-body p-3">
-                    <div class="row">
-                        <div class="col-8">
-                            <div class="numbers">
-                                <p class="text-sm mb-0 text-capitalize font-weight-bold">Nuevos usuarios
-                                </p>
-                                <h5 class="font-weight-bolder mb-0">
-                                    {{ $nuevosUsuarios }}
-                                </h5>
+            <!-- Nuevos usuarios -->
+            <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+                <div class="card">
+                    <div class="card-body p-3">
+                        <div class="row">
+                            <div class="col-8">
+                                <div class="numbers">
+                                    <p class="text-sm mb-0 text-capitalize font-weight-bold">Nuevos usuarios
+                                    </p>
+                                    <h5 class="font-weight-bolder mb-0">
+                                        {{ $nuevosUsuarios }}
+                                    </h5>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-4 text-end">
-                            <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
-                                <i class="bi bi-person-plus-fill text-lg opacity-10" aria-hidden="true"></i>
+                            <div class="col-4 text-end">
+                                <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
+                                    <i class="bi bi-person-plus-fill text-lg opacity-10" aria-hidden="true"></i>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
         @endif
-        @if (auth()->user()->role === 'admin' || auth()->user()->role === 'profesor' || auth()->user()->role === 'estudiante' )
-        <!-- Días para el simulacro -->
-        <div class="col-xl-3 col-sm-6">
-            <div class="card">
-                <div class="card-body p-3">
-                    <div class="row">
-                        <div class="col-8">
-                            <div class="numbers">
-                                <p class="text-sm mb-0 text-capitalize font-weight-bold">Días para el simulacro</p>
-                                <h5 class="font-weight-bolder mb-0">
-                                    {{ $diasParaSimulacro }}
-                                </h5>
+        @if (auth()->user()->role === 'admin' || auth()->user()->role === 'profesor' || auth()->user()->role === 'estudiante')
+            <!-- Días para el simulacro -->
+            <div class="col-xl-3 col-sm-6">
+                <div class="card">
+                    <div class="card-body p-3">
+                        <div class="row">
+                            <div class="col-8">
+                                <div class="numbers">
+                                    <p class="text-sm mb-0 text-capitalize font-weight-bold">Fecha simulacro</p>
+                                    <h5 id="countdown" class="font-weight-bolder text-lg"></h5>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-4 text-end">
-                            <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
-                                <i class="bi bi-hourglass-top text-lg opacity-10" aria-hidden="true"></i>
+                            <div class="col-4 text-end">
+                                <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
+                                    <i class="bi bi-hourglass-top text-lg opacity-10" aria-hidden="true"></i>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
     </div>
     @endif
 
@@ -105,7 +103,7 @@
             <div class="card h-100 p-3">
                 <div class="overflow-hidden position-relative border-radius-lg bg-cover h-100"
                     style="background-image: url('../assets/img/planner.jpg');">
-                    <span class="mask bg-gradient-dark"></span>
+                    <span class="mask bg-gradient-dark opacity-6"></span>
                     <div class="card-body position-relative z-index-1 d-flex flex-column h-100 p-3">
                         @if ($anuncio)
                             <p class="mb-1 pt-2 text-bold text-white">Último Anuncio</p>
@@ -131,7 +129,7 @@
             <div class="card h-100 p-3">
                 <div class="overflow-hidden position-relative border-radius-lg bg-cover h-100"
                     style="background-image: url('../assets/img/carousel/c2.jpg');">
-                    <span class="mask bg-gradient-dark"></span>
+                    <span class="mask bg-gradient-dark opacity-6"></span>
                     <div class="card-body position-relative z-index-1 d-flex flex-column h-100 p-3">
                         @if ($modulo)
                             <p class="mb-1 pt-2 text-bold text-white">Último Módulo</p>
@@ -767,5 +765,34 @@
                 },
             });
         }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            var fechaSimulacro = "{{ $fechaSimulacro }}"; // Fecha desde Laravel
+            if (!fechaSimulacro) {
+                document.getElementById("countdown").innerHTML = "Ninguno";
+                return;
+            }
+
+            var countDownDate = new Date(fechaSimulacro).getTime();
+
+            var countdownFunction = setInterval(function() {
+                var now = new Date().getTime();
+                var distance = countDownDate - now;
+
+                if (distance < 0) {
+                    clearInterval(countdownFunction);
+                    document.getElementById("countdown").innerHTML = "¡El simulacro ha comenzado!";
+                    return;
+                }
+
+                var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                document.getElementById("countdown").innerHTML = days + "d " + hours + "h " + minutes +
+                    "m " + seconds + "s ";
+            }, 1000);
+        });
     </script>
 @endpush

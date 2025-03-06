@@ -36,19 +36,8 @@ class HomeController extends Controller
             ->orderBy('fecha', 'asc')
             ->first();
 
-        if ($proximoSimulacro) {
-            $horasFaltantes = Carbon::now()->diffInHours($proximoSimulacro->fecha);
-            $diasFaltantes = Carbon::now()->diffInDays($proximoSimulacro->fecha);
+        $fechaSimulacro = $proximoSimulacro ? Carbon::parse($proximoSimulacro->fecha)->format('Y-m-d H:i:s') : null;
 
-            if ($horasFaltantes < 24) {
-                $diasParaSimulacro = '1';
-            } else {
-                $diasParaSimulacro = $diasFaltantes . ' días';
-            }
-        } else {
-            $diasParaSimulacro = 'Ninguno';
-        }
-
-        return view('dashboard', compact('anuncio', 'modulo', 'eventos', 'totalUsuarios', 'usuariosHoy', 'nuevosUsuarios', 'diasParaSimulacro'));
+        return view('dashboard', compact('anuncio', 'modulo', 'eventos', 'totalUsuarios', 'usuariosHoy', 'nuevosUsuarios', 'fechaSimulacro'));
     }
 }
