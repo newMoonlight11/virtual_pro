@@ -142,17 +142,15 @@ class SimulacroController extends Controller
                     $puntajeTotal += 10; // Suma 10 puntos por cada respuesta correcta
                 }
 
-                // Guardar cada respuesta individual
+                // Guardar el puntaje total del simulacro
                 Calificacion::updateOrCreate(
                     [
                         'estudiante_id' => auth()->id(),
                         'simulacro_id' => $simulacro->id,
-                        'pregunta_id' => $pregunta->id,
+                        'pregunta_id' => null, // Registro único por simulacro
                     ],
                     [
-                        'respuesta' => $respuestaSeleccionada,
-                        'es_correcta' => $esCorrecta,
-                        'puntaje' => $esCorrecta ? 10 : 0, // Guarda puntaje individual por pregunta
+                        'puntaje' => $puntajeTotal,
                     ]
                 );
             }

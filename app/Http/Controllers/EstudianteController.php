@@ -19,10 +19,9 @@ class EstudianteController extends Controller
     public function calificaciones()
     {
         $calificaciones = Calificacion::where('estudiante_id', auth()->id())
-            ->with('simulacro') // Asegura que cargue la relación con Simulacro
+            ->whereNull('pregunta_id') // Solo trae los registros de puntaje total
+            ->with('simulacro') // Carga la relación con el simulacro
             ->get();
-
-        #dd($calificaciones);
 
         return view('estudiante.calificaciones', compact('calificaciones'));
     }

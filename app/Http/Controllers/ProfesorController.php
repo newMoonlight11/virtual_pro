@@ -22,13 +22,26 @@ class ProfesorController extends Controller
 
 
 
-    public function calificaciones()
+    public function calificaciones(Request $request)
     {
-        $calificaciones = Calificacion::with('estudiante', 'simulacro')
-            ->orderBy('simulacro_id')
-            ->orderByDesc('puntaje')
-            ->get();
+        $query = Calificacion::with('estudiante', 'simulacro')
+            ->whereNull('pregunta_id') // Solo puntajes totales
+            ->orderByDesc('created_at');
 
+        // Filtros dinámicos por cada columna
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->whereHas('estudiante', function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%");
+            })
+                ->orWhereHas('simulacro', function ($q) use ($search) {
+                    $q->where('titulo', 'like', "%{$search}%");
+                })
+                ->orWhere('puntaje', 'like', "%{$search}%")
+                ->orWhereDate('created_at', 'like', "%{$search}%");
+        }
+
+        $calificaciones = $query->get();
         return view('profesor.calificaciones', compact('calificaciones'));
     }
 
@@ -258,5 +271,4 @@ class ProfesorController extends Controller
     {
         return view('profesor.anuncios');
     }
-
 }

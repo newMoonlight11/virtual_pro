@@ -11,6 +11,7 @@
                 <thead>
                     <tr>
                         <th>Simulacro</th>
+                        <th>Fecha</th>
                         <th>Puntaje</th>
                     </tr>
                 </thead>
@@ -18,6 +19,7 @@
                     @foreach ($calificaciones as $calificacion)
                         <tr>
                             <td>{{ $calificacion->simulacro->titulo }}</td>
+                            <td>{{ $calificacion->created_at->format('d/m/Y') }}</td>
                             <td>{{ $calificacion->puntaje }}</td>
                         </tr>
                     @endforeach
