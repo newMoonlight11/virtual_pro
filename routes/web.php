@@ -33,7 +33,7 @@ use App\Http\Controllers\SimulacroController;
 
 Route::group(['middleware' => 'auth'], function () {
 
-	Route::get('/', [IndexController::class, 'index']);
+	Route::get('/', [IndexController::class, 'index'])->name('index');
 	Route::get('dashboard', [HomeController::class, 'index'])->name('dashboard');
 	Route::get('/profesor', [ProfesorController::class, 'index'])->name('profesor.dashboard');
 	Route::get('/estudiante', [EstudianteController::class, 'index'])->name('estudiante.dashboard');
@@ -88,7 +88,7 @@ Route::group(['middleware' => 'guest'], function () {
 	Route::post('/forgot-password', [ResetController::class, 'sendEmail']);
 	Route::get('/reset-password/{token}', [ResetController::class, 'resetPass'])->name('password.reset');
 	Route::post('/reset-password', [ChangePasswordController::class, 'changePassword'])->name('password.update');
-	Route::get('/index', [IndexController::class, 'index']);
+	Route::get('/index', [IndexController::class, 'index'])->name('index');
 	// Route::get('/index', function () {return view('index');});	
 
 
