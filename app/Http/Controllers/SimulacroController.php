@@ -129,34 +129,22 @@ class SimulacroController extends Controller
 
     public function guardarRespuestas(Request $request, $id)
     {
-        $simulacro = Simulacro::findOrFail($id);
+        $simulacro = Simulacro::with('preguntas')->findOrFail($id);
         $preguntas = $simulacro->preguntas;
         $puntajeTotal = 0;
 
         foreach ($preguntas as $pregunta) {
             $respuestaSeleccionada = $request->input("pregunta_{$pregunta->id}");
 
-            if ($respuestaSeleccionada) {
+            if (!is_null($respuestaSeleccionada)) { // Verifica que la respuesta no esté vacía
                 $esCorrecta = ($respuestaSeleccionada == $pregunta->respuesta_correcta);
                 if ($esCorrecta) {
                     $puntajeTotal += 10; // Suma 10 puntos por cada respuesta correcta
                 }
-
-                // Guardar el puntaje total del simulacro
-                Calificacion::updateOrCreate(
-                    [
-                        'estudiante_id' => auth()->id(),
-                        'simulacro_id' => $simulacro->id,
-                        'pregunta_id' => null, // Registro único por simulacro
-                    ],
-                    [
-                        'puntaje' => $puntajeTotal,
-                    ]
-                );
             }
         }
 
-        // Guardar el puntaje total del simulacro
+        // Guardar solo una vez el puntaje total
         Calificacion::updateOrCreate(
             [
                 'estudiante_id' => auth()->id(),
@@ -165,10 +153,11 @@ class SimulacroController extends Controller
             ],
             [
                 'puntaje' => $puntajeTotal,
+                'titulo_simulacro' => $simulacro->titulo, // Guardamos el título del simulacro
             ]
         );
 
-        return redirect()->route('estudiante.simulacros');
+        return redirect()->route('estudiante.simulacros')->with('success', 'Respuestas guardadas correctamente.');
     }
 
     public function preview(Request $request)

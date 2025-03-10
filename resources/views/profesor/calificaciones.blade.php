@@ -89,7 +89,7 @@
                     @forelse ($calificaciones as $calificacion)
                         <tr>
                             <td>{{ $calificacion->estudiante->name }}</td>
-                            <td>{{ $calificacion->simulacro->titulo }}</td>
+                            <td>{{ $calificacion->titulo_simulacro }}</td>
                             <td>{{ $calificacion->created_at->format('d/m/Y H:i') }}</td>
                             <td>{{ $calificacion->puntaje }}</td>
                         </tr>

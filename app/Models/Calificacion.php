@@ -9,7 +9,7 @@ class Calificacion extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['estudiante_id', 'simulacro_id', 'pregunta_id', 'respuesta', 'es_correcta', 'puntaje'];
+    protected $fillable = ['estudiante_id', 'simulacro_id', 'pregunta_id', 'respuesta', 'es_correcta', 'puntaje', 'titulo_simulacro'];
 
     public function estudiante()
     {
