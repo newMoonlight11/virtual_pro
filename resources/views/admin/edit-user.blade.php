@@ -50,6 +50,34 @@
 
             <button type="submit" class="btn btn-success">Actualizar</button>
             <a href="{{ route('admin.users') }}" class="btn btn-danger">Cancelar</a>
+            <button type="button" class="btn btn-primary" onclick="copiarResumen()">Resumen</button>
         </form>
     </div>
+    <script>
+        function copiarResumen() {
+            let nombre = document.querySelector('input[name="name"]').value;
+            let email = document.querySelector('input[name="email"]').value;
+            let telefono = document.querySelector('input[name="phone"]').value;
+            let password = document.querySelector('input[name="password"]').value || "No modificada";
+            let role = document.querySelector('select[name="role"]').value;
+    
+            let resumen = `📌 **Resumen del usuario**\n\n`
+                + `👤 Nombre: ${nombre}\n`
+                + `📧 Email: ${email}\n`
+                + `📞 Teléfono: ${telefono}\n`
+                + `🔑 Contraseña: ${password}\n`
+                + `🎭 Rol: ${role}`;
+    
+            // Crear un elemento de texto temporal y copiarlo al portapapeles
+            let tempInput = document.createElement("textarea");
+            tempInput.value = resumen;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+    
+            alert("📋 Resumen copiado al portapapeles.");
+        }
+    </script>
+    
 @endsection

@@ -16,7 +16,7 @@
                 @foreach ($simulacro->preguntas as $index => $pregunta)
                     <div class="card mb-3">
                         <div class="card-body">
-                            @if ($pregunta->imagen)
+                            {{-- @if ($pregunta->imagen)
                                 <div class="text-center">
                                     @if (filter_var($pregunta->imagen, FILTER_VALIDATE_URL))
                                         <img src="{{ $pregunta->imagen }}" alt="Imagen Pregunta" class="img-fluid rounded"
@@ -25,6 +25,29 @@
                                         <img src="{{ asset('storage/' . $pregunta->imagen) }}" alt="Imagen Pregunta"
                                             class="img-fluid rounded" style="max-width: 100%; height: auto;">
                                     @endif
+                                </div>
+                            @endif --}}
+                            @if ($pregunta->imagen)
+                                <div class="text-center position-relative">
+                                    @php
+                                        $imagenSrc = filter_var($pregunta->imagen, FILTER_VALIDATE_URL)
+                                            ? $pregunta->imagen
+                                            : asset('storage/' . $pregunta->imagen);
+                                    @endphp
+
+                                    <!-- Imagen -->
+                                    <img src="{{ $imagenSrc }}" alt="Imagen Pregunta"
+                                        class="img-fluid rounded img-thumbnail zoomable" data-bs-toggle="modal"
+                                        data-bs-target="#imageModal" data-img="{{ $imagenSrc }}"
+                                        style="max-width: 100%; height: auto; cursor: pointer;">
+
+                                    <!-- Botón de Zoom -->
+                                    <button type="button"
+                                        class="btn btn-sm btn-light position-absolute top-0 end-0 m-2 zoom-btn"
+                                        data-bs-toggle="modal" data-bs-target="#imageModal" data-img="{{ $imagenSrc }}">
+                                        <i class="bi bi-zoom-in fs-6"></i>
+                                    </button>
+
                                 </div>
                             @endif
                             <h6 class="mt-3">{{ $index + 1 }}. {{ $pregunta->texto }}</h6>
@@ -92,6 +115,25 @@
         </div>
     </div>
 
+    <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <!-- Encabezado del Modal -->
+                <div class="modal-header">
+                    <h5 class="modal-title">Imagen Ampliada</h5>
+                    <button type="button" class="btn-close bg-primary" data-bs-dismiss="modal"
+                        aria-label="Cerrar"></button>
+                </div>
+
+                <!-- Cuerpo del Modal -->
+                <div class="modal-body text-center">
+                    <img id="modalImage" src="" class="img-fluid rounded" alt="Imagen Ampliada">
+                </div>
+
+            </div>
+        </div>
+    </div>
+
     <!-- CSS Personalizado -->
     <style>
         .custom-radio input[type="radio"] {
@@ -117,4 +159,18 @@
             border-color: white;
         }
     </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var imageModal = document.getElementById("imageModal");
+            var modalImage = document.getElementById("modalImage");
+
+            document.querySelectorAll(".zoom-btn").forEach(button => {
+                button.addEventListener("click", function() {
+                    var imageUrl = this.getAttribute("data-img");
+                    modalImage.src = imageUrl; // Cambia la imagen en el modal
+                });
+            });
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 @endsection
