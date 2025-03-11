@@ -18,7 +18,7 @@ use App\Http\Controllers\EstudianteController;
 use App\Http\Controllers\ModuloController;
 use App\Http\Controllers\ProfesorController;
 use App\Http\Controllers\SimulacroController;
-
+use App\Http\Controllers\VideoController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -141,6 +141,10 @@ Route::middleware(['auth', 'role:profesor'])->prefix('profesor')->group(function
 	Route::post('/anuncios', [AnuncioController::class, 'store'])->name('profesor.guardar_anuncio');
 	Route::delete('/anuncios/{id}', [AnuncioController::class, 'destroy'])->name('profesor.eliminar_anuncio');
 	Route::put('/anuncios/{id}', [AnuncioController::class, 'actualizarAnuncio'])->name('profesor.actualizar_anuncio');
+	Route::get('/videos', [VideoController::class, 'index'])->name('profesor.video');
+	Route::get('/videos/create', [VideoController::class, 'create'])->name('profesor.crear_video');
+	Route::post('/videos', [VideoController::class, 'store'])->name('profesor.guardar_video');
+	Route::delete('/videos/{id}', [VideoController::class, 'destroy'])->name('profesor.eliminar_video');
 });
 
 // Estudiante
@@ -152,4 +156,5 @@ Route::middleware(['auth', 'role:estudiante'])->prefix('estudiante')->group(func
 	Route::get('/simulacros', [SimulacroController::class, 'verSimulacros'])->name('estudiante.simulacros');
 	Route::get('/simulacros/{id}', [SimulacroController::class, 'realizarSimulacro'])->name('estudiante.realizar_simulacro');
 	Route::post('/simulacros/{id}', [SimulacroController::class, 'guardarRespuestas'])->name('estudiante.guardar_respuestas');
+	Route::get('/videos', [VideoController::class, 'index'])->name('estudiante.video');
 });
