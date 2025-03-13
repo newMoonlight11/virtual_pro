@@ -4,26 +4,13 @@
     <div class="container-fluid py-4 bg-white border-radius-lg">
         <div class="d-flex justify-content-between align-items-center">
             <h3>Lista de videos</h3>
-            <a href="{{ route('profesor.crear_video') }}" class="btn btn-primary mb-3">+ Nuevo Video</a>
         </div>
         <div class="row">
             @foreach ($videos as $video)
                 <div class="col-md-4">
                     <div class="card mb-3">
                         <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <h5 class="card-title">{{ $video->title }}</h5>
-                                <form action="{{ route('profesor.eliminar_video', $video->id) }}" method="POST"
-                                    style="display:inline;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-sm bg-danger"
-                                        onclick="return confirm('¿Eliminar este video?');" data-bs-toggle="tooltip"
-                                        data-bs-original-title="Eliminar simulacro">
-                                        <i class="fas fa-trash fs-6 text-white"></i>
-                                    </button>
-                                </form>
-                            </div>
+                            <h5 class="card-title">{{ $video->title }}</h5>
 
                             <!-- Miniatura del video -->
                             <img src="https://img.youtube.com/vi/{{ explode('embed/', $video->youtube_url)[1] }}/hqdefault.jpg"
