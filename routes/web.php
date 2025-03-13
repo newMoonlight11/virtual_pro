@@ -156,5 +156,5 @@ Route::middleware(['auth', 'role:estudiante'])->prefix('estudiante')->group(func
 	Route::get('/simulacros', [SimulacroController::class, 'verSimulacros'])->name('estudiante.simulacros');
 	Route::get('/simulacros/{id}', [SimulacroController::class, 'realizarSimulacro'])->name('estudiante.realizar_simulacro');
 	Route::post('/simulacros/{id}', [SimulacroController::class, 'guardarRespuestas'])->name('estudiante.guardar_respuestas');
-	Route::get('/videos', [VideoController::class, 'index'])->name('estudiante.video');
+	Route::get('/videos', [VideoController::class, 'estudiantes'])->name('estudiante.video');
 });

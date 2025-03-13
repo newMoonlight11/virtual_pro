@@ -47,4 +47,9 @@ class VideoController extends Controller
         Video::findOrFail($id)->delete();
         return redirect()->route('profesor.video');
     }
+    public function estudiantes()
+    {
+        $videos = Video::all();
+        return view('estudiante.videos', compact('videos'));
+    }
 }
