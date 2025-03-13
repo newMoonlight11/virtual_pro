@@ -1,5 +1,42 @@
-<aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-1 fixed-start ms-3 min-vh-95"
-    id="sidenav-main">
+<style>
+    /* Ajusta la altura y permite el scroll vertical */
+    #sidenav-collapse-main {
+        height: calc(100vh - 80px);
+        /* o la altura que necesites */
+        overflow-y: auto;
+        /* scroll vertical nativo */
+
+        /* Oculta el scrollbar en navegadores que soportan estas propiedades */
+        scrollbar-width: none;
+        /* Firefox */
+        -ms-overflow-style: none;
+        /* IE/Edge antiguos */
+    }
+
+    /* Ocultar scrollbar en Chrome, Safari y Opera */
+    #sidenav-collapse-main::-webkit-scrollbar {
+        width: 0px;
+        background: transparent;
+    }
+
+    /* Al hacer hover sobre el contenedor, que aparezca el scrollbar */
+    #sidenav-collapse-main:hover::-webkit-scrollbar {
+        width: 6px;
+        /* Grosor del scrollbar */
+        background: #e1e1e1;
+        /* Color de la "pista" */
+    }
+
+    /* Estilo del "thumb" (la parte que se arrastra) */
+    #sidenav-collapse-main::-webkit-scrollbar-thumb {
+        background: #bbb;
+        /* Color de la barra */
+        border-radius: 4px;
+    }
+</style>
+
+<aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl fixed-start ms-3 vh-100"
+    id="sidenav-main" style="top: 0; bottom: 0;">
 
     <div class="sidenav-header">
         <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
@@ -9,7 +46,7 @@
         </a>
     </div>
     <hr class="horizontal dark mt-0">
-    <div class="collapse navbar-collapse  w-auto" id="sidenav-collapse-main">
+    <div class="collapse navbar-collapse w-auto" id="sidenav-collapse-main">
         <ul class="navbar-nav">
             <li class="nav-item">
                 <a class="nav-link {{ Request::is('dashboard') ? 'active' : '' }}" href="{{ url('dashboard') }}">
