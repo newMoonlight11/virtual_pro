@@ -29,9 +29,14 @@
             <h1 class="text-white mb-2">¡Prepárate con la mejor plataforma educativa!</h1>
             <p class="text-lead text-white">La herramienta definitiva para alcanzar un puntaje sobresaliente y abrir
                 las puertas a tu futuro académico y profesional.</p>
-            <a href="https://wa.me/qr/ZM27K3GRHSH7I1" target="_blank" class="btn btn-sm btn-round mb-0 me-1 bg-white text-secondary">¡Inscríbete
+            <a href="https://wa.me/qr/ZM27K3GRHSH7I1" target="_blank"
+                class="btn btn-sm btn-round mb-0 me-1 bg-white text-secondary">¡Inscríbete
                 ahora y asegura tu éxito!</a>
+            <div id="countdown-container" class="text-center mt-4 text-white">
+                <div id="countdown" class="display-6 fw-bold"></div>
+            </div>
         </div>
+
         <button class="carousel-control-prev" type="button" data-bs-target="#imageCarousel" data-bs-slide="prev"
             style="z-index: 10;">
             <span class="carousel-control-prev-icon bg-dark p-3 rounded-circle" aria-hidden="true"></span>
@@ -142,7 +147,7 @@
                 </div>
                 <div class="d-flex align-items-center">
                     <i class="bi bi-cash-coin text-primary fs-4 me-3"></i>
-                    <span>Precio competitivo: Por todo el programa pagas solo <strong class="text-secondary">$399.000
+                    <span>Precio competitivo: Por todo el programa pagas solo <strong class="text-secondary">$490.000
                             COP.</strong></span>
                 </div>
             </div>
@@ -157,7 +162,7 @@
                 </div>
                 <div class="d-flex align-items-center mb-3">
                     <i class="bi bi-calendar-check text-primary fs-4 me-3"></i>
-                    <span>Duración: Del 3 de mayo al 10 de agosto.</span>
+                    <span>Duración: Del 5 de mayo al 10 de agosto.</span>
                 </div>
                 <div class="d-flex align-items-center mb-3">
                     <i class="bi bi-clock text-primary fs-4 me-3"></i>
@@ -165,11 +170,11 @@
                 </div>
                 <div class="d-flex align-items-center mb-3">
                     <i class="bi bi-1-square-fill text-primary fs-4 me-3"></i>
-                    <span> Lunes a Viernes: 7:30 a.m. - 9:30 p.m.</span>
+                    <span> Lunes: 7:00 p.m. - 9:00 p.m.</span>
                 </div>
                 <div class="d-flex align-items-center mb-3">
                     <i class="bi bi-2-square-fill text-primary fs-4 me-3"></i>
-                    <span> Sábados y Domingos: 8:00 a.m. - 1:00 p.m.</span>
+                    <span> Sábados: 7:00 a.m. - 12:00 m. | 1:00 p.m. - 6:00 p.m.</span>
                 </div>
             </div>
 
@@ -227,6 +232,29 @@
             }
         });
     });
+    const deadline = new Date("May 5, 2025 00:00:00").getTime();
+
+    function updateCountdown() {
+        const now = new Date().getTime();
+        const timeLeft = deadline - now;
+
+        if (timeLeft <= 0) {
+            document.getElementById("countdown").innerHTML = "¡Tiempo Finalizado!";
+            return;
+        }
+
+        const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+        document.getElementById("countdown").innerHTML =
+            `${days}d ${hours}h ${minutes}m ${seconds}s`;
+    }
+
+    // Actualizar cada segundo
+    setInterval(updateCountdown, 1000);
+    updateCountdown(); // Ejecutar inmediatamente para no esperar 1s
 </script>
 
 <style>
