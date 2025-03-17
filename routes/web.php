@@ -125,17 +125,33 @@ Route::middleware(['auth', 'role:profesor'])->prefix('profesor')->group(function
 	Route::delete('/modulos/{id}', [ProfesorController::class, 'eliminarModulo'])->name('profesor.eliminar_modulo');
 	Route::post('/modulos/{id}/archivo', [ProfesorController::class, 'subirArchivo'])->name('profesor.subir_archivo');
 	Route::delete('/archivos/{id}', [ProfesorController::class, 'eliminarArchivo'])->name('profesor.eliminar_archivo');
-	Route::resource('/simulacros', SimulacroController::class)->names([
-		'index' => 'profesor.simulacros.index',
-		'create' => 'profesor.simulacros.create',
-		'store' => 'profesor.simulacros.store',
-		'show' => 'profesor.simulacros.show',
-		'edit' => 'profesor.simulacros.edit',
-		'update' => 'profesor.simulacros.update',
-		'destroy' => 'profesor.simulacros.destroy',
-	]);
-	Route::post('/simulacros/preview', [SimulacroController::class, 'preview'])->name('profesor.simulacros.preview');
-	Route::get('/simulacros/{id}/test', [SimulacroController::class, 'test'])->name('profesor.simulacros.test');
+	// Listar simulacros
+	Route::get('/simulacros', [SimulacroController::class, 'index'])
+		->name('profesor.simulacros.index');
+
+	// Formulario para crear un simulacro
+	Route::get('/simulacros/create', [SimulacroController::class, 'create'])
+		->name('profesor.simulacros.create');
+
+	// Guardar simulacro (método store)
+	Route::post('/simulacros', [SimulacroController::class, 'store'])
+		->name('profesor.simulacros.store');
+
+	// Actualizar simulacro (método update)
+	Route::put('/simulacros/{id}', [SimulacroController::class, 'update'])
+		->name('profesor.simulacros.update');
+
+	// Eliminar simulacro (método destroy)
+	Route::delete('/simulacros/{id}', [SimulacroController::class, 'destroy'])
+		->name('profesor.simulacros.destroy');
+
+	// Ruta para previsualizar (preview) el simulacro; se le asigna un slug distinto para evitar conflicto
+	Route::post('/simulacros/preview', [SimulacroController::class, 'preview'])
+		->name('profesor.simulacros.preview');
+
+	// Ruta para "testear" el simulacro
+	Route::get('/simulacros/{id}/test', [SimulacroController::class, 'test'])
+		->name('profesor.simulacros.test');
 	Route::get('/anuncios', [AnuncioController::class, 'index'])->name('profesor.anuncios');
 	Route::get('/anuncios/create', [AnuncioController::class, 'create'])->name('profesor.crear_anuncio');
 	Route::post('/anuncios', [AnuncioController::class, 'store'])->name('profesor.guardar_anuncio');

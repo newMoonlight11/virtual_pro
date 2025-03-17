@@ -8,6 +8,7 @@ use App\Models\Cronograma;
 use App\Models\Modulo;
 use App\Models\Simulacro;
 use App\Models\User;
+use App\Models\Video;
 use Carbon\Carbon;
 
 class HomeController extends Controller
@@ -21,6 +22,7 @@ class HomeController extends Controller
     {
         $anuncio = Anuncio::latest()->first();
         $modulo = Modulo::latest()->first();
+        $lastVideo = Video::latest()->first();
         $eventos = Cronograma::orderBy('fecha', 'asc')->take(6)->get(); // Obtiene los próximos 6 eventos ordenados por fecha
 
         $totalUsuarios = User::count();
@@ -38,6 +40,6 @@ class HomeController extends Controller
 
         $fechaSimulacro = $proximoSimulacro ? Carbon::parse($proximoSimulacro->fecha)->format('Y-m-d H:i:s') : null;
 
-        return view('dashboard', compact('anuncio', 'modulo', 'eventos', 'totalUsuarios', 'usuariosHoy', 'nuevosUsuarios', 'fechaSimulacro'));
+        return view('dashboard', compact('anuncio', 'modulo', 'eventos', 'totalUsuarios', 'usuariosHoy', 'nuevosUsuarios', 'fechaSimulacro', 'lastVideo'));
     }
 }

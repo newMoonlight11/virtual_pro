@@ -36,6 +36,7 @@
                     <th class="text-center"><strong>Título</strong></th>
                     <th class="text-center"><strong>Fecha</strong></th>
                     <th class="text-center"><strong>Hora</strong></th>
+                    <th class="text-center"><strong>Hora Fin</strong></th>
                     <th class="text-center"><strong>Acciones</strong></th>
                 </tr>
             </thead>
@@ -45,57 +46,61 @@
                         <form action="{{ route('profesor.simulacros.update', $simulacro->id) }}" method="POST">
                             @csrf
                             @method('PUT')
+
+                            <!-- Título -->
                             <td>
                                 <input type="text" name="titulo" value="{{ $simulacro->titulo }}" class="form-control">
                             </td>
 
+                            <!-- Fecha (solo día) -->
                             <td>
                                 <input type="date" name="fecha"
                                     value="{{ \Carbon\Carbon::parse($simulacro->fecha)->format('Y-m-d') }}"
                                     class="form-control">
                             </td>
 
-                            <!-- Hora -->
+                            <!-- Hora de inicio -->
                             <td>
                                 <input type="time" name="hora"
                                     value="{{ \Carbon\Carbon::parse($simulacro->fecha)->format('H:i') }}"
                                     class="form-control">
                             </td>
 
+                            <!-- Hora Fin (solo la parte de hora) -->
+                            <td>
+                                <input type="time" name="hora_fin"
+                                    value="{{ \Carbon\Carbon::parse($simulacro->hora_fin)->format('H:i') }}"
+                                    class="form-control">
+                            </td>
+
                             <!-- Acciones -->
                             <td class="text-center">
-                                {{-- <div style="display: flex; gap: 1px; align-items: center; justify-content: center;"> --}}
-                                    <button type="submit" class="btn btn-sm" data-bs-toggle="tooltip"
-                                        data-bs-original-title="Actualizar simulacro">
-                                        <i class="bi bi-arrow-repeat fs-6 text-success"></i>
-                                    </button>
-                        </form>
-                        {{-- <td class="text-center">{{ $simulacro->titulo }}</td>
-                        <td class="text-center">{{ \Carbon\Carbon::parse($simulacro->fecha)->format('d/m/Y') }}</td> --}}
-                       
-                            <form action="{{ route('profesor.simulacros.destroy', $simulacro->id) }}" method="POST"
-                                style="display:inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-sm"
-                                    onclick="return confirm('¿Eliminar este simulacro?');" data-bs-toggle="tooltip"
-                                    data-bs-original-title="Eliminar simulacro">
-                                    <i class="fas fa-trash fs-6 text-danger"></i>
+                                <button type="submit" class="btn btn-sm" data-bs-toggle="tooltip"
+                                    title="Actualizar simulacro">
+                                    <i class="bi bi-arrow-repeat fs-6 text-success"></i>
                                 </button>
-                                <a href="{{ route('profesor.simulacros.test', $simulacro->id) }}" class="btn btn-sm"
-                                    data-bs-toggle="tooltip" data-bs-original-title="Probar simulacro">
-                                    <i class="fas fa-play text-primary fs-6"></i>
-                                </a>
-                                {{-- <button type="submit" class="btn btn-sm"
-                                    onclick="{{ route('profesor.simulacros.preview') }}">
-                                    <i class="fas fa-eye fs-6 text-secondary"></i> 
-                                </button> --}}
-                            </form>
+                        </form>
+
+                        <!-- Botón Eliminar -->
+                        <form action="{{ route('profesor.simulacros.destroy', $simulacro->id) }}" method="POST"
+                            style="display:inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-sm" onclick="return confirm('¿Eliminar este simulacro?');"
+                                data-bs-toggle="tooltip" title="Eliminar simulacro">
+                                <i class="fas fa-trash fs-6 text-danger"></i>
+                            </button>
+                            <!-- Botón Probar -->
+                            <a href="{{ route('profesor.simulacros.test', $simulacro->id) }}" class="btn btn-sm"
+                                data-bs-toggle="tooltip" title="Probar simulacro">
+                                <i class="fas fa-play text-primary fs-6"></i>
+                            </a>
+                        </form>
                         </td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="3" class="text-center">No se encontraron simulacros.</td>
+                        <td colspan="5" class="text-center">No se encontraron simulacros.</td>
                     </tr>
                 @endforelse
             </tbody>
