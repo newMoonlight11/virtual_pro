@@ -9,7 +9,7 @@ class Simulacro extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['titulo', 'descripcion', 'fecha', 'profesor_id'];
+    protected $fillable = ['titulo', 'descripcion', 'fecha', 'profesor_id', 'hora_fin', 'archivo_preguntas'];
 
     public function profesor()
     {

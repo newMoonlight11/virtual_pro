@@ -8,6 +8,7 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Simulacro;
 use App\Models\Pregunta;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class SimulacroController extends Controller
@@ -37,51 +38,58 @@ class SimulacroController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'titulo' => 'required|string|max:255',
-            'descripcion' => 'nullable|string',
-            'fecha' => 'required|date',
-            'archivo_preguntas' => 'required|string'
+            'titulo'            => 'required|string|max:255',
+            'descripcion'       => 'nullable|string',
+            'fecha'             => 'required|date_format:Y-m-d\TH:i',
+            'hora_fin'          => 'required|date_format:Y-m-d\TH:i|after:fecha',
+            'archivo_preguntas' => 'required|mimes:xlsx,xls,csv|max:2048'
         ]);
 
-        // Crear el simulacro
+        $fechaInicio = \Carbon\Carbon::parse($request->fecha);
+        $fechaFin    = \Carbon\Carbon::parse($request->hora_fin);
+
+        // Subir archivo
+        $rutaArchivo = $request->file('archivo_preguntas')->store('preguntas', 'local');
+
+        // Crear el simulacro con fecha y hora fin
         $simulacro = Simulacro::create([
-            'titulo' => $request->titulo,
-            'descripcion' => $request->descripcion,
-            'fecha' => $request->fecha,
-            'profesor_id' => auth()->id()
+            'titulo'       => $request->titulo,
+            'descripcion'  => $request->descripcion,
+            'fecha'        => $fechaInicio,
+            'hora_fin'     => $fechaFin,
+            'archivo_preguntas' => $rutaArchivo,
+            'profesor_id'  => auth()->id()
         ]);
 
-        // Leer el archivo de preguntas
-        $filePath = storage_path('app/' . $request->archivo_preguntas);
-        $spreadsheet = IOFactory::load($filePath);
-        $worksheet = $spreadsheet->getActiveSheet();
-        $rows = $worksheet->toArray();
+        // Leer el archivo de preguntas y guardarlas
+        $filePath   = storage_path("app/$rutaArchivo");
+        $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($filePath);
+        $worksheet   = $spreadsheet->getActiveSheet();
+        $rows        = $worksheet->toArray();
 
         foreach (array_slice($rows, 1) as $row) {
             if (count($row) < 7) {
-                continue; // Si hay menos de 7 columnas, la fila se ignora
+                continue;
             }
-
             Pregunta::create([
-                'simulacro_id' => $simulacro->id,
-                'imagen' => isset($row[0]) && !empty($row[0]) ? trim($row[0]) : null,
-                'texto' => trim($row[1]),
-                'opcion_a' => trim($row[2]),
-                'opcion_b' => trim($row[3]),
-                'opcion_c' => trim($row[4]),
-                'opcion_d' => trim($row[5]),
-                'respuesta_correcta' => strtoupper(substr(trim($row[6]), 0, 1)), // Solo una letra
+                'simulacro_id'       => $simulacro->id,
+                'imagen'             => !empty(trim($row[0])) ? trim($row[0]) : null,
+                'texto'              => trim($row[1]),
+                'opcion_a'           => trim($row[2]),
+                'opcion_b'           => trim($row[3]),
+                'opcion_c'           => trim($row[4]),
+                'opcion_d'           => trim($row[5]),
+                'respuesta_correcta' => strtoupper(substr(trim($row[6]), 0, 1)),
             ]);
         }
 
-        return redirect()->route('profesor.simulacros.index')->with('success', 'Simulacro creado y preguntas importadas correctamente.');
+        return redirect()->route('profesor.simulacros.index');
     }
-
 
     public function destroy($id)
     {
         Simulacro::findOrFail($id)->delete();
-        return redirect()->route('profesor.simulacros.index')->with('success', 'Simulacro eliminado correctamente.');
+        return redirect()->route('profesor.simulacros.index');
     }
 
     public function verSimulacros()
@@ -89,17 +97,23 @@ class SimulacroController extends Controller
         $userId = Auth::id();
         $fechaActual = now();
 
-        // Obtener todos los simulacros
+        // Todos los simulacros
         $simulacros = Simulacro::all();
 
         foreach ($simulacros as $simulacro) {
-            // Verificar si ya fue presentado
+            // Verificar si el estudiante ya presentó el simulacro
             $simulacro->presentado = Calificacion::where('estudiante_id', $userId)
                 ->where('simulacro_id', $simulacro->id)
                 ->exists();
 
-            // Verificar si la fecha del simulacro ya ha llegado
-            $simulacro->disponible = $fechaActual >= $simulacro->fecha;
+            // Comprobar si el simulacro está en rango [fecha, hora_fin]
+            $inicioSimulacro = \Carbon\Carbon::parse($simulacro->fecha);
+            $finSimulacro    = $simulacro->hora_fin ? \Carbon\Carbon::parse($simulacro->hora_fin) : null;
+
+            $simulacro->disponible = $finSimulacro
+                ? $fechaActual->between($inicioSimulacro, $finSimulacro)
+                : $fechaActual->greaterThanOrEqualTo($inicioSimulacro);
+            // Si no hay hora_fin, tal vez lo consideras disponible indefinidamente
         }
 
         return view('estudiante.simulacros', compact('simulacros'));
@@ -131,41 +145,49 @@ class SimulacroController extends Controller
     {
         $simulacro = Simulacro::with('preguntas')->findOrFail($id);
         $preguntas = $simulacro->preguntas;
-        $puntajeTotal = 0;
 
+        // Verificar fin
+        $horaFin = $simulacro->hora_fin ? \Carbon\Carbon::parse($simulacro->hora_fin) : null;
+        if ($horaFin && now()->greaterThan($horaFin)) {
+            return redirect()->route('estudiante.simulacros')->with('error', 'El tiempo del simulacro ha finalizado.');
+        }
+
+        // Calcular puntaje
+        $puntajeTotal = 0;
         foreach ($preguntas as $pregunta) {
             $respuestaSeleccionada = $request->input("pregunta_{$pregunta->id}");
-
-            if (!is_null($respuestaSeleccionada)) { // Verifica que la respuesta no esté vacía
+            if ($respuestaSeleccionada) {
                 $esCorrecta = ($respuestaSeleccionada == $pregunta->respuesta_correcta);
                 if ($esCorrecta) {
-                    $puntajeTotal += 10; // Suma 10 puntos por cada respuesta correcta
+                    $puntajeTotal += 10;
                 }
             }
         }
 
-        // Guardar solo una vez el puntaje total
+        // Guardar calificación total
         Calificacion::updateOrCreate(
             [
                 'estudiante_id' => auth()->id(),
-                'simulacro_id' => $simulacro->id,
-                'pregunta_id' => null, // Identificador de puntaje total
+                'simulacro_id'  => $simulacro->id,
+                'pregunta_id'   => null,
             ],
             [
-                'puntaje' => $puntajeTotal,
-                'titulo_simulacro' => $simulacro->titulo, // Guardamos el título del simulacro
+                'puntaje'          => $puntajeTotal,
+                'titulo_simulacro' => $simulacro->titulo,
             ]
         );
 
-        return redirect()->route('estudiante.simulacros')->with('success', 'Respuestas guardadas correctamente.');
+        return redirect()->route('estudiante.simulacros');
     }
 
     public function preview(Request $request)
     {
+        // Ajusta la validación si en la previsualización también quieres capturar la hora_fin
         $request->validate([
             'titulo' => 'required|string|max:255',
             'descripcion' => 'nullable|string',
-            'fecha' => 'required|date',
+            'fecha' => 'required|date_format:Y-m-d\TH:i',
+            'hora_fin' => 'required|date_format:Y-m-d\TH:i|after:fecha',
             'archivo_preguntas' => 'required|mimes:xlsx,xls,csv'
         ]);
 
@@ -173,45 +195,34 @@ class SimulacroController extends Controller
         $filePath = $request->file('archivo_preguntas')->store('temp');
 
         // Leer el archivo con PhpSpreadsheet
-        $spreadsheet = IOFactory::load(storage_path('app/' . $filePath));
+        $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load(storage_path('app/' . $filePath));
         $worksheet = $spreadsheet->getActiveSheet();
         $rows = $worksheet->toArray();
 
-        // Extraer preguntas (sin la primera fila, que son los encabezados)
+        // Extraer preguntas (sin la primera fila)
         $preguntas = [];
         foreach (array_slice($rows, 1) as $row) {
             if (count($row) < 7) {
-                continue; // Si la fila tiene menos de 7 columnas, se ignora
+                continue;
             }
-
-            // $imagenPath = null;
-
-            // if (!empty(trim($row[0]))) {
-            //     $nombreArchivo = trim($row[0]);
-            //     $rutaImagen = 'public/imagenes_simulacros/' . $nombreArchivo;
-
-            //     if (Storage::exists($rutaImagen)) {
-            //         $imagenPath = 'imagenes_simulacros/' . $nombreArchivo;
-            //     }
-            // }
-
             $preguntas[] = [
-                'imagen' => isset($row[0]) && !empty($row[0]) ? trim($row[0]) : null, // Imagen en la primera columna,
-                'texto' => trim($row[1]),
-                'opcion_a' => trim($row[2]),
-                'opcion_b' => trim($row[3]),
-                'opcion_c' => trim($row[4]),
-                'opcion_d' => trim($row[5]),
-                'respuesta_correcta' => strtoupper(substr(trim($row[6]), 0, 1)), // Solo una letra
+                'imagen'             => isset($row[0]) && !empty($row[0]) ? trim($row[0]) : null,
+                'texto'              => trim($row[1]),
+                'opcion_a'           => trim($row[2]),
+                'opcion_b'           => trim($row[3]),
+                'opcion_c'           => trim($row[4]),
+                'opcion_d'           => trim($row[5]),
+                'respuesta_correcta' => strtoupper(substr(trim($row[6]), 0, 1)),
             ];
         }
 
         return view('profesor.preview', [
-            'titulo' => $request->titulo,
+            'titulo'      => $request->titulo,
             'descripcion' => $request->descripcion,
-            'fecha' => $request->fecha,
-            'archivo' => $filePath,
-            'preguntas' => $preguntas // Ahora las preguntas solo se previsualizan, no se guardan en la BD
+            'fecha'       => $request->fecha,
+            'hora_fin'    => $request->hora_fin,
+            'archivo'     => $filePath,
+            'preguntas'   => $preguntas
         ]);
     }
 
@@ -225,19 +236,46 @@ class SimulacroController extends Controller
     {
         $request->validate([
             'titulo' => 'required|string|max:255',
-            'descripcion' => 'nullable|string',
-            'fecha' => 'required|date',
-            'hora' => 'required', // Asegurar que 'hora' está validado
+            'fecha'  => 'required|date',      // solo la parte YYYY-mm-dd
+            'hora'   => 'required|date_format:H:i',
+            'hora_fin' => 'required|date_format:H:i',
         ]);
 
+        // Combinar fecha + hora para el inicio
+        $fechaInicio = \Carbon\Carbon::parse($request->fecha . ' ' . $request->hora);
+
+        // Si quieres permitir que la fecha de fin sea otro día, necesitarías otro campo "fecha_fin".
+        // De momento, usaremos la misma $request->fecha para la hora_fin:
+        $fechaFin = \Carbon\Carbon::parse($request->fecha . ' ' . $request->hora_fin);
+
+        // Actualizar
         $simulacro = Simulacro::findOrFail($id);
         $simulacro->update([
-            'titulo' => $request->titulo,
-            'descripcion' => $request->descripcion,
-            'fecha' => $request->fecha . ' ' . $request->hora,
-            'profesor_id' => auth()->id()
+            'titulo'   => $request->titulo,
+            // 'descripcion' => $request->descripcion, // solo si lo incluyes en el form
+            'fecha'    => $fechaInicio,
+            'hora_fin' => $fechaFin,
         ]);
 
         return redirect()->route('profesor.simulacros.index');
+    }
+
+    public function verificarAcceso(Simulacro $simulacro)
+    {
+        $ahora = now();
+        $inicioSimulacro = \Carbon\Carbon::parse($simulacro->fecha . ' ' . $simulacro->hora);
+        $finSimulacro = $simulacro->hora_fin ? \Carbon\Carbon::parse($simulacro->fecha . ' ' . $simulacro->hora_fin) : null;
+
+        // Verificar si el simulacro ha iniciado
+        if ($inicioSimulacro->isFuture()) {
+            return redirect()->route('estudiante.simulacros')->with('error', 'El simulacro aún no ha comenzado.');
+        }
+
+        // Bloquear si la hora final pasó
+        if ($simulacro->hora_fin && $ahora->greaterThan($finSimulacro)) {
+            return redirect()->route('estudiante.simulacros')->with('error', 'El simulacro ha finalizado.');
+        }
+
+        return view('simulacros.show', compact('simulacro'));
     }
 }
