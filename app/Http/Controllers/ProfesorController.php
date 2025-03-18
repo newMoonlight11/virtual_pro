@@ -136,31 +136,38 @@ class ProfesorController extends Controller
         return view('profesor.crear-modulo');
     }
 
+    // En guardarModulo()
     public function guardarModulo(Request $request)
     {
         $request->validate([
             'nombre' => 'required|string|max:255',
             'descripcion' => 'nullable|string',
-            'link_reunion' => 'nullable|url',
-            'archivos.*' => 'file|max:10240', // Cada archivo máximo 10MB
+            'link_reunion' => 'nullable|string', // Quitamos la validación "url"
+            'archivos.*' => 'file|max:10240',
             'nombres_personalizados' => 'nullable|string',
         ]);
 
-        // Crear el módulo incluyendo el link de la reunión virtual
-        $modulo = Modulo::create($request->only(['nombre', 'descripcion', 'link_reunion']));
+        // Prepara el link de reunión: si se ingresó y no empieza con http(s)://, se le antepone https://
+        $link_reunion = $request->link_reunion;
+        if ($link_reunion && !preg_match('/^https?:\/\//i', $link_reunion)) {
+            $link_reunion = 'https://' . $link_reunion;
+        }
 
-        // Si se subieron archivos, guardarlos
+        // Crear el módulo incluyendo el link de la reunión virtual
+        $modulo = Modulo::create([
+            'nombre' => $request->nombre,
+            'descripcion' => $request->descripcion,
+            'link_reunion' => $link_reunion,
+        ]);
+
+        // Procesar archivos (igual que antes)
         if ($request->hasFile('archivos')) {
             $archivos = $request->file('archivos');
             $nombresPersonalizados = explode("\n", trim($request->nombres_personalizados));
 
             foreach ($archivos as $index => $archivo) {
                 $rutaArchivo = $archivo->store('modulos', 'public');
-
-                // Usar nombre personalizado si está definido, de lo contrario, el nombre original
-                $nombreArchivo = $nombresPersonalizados[$index] ?? $archivo->getClientOriginalName();
-                $nombreArchivo = trim($nombreArchivo);
-
+                $nombreArchivo = trim($nombresPersonalizados[$index] ?? $archivo->getClientOriginalName());
                 Archivo::create([
                     'modulo_id' => $modulo->id,
                     'nombre' => $nombreArchivo,
@@ -183,12 +190,21 @@ class ProfesorController extends Controller
         $request->validate([
             'nombre' => 'required|string|max:255',
             'descripcion' => 'nullable|string',
-            'link_reunion' => 'nullable|url',
+            'link_reunion' => 'nullable|string', // Quitamos "url"
         ]);
 
         $modulo = Modulo::findOrFail($id);
-        // Actualiza solo los campos necesarios
-        $modulo->update($request->only(['nombre', 'descripcion', 'link_reunion']));
+
+        $link_reunion = $request->link_reunion;
+        if ($link_reunion && !preg_match('/^https?:\/\//i', $link_reunion)) {
+            $link_reunion = 'https://' . $link_reunion;
+        }
+
+        $modulo->update([
+            'nombre' => $request->nombre,
+            'descripcion' => $request->descripcion,
+            'link_reunion' => $link_reunion,
+        ]);
 
         return redirect()->route('profesor.modulos');
     }

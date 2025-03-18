@@ -24,9 +24,9 @@
                 <!-- Nuevo campo para el link de la reunión virtual -->
                 <div class="mb-3">
                     <label class="form-label">Link para la reunión virtual</label>
-                    <input type="url" name="link_reunion" class="form-control"
+                    <input type="text" name="link_reunion" class="form-control"
                         value="{{ old('link_reunion', $modulo->link_reunion) }}"
-                        placeholder="https://meet.google.com/xxx-xxxx-xxx">
+                        placeholder="meet.google.com/ozk-ihgm-hsp">
                 </div>
 
                 <button type="submit" class="btn btn-success">Actualizar</button>

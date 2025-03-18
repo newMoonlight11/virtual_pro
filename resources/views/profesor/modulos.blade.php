@@ -176,7 +176,13 @@
                                         <div class="modal-body">
                                             <p>{{ $modulo->descripcion }}</p>
 
-                                            <!-- Subir archivos -->
+                                            @if ($modulo->link_reunion)
+                                                <p>
+                                                    <strong>Reunión Virtual:</strong>
+                                                    <a href="{{ $modulo->link_reunion }}"
+                                                        target="_blank">{{ $modulo->link_reunion }}</a>
+                                                </p>
+                                            @endif
                                             <!-- Subir archivos -->
                                             <form action="{{ route('profesor.subir_archivo', $modulo->id) }}"
                                                 method="POST" enctype="multipart/form-data">
