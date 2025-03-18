@@ -141,12 +141,13 @@ class ProfesorController extends Controller
         $request->validate([
             'nombre' => 'required|string|max:255',
             'descripcion' => 'nullable|string',
+            'link_reunion' => 'nullable|url',
             'archivos.*' => 'file|max:10240', // Cada archivo máximo 10MB
             'nombres_personalizados' => 'nullable|string',
         ]);
 
-        // Crear el módulo
-        $modulo = Modulo::create($request->only(['nombre', 'descripcion']));
+        // Crear el módulo incluyendo el link de la reunión virtual
+        $modulo = Modulo::create($request->only(['nombre', 'descripcion', 'link_reunion']));
 
         // Si se subieron archivos, guardarlos
         if ($request->hasFile('archivos')) {
@@ -182,10 +183,12 @@ class ProfesorController extends Controller
         $request->validate([
             'nombre' => 'required|string|max:255',
             'descripcion' => 'nullable|string',
+            'link_reunion' => 'nullable|url',
         ]);
 
         $modulo = Modulo::findOrFail($id);
-        $modulo->update($request->all());
+        // Actualiza solo los campos necesarios
+        $modulo->update($request->only(['nombre', 'descripcion', 'link_reunion']));
 
         return redirect()->route('profesor.modulos');
     }
