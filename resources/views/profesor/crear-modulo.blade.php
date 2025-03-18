@@ -20,8 +20,8 @@
                 <!-- Nuevo campo para el link de la reunión virtual -->
                 <div class="mb-3">
                     <label class="form-label">Link para la reunión virtual</label>
-                    <input type="url" name="link_reunion" class="form-control"
-                        placeholder="https://meet.google.com/xxx-xxxx-xxx">
+                    <input type="text" name="link_reunion" class="form-control"
+                        placeholder="meet.google.com/ozk-ihgm-hsp">
                 </div>
 
                 <!-- Formulario de carga de archivos -->

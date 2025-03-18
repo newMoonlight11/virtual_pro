@@ -62,7 +62,13 @@
                                         </div>
                                         <div class="modal-body">
                                             <p>{{ $modulo->descripcion }}</p>
-
+                                            @if ($modulo->link_reunion)
+                                                <p>
+                                                    <strong>Reunión Virtual:</strong>
+                                                    <a href="{{ $modulo->link_reunion }}"
+                                                        target="_blank">{{ $modulo->link_reunion }}</a>
+                                                </p>
+                                            @endif
                                             <!-- Lista de archivos -->
                                             @if ($modulo->archivos->count())
                                                 <div class="mt-3">
