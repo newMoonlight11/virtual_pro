@@ -1,44 +1,100 @@
 <style>
-    /* Ajusta la altura y permite el scroll vertical */
+    /* Botón hamburguesa fijo, con margen top para no tapar el logo */
+    #sidebarToggle {
+        position: fixed;
+        top: 70px;
+        /* Ajusta según la altura del logo */
+        left: 20px;
+        z-index: 2001;
+        /* por encima del sidebar */
+    }
+
+    /* Sidebar fijo a la izquierda, con transición */
+    #sidenav-main {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 250px;
+        height: 100vh;
+        background-color: #fff;
+        z-index: 2000;
+        transition: transform 0.3s ease;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        /* Para que no aparezca scrollbar al colapsar */
+    }
+
+    /* Al colapsar, lo movemos fuera de la pantalla */
+    #sidenav-main.collapsed {
+        transform: translateX(-100%);
+    }
+
+    /* Header del sidebar (logo, etc.) */
+    .sidebar-header {
+        padding: 1rem;
+        display: flex;
+        align-items: center;
+    }
+
+    .sidebar-header img {
+        max-height: 50px;
+        /* Ajusta el tamaño del logo */
+    }
+
+    /* Contenido desplazable dentro del sidebar */
     #sidenav-collapse-main {
         height: calc(100vh - 80px);
-        /* o la altura que necesites */
+        /* Ajusta según la altura del header */
         overflow-y: auto;
-        /* scroll vertical nativo */
-
-        /* Oculta el scrollbar en navegadores que soportan estas propiedades */
         scrollbar-width: none;
         /* Firefox */
         -ms-overflow-style: none;
         /* IE/Edge antiguos */
     }
 
-    /* Ocultar scrollbar en Chrome, Safari y Opera */
     #sidenav-collapse-main::-webkit-scrollbar {
         width: 0px;
         background: transparent;
     }
 
-    /* Al hacer hover sobre el contenedor, que aparezca el scrollbar */
     #sidenav-collapse-main:hover::-webkit-scrollbar {
         width: 6px;
-        /* Grosor del scrollbar */
         background: #e1e1e1;
-        /* Color de la "pista" */
     }
 
-    /* Estilo del "thumb" (la parte que se arrastra) */
     #sidenav-collapse-main::-webkit-scrollbar-thumb {
         background: #bbb;
-        /* Color de la barra */
         border-radius: 4px;
     }
-</style>
 
+    /*
+      Opcional:
+      - Para pantallas >= 992px (Bootstrap lg) movemos <main> a la derecha cuando sidebar abierto
+      - En pantallas más pequeñas, el sidebar cubre el contenido (main no se mueve).
+    */
+    @media (min-width: 992px) {
+        main {
+            margin-left: 250px;
+            /* sidebar abierto */
+            transition: margin-left 0.3s ease;
+        }
+
+        main.full-width {
+            margin-left: 0;
+            /* sidebar colapsado */
+        }
+    }
+</style>
+<button id="sidebarToggle" class="btn btn-outline-primary">
+    <i class="fas fa-bars"></i>
+</button>
+<!-- Overlay -->
+{{-- <div id="sidebarOverlay" class="sidebar-overlay d-none"></div> --}}
 <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl fixed-start ms-3 vh-100"
-    id="sidenav-main" style="top: 0; bottom: 0;">
+    id="sidenav-main">
 
     <div class="sidenav-header">
+
         <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
             aria-hidden="true" id="iconSidenav"></i>
         <a class="align-items-center d-flex m-0 navbar-brand text-wrap" href="{{ route('dashboard') }}">
@@ -237,3 +293,21 @@
         </ul>
     </div>
 </aside>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const btnToggle = document.getElementById('sidebarToggle');
+        const sidebar = document.getElementById('sidenav-main');
+        const mainContent = document.querySelector('main'); // Solo si deseas mover <main>
+
+        // Al hacer clic en el botón hamburguesa
+        btnToggle.addEventListener('click', () => {
+            // Toggle de la clase 'collapsed' para ocultar/mostrar el sidebar
+            sidebar.classList.toggle('collapsed');
+
+            // Si usas el empuje de <main> en pantallas grandes
+            if (mainContent) {
+                mainContent.classList.toggle('full-width');
+            }
+        });
+    });
+</script>

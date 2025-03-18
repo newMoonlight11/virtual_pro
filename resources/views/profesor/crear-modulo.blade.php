@@ -17,6 +17,13 @@
                     <textarea name="descripcion" class="form-control"></textarea>
                 </div>
 
+                <!-- Nuevo campo para el link de la reunión virtual -->
+                <div class="mb-3">
+                    <label class="form-label">Link para la reunión virtual</label>
+                    <input type="url" name="link_reunion" class="form-control"
+                        placeholder="https://meet.google.com/xxx-xxxx-xxx">
+                </div>
+
                 <!-- Formulario de carga de archivos -->
                 <div class="mb-3">
                     <label class="form-label">Archivos</label>

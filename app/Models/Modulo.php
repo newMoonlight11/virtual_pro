@@ -9,7 +9,7 @@ class Modulo extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['nombre', 'descripcion'];
+    protected $fillable = ['nombre', 'descripcion', 'link_reunion'];
 
     public function archivos()
     {
