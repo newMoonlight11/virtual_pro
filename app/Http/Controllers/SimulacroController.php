@@ -38,34 +38,36 @@ class SimulacroController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'titulo'            => 'required|string|max:255',
-            'descripcion'       => 'nullable|string',
-            'fecha'             => 'required|date_format:Y-m-d\TH:i',
-            'hora_fin'          => 'required|date_format:Y-m-d\TH:i|after:fecha',
-            'archivo_preguntas' => 'required|mimes:xlsx,xls,csv|max:2048'
+            'titulo'      => 'required|string|max:255',
+            'descripcion' => 'nullable|string',
+            'fecha'       => 'required|date_format:Y-m-d\TH:i',
+            'hora_fin'    => 'required|date_format:Y-m-d\TH:i|after:fecha',
         ]);
+
+        // Obtener la ruta del archivo desde la sesión
+        $archivoTemporal = session('archivo');
+
+        if (!$archivoTemporal || !Storage::exists($archivoTemporal)) {
+            return redirect()->route('profesor.simulacros.create')->withErrors(['archivo_preguntas' => 'No se encontró el archivo de preguntas.']);
+        }
 
         $fechaInicio = \Carbon\Carbon::parse($request->fecha);
         $fechaFin    = \Carbon\Carbon::parse($request->hora_fin);
 
-        // Subir archivo
-        $rutaArchivo = $request->file('archivo_preguntas')->store('preguntas', 'local');
-
-        // Crear el simulacro con fecha y hora fin
+        // Crear el simulacro SIN GUARDAR el archivo en la BD
         $simulacro = Simulacro::create([
             'titulo'       => $request->titulo,
             'descripcion'  => $request->descripcion,
             'fecha'        => $fechaInicio,
             'hora_fin'     => $fechaFin,
-            'archivo_preguntas' => $rutaArchivo,
             'profesor_id'  => auth()->id()
         ]);
 
-        // Leer el archivo de preguntas y guardarlas
-        $filePath   = storage_path("app/$rutaArchivo");
+        // Leer el archivo para extraer preguntas
+        $filePath = storage_path("app/$archivoTemporal");
         $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($filePath);
-        $worksheet   = $spreadsheet->getActiveSheet();
-        $rows        = $worksheet->toArray();
+        $worksheet = $spreadsheet->getActiveSheet();
+        $rows = $worksheet->toArray();
 
         foreach (array_slice($rows, 1) as $row) {
             if (count($row) < 7) {
@@ -82,6 +84,9 @@ class SimulacroController extends Controller
                 'respuesta_correcta' => strtoupper(substr(trim($row[6]), 0, 1)),
             ]);
         }
+
+        // Eliminar el archivo después de extraer los datos
+        Storage::delete($archivoTemporal);
 
         return redirect()->route('profesor.simulacros.index');
     }
@@ -182,6 +187,9 @@ class SimulacroController extends Controller
 
     public function preview(Request $request)
     {
+        if ($request->method() !== 'POST') {
+            abort(405, 'Método no permitido'); // Esto evitará accesos GET accidentales
+        }
         // Ajusta la validación si en la previsualización también quieres capturar la hora_fin
         $request->validate([
             'titulo' => 'required|string|max:255',
@@ -216,7 +224,7 @@ class SimulacroController extends Controller
             ];
         }
 
-        return view('profesor.preview', [
+        session([
             'titulo'      => $request->titulo,
             'descripcion' => $request->descripcion,
             'fecha'       => $request->fecha,
@@ -224,6 +232,9 @@ class SimulacroController extends Controller
             'archivo'     => $filePath,
             'preguntas'   => $preguntas
         ]);
+
+
+        return view('profesor.preview', compact('preguntas'));
     }
 
     public function test($id)

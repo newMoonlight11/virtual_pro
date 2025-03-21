@@ -1,15 +1,18 @@
 @extends('layouts.user_type.auth')
 
 @section('content')
+    <meta name="referrer" content="no-referrer">
     <div class="container py-4 card">
         <h3 class="mb-4">Vista Previa de Preguntas</h3>
 
         <form action="{{ route('profesor.simulacros.store') }}" method="POST" class="card-body">
             @csrf
-            <input type="hidden" name="titulo" value="{{ $titulo }}">
-            <input type="hidden" name="descripcion" value="{{ $descripcion }}">
-            <input type="hidden" name="fecha" value="{{ $fecha }}">
-            <input type="hidden" name="archivo_preguntas" value="{{ $archivo }}">
+            <input type="hidden" name="titulo" value="{{ session('titulo') }}">
+            <input type="hidden" name="descripcion" value="{{ session('descripcion') }}">
+            <input type="hidden" name="fecha" value="{{ session('fecha') }}">
+            <input type="hidden" name="hora_fin" value="{{ session('hora_fin') }}">
+            <input type="hidden" name="archivo_preguntas" value="{{ session('archivo') }}">
+
 
             <div class="table-responsive">
                 <table class="table">
@@ -61,3 +64,24 @@
         */
     }
 </style>
+<script>
+    document.querySelector("form").addEventListener("submit", function(event) {
+        event.preventDefault(); // Evita la recarga
+
+        let form = this;
+        let formData = new FormData(form);
+
+        fetch(form.action, {
+                method: form.method,
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.href =
+                    "{{ route('profesor.simulacros.preview') }}"; // Redirige sin perder datos
+                }
+            })
+            .catch(error => console.error(error));
+    });
+</script>

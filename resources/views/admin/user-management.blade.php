@@ -31,6 +31,8 @@
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder text-center">
                                             Rol</th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder text-center">
+                                            Grupo</th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder text-center">
                                             Acciones</th>
                                     </tr>
                                 </thead>
@@ -44,6 +46,7 @@
                                                 <span class="badge bg-primary"
                                                     style="width: 80%">{{ ucfirst($user->role) }}</span>
                                             </td>
+                                            <td class="text-center">{{ $user->group }}</td>
                                             <td class="text-center">
                                                 <a href="{{ route('admin.users.edit', $user->id) }}" class="mx-3"
                                                     data-bs-toggle="tooltip" data-bs-original-title="Editar usuario">

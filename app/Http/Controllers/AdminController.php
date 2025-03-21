@@ -23,30 +23,43 @@ class AdminController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
-            'phone' => 'nullable|numeric',
+            'phone' => 'nullable|string|max:15',
+            'group' => 'required|string|in:Sábados,Lunes,Ninguno',
             'password' => [
                 'required',
                 'string',
                 'min:8',
-                'regex:/[A-Z]/',
-                'regex:/[a-z]/',
-                'regex:/[0-9]/',
-                'regex:/[\W]/',
+                'regex:/[A-Z]/', // Debe tener al menos una mayúscula
+                'regex:/[a-z]/', // Debe tener al menos una minúscula
+                'regex:/[0-9]/', // Debe tener al menos un número
+                'regex:/[\W]/',  // Debe tener al menos un carácter especial
                 'confirmed'
             ],
             'role' => 'required|in:admin,profesor,estudiante',
+        ], [
+            'password.min' => 'La contraseña debe tener al menos 8 caracteres.',
+            'password.regex' => 'La contraseña debe incluir una mayúscula, una minúscula, un número y un carácter especial.',
+            'password.confirmed' => 'Las contraseñas no coinciden.',
         ]);
 
-        User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'password' => Hash::make($request->password),
-            'role' => $request->role,
-        ]);
+        try {
+            User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'group' => $request->group,
+                'password' => Hash::make($request->password),
+                'role' => $request->role,
+            ]);
 
-        return redirect()->route('admin.users');
+            return redirect()->route('admin.users');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Error al guardar el usuario: ' . $e->getMessage());
+        }
     }
+
+
+
 
     public function edit($id)
     {
@@ -61,7 +74,8 @@ class AdminController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $id,
-            'phone' => 'nullable|numeric',
+            'phone' => 'nullable|string|max:15',
+            'group' => 'required|string|in:Sábados,Lunes,Ninguno',
             'role' => 'required|in:admin,profesor,estudiante',
             'password' => [
                 'nullable',
@@ -73,22 +87,31 @@ class AdminController extends Controller
                 'regex:/[\W]/',
                 'confirmed'
             ],
+        ], [
+            'password.min' => 'La contraseña debe tener al menos 8 caracteres.',
+            'password.regex' => 'La contraseña debe incluir una mayúscula, una minúscula, un número y un carácter especial.',
+            'password.confirmed' => 'Las contraseñas no coinciden.',
         ]);
 
-        $user->update([
-            'name' => $request->name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'role' => $request->role,
-        ]);
-
-        if ($request->filled('password')) {
+        try {
             $user->update([
-                'password' => Hash::make($request->password),
+                'name' => $request->name,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'group' => $request->group,
+                'role' => $request->role,
             ]);
-        }
 
-        return redirect()->route('admin.users');
+            if ($request->filled('password')) {
+                $user->update([
+                    'password' => Hash::make($request->password),
+                ]);
+            }
+
+            return redirect()->route('admin.users');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Error al actualizar el usuario: ' . $e->getMessage());
+        }
     }
 
     public function destroy($id)

@@ -9,12 +9,58 @@
             </a>
         </div>
         <div class="row">
+
+            <div id="pregunta-container" class="text-center">
+                @foreach ($simulacro->preguntas as $index => $pregunta)
+                    <div class="pregunta-card card p-4 {{ $index == 0 ? '' : 'd-none' }}" data-index="{{ $index }}">
+                        @if ($pregunta->imagen)
+                            <img src="{{ filter_var($pregunta->imagen, FILTER_VALIDATE_URL) ? $pregunta->imagen : asset('storage/' . $pregunta->imagen) }}"
+                                 alt="Imagen Pregunta" class="img-fluid rounded mb-3" style="max-width: 100%; height: auto;">
+                        @endif
+
+                        <h5 class="mb-4">{{ $index + 1 }}. {{ $pregunta->texto }}</h5>
+
+                        <div class="respuestas-container">
+                            <p>A. {{ $pregunta->opcion_a }}</p>
+                            <p>B. {{ $pregunta->opcion_b }}</p>
+                            <p>C. {{ $pregunta->opcion_c }}</p>
+                            <p>D. {{ $pregunta->opcion_d }}</p>
+                        </div>
+
+                        <div class="burbujas mt-3">
+                            <label class="custom-radio">
+                                <input type="radio" name="respuesta_{{ $index }}" value="A">
+                                <span class="circle">A</span>
+                            </label>
+                            <label class="custom-radio">
+                                <input type="radio" name="respuesta_{{ $index }}" value="B">
+                                <span class="circle">B</span>
+                            </label>
+                            <label class="custom-radio">
+                                <input type="radio" name="respuesta_{{ $index }}" value="C">
+                                <span class="circle">C</span>
+                            </label>
+                            <label class="custom-radio">
+                                <input type="radio" name="respuesta_{{ $index }}" value="D">
+                                <span class="circle">D</span>
+                            </label>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+
+            <!-- Flechas de Navegación -->
+            <div class="d-flex justify-content-between mt-4">
+                <button id="prev" class="btn btn-secondary" onclick="cambiarPregunta(-1)">← Anterior</button>
+                <button id="next" class="btn btn-primary" onclick="cambiarPregunta(1)">Siguiente →</button>
+            </div>
+        </div>
             <!-- Columna Izquierda: Preguntas -->
-            <div class="col-md-6">
+            {{-- <div class="col-md-6">
                 <h5>Preguntas</h5>
                 @foreach ($simulacro->preguntas as $index => $pregunta)
                     <div class="card mb-3">
-                        <div class="card-body">
+                        <div class="card-body"> --}}
                             {{-- @if ($pregunta->imagen)
                                 <div class="text-center">
                                     @if (filter_var($pregunta->imagen, FILTER_VALIDATE_URL))
@@ -28,7 +74,7 @@
                                     @endif
                                 </div>
                             @endif --}}
-                            @if ($pregunta->imagen)
+                            {{-- @if ($pregunta->imagen)
                                 <div class="text-center position-relative">
                                     @php
                                         $imagenSrc = filter_var($pregunta->imagen, FILTER_VALIDATE_URL)
@@ -63,10 +109,10 @@
                         </div>
                     </div>
                 @endforeach
-            </div>
+            </div> --}}
 
             <!-- Columna Derecha: Formato de Respuestas -->
-            <div class="col-md-6">
+            {{-- <div class="col-md-6">
                 <h5>Respuestas</h5>
                 <form id="form-test" class="card">
                     @csrf
@@ -114,7 +160,7 @@
 
                 <!-- Contenedor para mostrar el puntaje -->
                 <div id="resultado" class="mt-3"></div>
-            </div>
+            </div> --}}
         </div>
     </div>
     <!-- Modal de Imagen Ampliada -->
@@ -197,6 +243,20 @@
                 });
             });
         });
+        
+        let currentIndex = 0;
+        const preguntas = document.querySelectorAll('.pregunta-card');
+
+        function cambiarPregunta(direccion) {
+            preguntas[currentIndex].classList.add('d-none'); // Ocultar pregunta actual
+            currentIndex += direccion;
+
+            // Evitar que pase de los límites
+            if (currentIndex < 0) currentIndex = 0;
+            if (currentIndex >= preguntas.length) currentIndex = preguntas.length - 1;
+
+            preguntas[currentIndex].classList.remove('d-none'); // Mostrar nueva pregunta
+        }
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 @endsection
